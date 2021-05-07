@@ -4,10 +4,25 @@ Modding the VRChat client is against VRChat's Terms of Service. Therefore use th
 
 ## Mods
 <ol>
+  <li><a href="#actionmenuapi">ActionMenuApi</a></li>
   <li><a href="#actionmenuutils">ActionMenuUtils</a></li>
   <li><a href="#downloadfix">DownloadFix</a></li>
   <li><a href="#worldpredownload">WorldPredownload</a></li>
 </ol>
+
+## ActionMenuApi
+
+This mod doesn't do anything on it's own. <br>
+It provides an easy way for modders to add integration with the action menu. <br>
+It supports the use of the <br>
+* Radial Puppet
+* Four Axis Puppet
+* Button
+* Toggle Button
+* Sub Menus
+
+Additionally allows mods to add their menus to a dedicated section on the action menu to prevent clutter. <br>
+More information [here](https://github.com/gompocp/ActionMenuApi)
 
 ## ActionMenuUtils 
 - Lets you respawn using the action menu<br>
