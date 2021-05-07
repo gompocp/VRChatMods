@@ -1,0 +1,3 @@
+[submodule "ActionMenuApi"]
+	path = ActionMenuApi
+	url = https://github.com/gompocp/ActionMenuApi/
