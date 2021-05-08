@@ -116,14 +116,15 @@ namespace WorldPredownload
     {
         public static void Patch()
         {
-            WorldPredownload.HarmonyInstance.Patch(typeof(PageUserInfo).GetMethods().Single(
+            WorldPredownload.HarmonyInstance.Patch(typeof(PageUserInfo).GetMethods().Where(
                     m => m.ReturnType == typeof(void)
                          && m.GetParameters().Length == 3
                          && m.GetParameters()[0].ParameterType == typeof(APIUser)
                          && m.GetParameters()[1].ParameterType == typeof(InfoType)
                          && m.GetParameters()[2].ParameterType == typeof(ListType)
                          && !m.Name.Contains("PDM")
-                ),
+                ).OrderBy(m => m.GetCustomAttribute<CallerCountAttribute>().Count)
+                .Last(),
                 null,
                 new HarmonyMethod(typeof(SocialMenuSetup).GetMethod(nameof(Postfix)))
             );
