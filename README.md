@@ -10,6 +10,15 @@ Modding the VRChat client is against VRChat's Terms of Service. Therefore use th
   <li><a href="#worldpredownload">WorldPredownload</a></li>
 </ol>
 
+
+## Building
+
+To Build simply
+1. Clone repo using git
+2. Copy `*.dlls` from `MelonLoader\Managed` to `Libs` folder
+3. Copy in `MelonLoader.dll`,`ActionMenuApi.dll` and `UIExpansionKit.dll` too
+4. Build Solution
+
 ## ActionMenuApi
 
 This mod doesn't do anything on it's own. <br>
