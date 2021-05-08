@@ -59,3 +59,4 @@ The devs are very much aware of this bug. According to some "secret intel" they 
 - Performance may degrade for split second on world enter due to you having a large cache size 
 
 
+Repo structure from [Knah's VRCMods Repo](https://github.com/knah/VRCMods/)

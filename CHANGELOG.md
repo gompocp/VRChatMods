@@ -1,3 +1,7 @@
+
+### WorldPredownload v1.4.3
+- Build 1089 compatibility fix
+
 ### WorldPredownload v1.4.2
 
 - Fixed Invite Button Ui Tooltip Text
