@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-[assembly: MelonInfo(typeof(DownloadFix.DownloadFix), "DownloadFix", "1.0.2", "gompo", "https://github.com/gompocp/DownloadFix/releases")]
+[assembly: MelonInfo(typeof(DownloadFix.DownloadFix), "DownloadFix", "1.0.2", "gompo", "https://github.com/gompocp/VRChatMods/releases/")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 namespace DownloadFix

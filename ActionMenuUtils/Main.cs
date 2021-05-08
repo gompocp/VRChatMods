@@ -16,7 +16,7 @@ using UnhollowerRuntimeLib.XrefScans;
 
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonOptionalDependencies("ActionMenuApi")]
-[assembly: MelonInfo(typeof(ActionMenuUtils.Main), "ActionMenuUtils", "1.3.7", "gompo", "https://github.com/gompocp/ActionMenuUtils/releases")]
+[assembly: MelonInfo(typeof(ActionMenuUtils.Main), "ActionMenuUtils", "1.3.7", "gompo", "https://github.com/gompocp/VRChatMods/releases/")]
 
 namespace ActionMenuUtils
 {

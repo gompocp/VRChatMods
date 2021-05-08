@@ -6,7 +6,7 @@ using VRC.UI;
 using WorldPredownload.UI;
 using WorldPredownload.Cache;
 
-[assembly: MelonInfo(typeof(WorldPredownload.WorldPredownload), "WorldPredownload", "1.4.3", "gompo", "https://github.com/gompocp/WorldPredownload/releases")]
+[assembly: MelonInfo(typeof(WorldPredownload.WorldPredownload), "WorldPredownload", "1.4.3", "gompo", "https://github.com/gompocp/VRChatMods/releases/")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 namespace WorldPredownload
