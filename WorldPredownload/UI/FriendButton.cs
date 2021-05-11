@@ -81,18 +81,12 @@ namespace WorldPredownload.UI
         
         public static void UpdateTextDownloadStopped()
         {
-            //Lazy way to check if the user menu is up
-            try
-            {
-                if (CacheManager.HasDownloadedWorld(GetUserInfo().field_Private_ApiWorld_0.id, GetUserInfo().field_Private_ApiWorld_0.version))
-                    button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
-                else
-                    button.SetText(Constants.BUTTON_IDLE_TEXT);
-            }
-            catch
-            {
-                // if it isn't up who the fuck cares what it says
-            }
+            var userInfo = GetUserInfo();
+            if (userInfo == null || userInfo.field_Private_ApiWorld_0?.id == null) return;
+            if (CacheManager.HasDownloadedWorld(userInfo.field_Private_ApiWorld_0.id, userInfo.field_Private_ApiWorld_0.version))
+                button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
+            else
+                button.SetText(Constants.BUTTON_IDLE_TEXT);
             canChangeText = true;
         }
         

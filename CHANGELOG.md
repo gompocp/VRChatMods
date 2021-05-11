@@ -1,3 +1,6 @@
+### WorldPredownload v1.4.4
+- Build 1093 compatibility fix
+- Fixed issue with cache checking
 
 ### WorldPredownload v1.4.3
 - Build 1089 compatibility fix

@@ -1,8 +1,14 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using Transmtn.DTO.Notifications;
+using UnhollowerBaseLib.Attributes;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.Core;
+using VRC.UI;
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
+// ReSharper disable HeuristicUnreachableCode
 
 namespace WorldPredownload
 {
@@ -52,6 +58,33 @@ namespace WorldPredownload
         
         public static string GetInstanceIDWithTags(this ApiWorld apiWorld) =>
             apiWorld.currentInstanceIdWithTags.Split(':')[1];
+        
+        
+        private static LoadUserDelegate GetLoadUserDelegate
+        {
+            get
+            {
+                //Build 1088 menu.Method_Private_Void_ObjectNPublicAcTeAcStGaUnique_0()
+                if (loadUserDelegate != null) return loadUserDelegate;
+                MethodInfo loadUserMethod = typeof(PageUserInfo).GetMethods().Where(
+                    m =>
+                        m.Name.StartsWith("Method_Public_Void_APIUser_PDM_")
+                    )
+                .OrderBy(m => m.GetCustomAttribute<CallerCountAttribute>().Count)
+                .Last();
+                loadUserDelegate = (LoadUserDelegate)Delegate.CreateDelegate(
+                    typeof(LoadUserDelegate),
+                    null,
+                    loadUserMethod);
+                return loadUserDelegate;
+            }
+        }
+        public static void LoadUser(this PageUserInfo pageUserInfo, APIUser apiUser)
+        {
+            GetLoadUserDelegate(pageUserInfo, apiUser);
+        }
+        private static LoadUserDelegate loadUserDelegate;
+        private delegate void LoadUserDelegate(PageUserInfo pageUserInfo, APIUser apiUser);
 
     }
 

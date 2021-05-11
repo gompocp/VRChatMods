@@ -65,7 +65,7 @@ namespace WorldPredownload.Cache
         {
             byte[] bytes = BitConverter.GetBytes(version);
             string result = "";
-            foreach (byte b in bytes) result += b.ToString("X2");
+            foreach (byte b in bytes) result += b.ToString("x2");
             return result;
         }
 

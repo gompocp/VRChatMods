@@ -55,15 +55,13 @@ namespace WorldPredownload.UI
 
         public static void UpdateTextDownloadStopped()
         {
-            try
-            {
-                if (CacheManager.HasDownloadedWorld(WorldDownloadManager.DownloadInfo.ApiWorld.id,
-                    WorldDownloadManager.DownloadInfo.ApiWorld.version))
-                    button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
-                else
-                    button.SetText(Constants.BUTTON_IDLE_TEXT);
-            }
-            catch { }
+            var worldInfo = GetWorldInfo();
+            if (worldInfo == null || worldInfo.field_Private_ApiWorld_0?.id == null) return;
+            if (CacheManager.HasDownloadedWorld(worldInfo.field_Private_ApiWorld_0.id,
+                worldInfo.field_Private_ApiWorld_0.version))
+                button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
+            else
+                button.SetText(Constants.BUTTON_IDLE_TEXT);
             canChangeText = true;
         }
 

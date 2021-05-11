@@ -91,7 +91,7 @@ namespace WorldPredownload.DownloadManager
                     GameObject.Find("UserInterface/QuickMenu/ShortcutMenu/SocialButton").GetComponent<Button>().onClick.Invoke();
                     _ = DownloadInfo.APIUser ?? throw new NullReferenceException(message: "Friend User Info Null Uh Oh");
                     Utilities.ShowPage(DownloadInfo.PageUserInfo);
-                    DownloadInfo.PageUserInfo.Method_Public_Void_APIUser_PDM_0(DownloadInfo.APIUser);
+                    DownloadInfo.PageUserInfo.LoadUser(DownloadInfo.APIUser);
                     //FriendButton.UpdateTextDownloadStopped();
                     ClearDownload();
                 }),
