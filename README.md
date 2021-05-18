@@ -10,6 +10,18 @@ Modding the VRChat client is against VRChat's Terms of Service. Therefore use th
   <li><a href="#worldpredownload">WorldPredownload</a></li>
 </ol>
 
+## Canny Posts
+
+
+
+I highly recommend checking out the canny posts linked below and upvoting if you'd like VRChat to implement some mods as actual vanilla features
+* [World Predownloading/Preloading](https://feedback.vrchat.com/feature-requests/p/preload-worlds)
+* [Avatar/Loading Screen 100% Bug](https://feedback.vrchat.com/bug-reports/p/vrchat-loading-screen-100-stuck-bug)
+* [Another Avatar/Loading Screen 100% Bug](https://feedback.vrchat.com/bug-reports/p/still-consistently-stuck-in-loading-screen-at-100-if-avatars-dont-finish-downloa)
+* [Menu Respawn Issue ActionMenuUtils addresses](https://feedback.vrchat.com/feature-requests/p/respawnhub-hotkey)
+* [Useable menu while falling](https://feedback.vrchat.com/feature-requests/p/useable-menu-while-moving-or-falling)
+* [Not currently a mod feature but priority for friend's avatars first](https://feedback.vrchat.com/feature-requests/p/friends-first-model-priority-loading)
+
 
 ## Building
 
