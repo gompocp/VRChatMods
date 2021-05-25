@@ -6,10 +6,11 @@ namespace WorldPredownload.UI
 {
     public static class WorldDownloadStatus
     {
-        public static GameObject gameObject { get; set; }
+        private const string PATH_TO_GAMEOBJECT_TO_CLONE =
+            "UserInterface/QuickMenu/QuickMenu_NewElements/_InfoBar/PingText";
 
-        private const string PATH_TO_GAMEOBJECT_TO_CLONE = "UserInterface/QuickMenu/QuickMenu_NewElements/_InfoBar/PingText";
         private const string PATH_TO_CLONE_PARENT = "UserInterface/QuickMenu/QuickMenu_NewElements/_InfoBar";
+        public static GameObject gameObject { get; set; }
 
         public static void Setup()
         {
@@ -34,7 +35,7 @@ namespace WorldPredownload.UI
 
         public static void Disable()
         {
-            if (gameObject != null) 
+            if (gameObject != null)
                 gameObject.SetActive(false);
         }
     }

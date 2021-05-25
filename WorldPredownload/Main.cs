@@ -12,6 +12,12 @@ namespace WorldPredownload
     public class WorldPredownload : MelonMod
     {
         private static MelonMod Instance;
+
+        public WorldPredownload()
+        {
+            LoaderCheck.CheckForRainbows();
+        }
+
         public static HarmonyInstance HarmonyInstance => Instance.Harmony;
 
         public override void OnApplicationStart()
@@ -24,7 +30,7 @@ namespace WorldPredownload
             WorldDownloadListener.Patch();
             NotificationMoreActions.Patch();
         }
-        
+
         public override void VRChat_OnUiManagerInit()
         {
             InviteButton.Setup();
@@ -34,13 +40,15 @@ namespace WorldPredownload
             HudIcon.Setup();
             CacheManager.UpdateDirectories();
         }
-        
-        public override void OnPreferencesLoaded() => ModSettings.Apply();
 
-        public override void OnPreferencesSaved() => ModSettings.Apply();
-        public WorldPredownload()
+        public override void OnPreferencesLoaded()
         {
-            LoaderCheck.CheckForRainbows();
+            ModSettings.Apply();
+        }
+
+        public override void OnPreferencesSaved()
+        {
+            ModSettings.Apply();
         }
     }
 }

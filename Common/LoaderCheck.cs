@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Reflection;
 using Harmony;
 using MelonLoader;
@@ -9,6 +8,8 @@ namespace gompoCommon
     [HarmonyShield]
     internal static class LoaderCheck
     {
+        private static readonly string currentAssemblyName = $"{Assembly.GetExecutingAssembly().GetName().Name}";
+
         //Credit to knah: https://github.com/knah/VRCMods/blob/master/UIExpansionKit/LoaderIntegrityCheck.cs
         public static void CheckForRainbows()
         {
@@ -21,6 +22,7 @@ namespace gompoCommon
             catch (BadImageFormatException ex)
             {
             }
+
             try
             {
                 var assembly = Assembly.Load(ReadResource("_dummy2_.dll"));
@@ -46,12 +48,15 @@ namespace gompoCommon
             }
         }
 
-        private static bool ReturnFalse() => false;
+        private static bool ReturnFalse()
+        {
+            return false;
+        }
 
         public static void PatchTest()
         {
             throw new BadImageFormatException();
-        } 
+        }
 
         private static void RainbowsFound()
         {
@@ -66,7 +71,7 @@ namespace gompoCommon
             MelonLogger.Error("If you want to accept those risks, press Enter to continue");
             MelonLogger.Error("===================================================================");
         }
-        
+
         private static byte[] ReadResource(string fileName)
         {
             var assembly = Assembly.GetExecutingAssembly();
@@ -78,7 +83,5 @@ namespace gompoCommon
             }
             return buffer;
         }
-
-        private static readonly string currentAssemblyName = $"{Assembly.GetExecutingAssembly().GetName().Name}";
     }
 }

@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-
-
-namespace WorldPredownload.UI
+﻿namespace WorldPredownload.UI
 {
     /*public static class LoadingScreen
     {

@@ -20,17 +20,18 @@ using OnDownloadComplete = AssetBundleDownloadManager.MulticastDelegateNInternal
 namespace WorldPredownload
 {
     [HarmonyPatch(typeof(NetworkManager), "OnLeftRoom")]
-    class OnLeftRoomPatch
+    internal class OnLeftRoomPatch
     {
-        static void Prefix() => WorldDownloadManager.CancelDownload();
+        private static void Prefix()
+        {
+            WorldDownloadManager.CancelDownload();
+        }
     }
-    
-    class WorldInfoSetup
-    {
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate void WorldInfoSetupDelegate(IntPtr thisPtr, IntPtr apiWorld, IntPtr apiWorldInstance, byte something1, byte something2, IntPtr additionalJunk);
 
+    internal class WorldInfoSetup
+    {
         private static WorldInfoSetupDelegate worldInfoSetupDelegate;
+
         public static void Patch()
         {
             unsafe
@@ -41,61 +42,70 @@ namespace WorldPredownload
                         !m.Name.Contains("PDM"))
                     .OrderBy(m => m.GetCustomAttribute<CallerCountAttribute>().Count)
                     .Last();
-                
+
                 // Thanks to Knah
-                var originalMethod = *(IntPtr*) (IntPtr) UnhollowerUtils.GetIl2CppMethodInfoPointerFieldForGeneratedMethod(setupMethod).GetValue(null);
-                
-                MelonUtils.NativeHookAttach((IntPtr) (&originalMethod), typeof(WorldInfoSetup).GetMethod(nameof(Postfix), BindingFlags.Static | BindingFlags.Public)!.MethodHandle.GetFunctionPointer());
-                
+                var originalMethod = *(IntPtr*) (IntPtr) UnhollowerUtils
+                    .GetIl2CppMethodInfoPointerFieldForGeneratedMethod(setupMethod).GetValue(null);
+
+                MelonUtils.NativeHookAttach((IntPtr) (&originalMethod),
+                    typeof(WorldInfoSetup).GetMethod(nameof(Postfix), BindingFlags.Static | BindingFlags.Public)!
+                        .MethodHandle.GetFunctionPointer());
+
                 worldInfoSetupDelegate = Marshal.GetDelegateForFunctionPointer<WorldInfoSetupDelegate>(originalMethod);
             }
         }
 
-        public static void Postfix(IntPtr thisPtr, IntPtr apiWorldPtr, IntPtr apiWorldInstancePtr, byte something1, byte something2, IntPtr additionalJunkPtr)
+        public static void Postfix(IntPtr thisPtr, IntPtr apiWorldPtr, IntPtr apiWorldInstancePtr, byte something1,
+            byte something2, IntPtr additionalJunkPtr)
         {
             try
             {
-                worldInfoSetupDelegate(thisPtr, apiWorldPtr, apiWorldInstancePtr, something1, something2, additionalJunkPtr);
+                worldInfoSetupDelegate(thisPtr, apiWorldPtr, apiWorldInstancePtr, something1, something2,
+                    additionalJunkPtr);
                 if (apiWorldPtr != IntPtr.Zero) WorldButton.UpdateText(new ApiWorld(apiWorldPtr));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 MelonLogger.Error($"Something went horribly wrong in WorldInfoSetup Patch, pls report to gompo: {e}");
             }
         }
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void WorldInfoSetupDelegate(IntPtr thisPtr, IntPtr apiWorld, IntPtr apiWorldInstance,
+            byte something1, byte something2, IntPtr additionalJunk);
     }
 
-    
-    class WorldDownloadListener
+
+    internal class WorldDownloadListener
     {
         public static void Patch()
         {
-            WorldPredownload.HarmonyInstance.Patch(Utilities.WorldDownloadMethodInfo, 
+            WorldPredownload.HarmonyInstance.Patch(Utilities.WorldDownloadMethodInfo,
                 new HarmonyMethod(typeof(WorldDownloadListener).GetMethod(nameof(Prefix))));
         }
+
         public static void Prefix(ApiWorld __0, ref OnDownloadComplete __2)
         {
             __2 = Delegate.Combine(
-                    __2,
-                    (OnDownloadComplete)new Action<AssetBundleDownload>(
-                            _ =>
-                            {
-                                if (CacheManager.WorldFileExists(__0.id))
-                                    CacheManager.AddDirectory(CacheManager.ComputeAssetHash(__0.id));
-                                else
-                                    MelonLogger.Warning($"Failed to verify world {__0.id} was downloaded. No idea why this would happen");
-                            }
-                    )
+                __2,
+                (OnDownloadComplete) new Action<AssetBundleDownload>(
+                    _ =>
+                    {
+                        if (CacheManager.WorldFileExists(__0.id))
+                            CacheManager.AddDirectory(CacheManager.ComputeAssetHash(__0.id));
+                        else
+                            MelonLogger.Warning(
+                                $"Failed to verify world {__0.id} was downloaded. No idea why this would happen");
+                    }
+                )
             ).Cast<OnDownloadComplete>();
-            
         }
     }
-    
-    
-    
+
+
     //I accidently found that this neat little method which opens the notification more actions page a while ago while fixing up advanced invites 
     //[HarmonyPatch(typeof(NotificationManager), "Method_Private_Void_Notification_1")]
-    class NotificationMoreActions
+    internal class NotificationMoreActions
     {
         public static Notification selectedNotification { get; private set; }
 
@@ -107,8 +117,10 @@ namespace WorldPredownload
                     !m.Name.Contains("PDM"))
                 .OrderBy(m => m.GetCustomAttribute<CallerCountAttribute>().Count)
                 .Last();
-            WorldPredownload.HarmonyInstance.Patch(openMoreActionsMethod, new HarmonyMethod(typeof(NotificationMoreActions).GetMethod(nameof(Prefix))));
+            WorldPredownload.HarmonyInstance.Patch(openMoreActionsMethod,
+                new HarmonyMethod(typeof(NotificationMoreActions).GetMethod(nameof(Prefix))));
         }
+
         public static void Prefix(Notification __0)
         {
             selectedNotification = __0;
@@ -116,19 +128,19 @@ namespace WorldPredownload
         }
     }
 
-    class SocialMenuSetup
+    internal class SocialMenuSetup
     {
         public static void Patch()
         {
             WorldPredownload.HarmonyInstance.Patch(typeof(PageUserInfo).GetMethods().Where(
-                    m => m.ReturnType == typeof(void)
-                         && m.GetParameters().Length == 3
-                         && m.GetParameters()[0].ParameterType == typeof(APIUser)
-                         && m.GetParameters()[1].ParameterType == typeof(InfoType)
-                         && m.GetParameters()[2].ParameterType == typeof(ListType)
-                         && !m.Name.Contains("PDM")
-                ).OrderBy(m => m.GetCustomAttribute<CallerCountAttribute>().Count)
-                .Last(),
+                        m => m.ReturnType == typeof(void)
+                             && m.GetParameters().Length == 3
+                             && m.GetParameters()[0].ParameterType == typeof(APIUser)
+                             && m.GetParameters()[1].ParameterType == typeof(InfoType)
+                             && m.GetParameters()[2].ParameterType == typeof(ListType)
+                             && !m.Name.Contains("PDM")
+                    ).OrderBy(m => m.GetCustomAttribute<CallerCountAttribute>().Count)
+                    .Last(),
                 null,
                 new HarmonyMethod(typeof(SocialMenuSetup).GetMethod(nameof(Postfix)))
             );
@@ -142,12 +154,15 @@ namespace WorldPredownload
                 FriendButton.button.SetActive(false);
                 return;
             }
-            if (!__0.isFriend || 
-                Utilities.isInSameWorld(__0) || 
-                __0.location.ToLower().Equals("private") || 
+
+            if (!__0.isFriend ||
+                Utilities.isInSameWorld(__0) ||
+                __0.location.ToLower().Equals("private") ||
                 __0.location.ToLower().Equals("offline")
             )
+            {
                 FriendButton.button.SetActive(false);
+            }
             else
             {
                 FriendButton.button.SetActive(true);
