@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using VRC.UI;
 
 namespace WorldPredownload.UI
 {
@@ -17,7 +18,7 @@ namespace WorldPredownload.UI
             if (ModSettings.showStatusOnQM && !ModSettings.hideQMStatusWhenInActive) gameObject.SetActive(true);
             else gameObject.SetActive(false);
             gameObject.SetName(Constants.DOWNLOAD_STATUS_NAME);
-            gameObject.GetComponent<VRC.UI.DebugDisplayText>().enabled = false;
+            gameObject.GetComponent<DebugDisplayText>().enabled = false;
             gameObject.GetComponent<Text>().alignment = TextAnchor.UpperRight;
             gameObject.SetText(Constants.DOWNLOAD_STATUS_IDLE_TEXT);
         }

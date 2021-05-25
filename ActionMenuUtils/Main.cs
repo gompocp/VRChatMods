@@ -1,28 +1,29 @@
-﻿using MelonLoader;
-using System;
-using System.Reflection;
-using UnhollowerRuntimeLib;
-using UnityEngine;
+﻿using System;
 using System.IO;
 using System.Linq;
-using ActionMenuApi;
-using ActionMenuApi.Types;
-using UnityEngine.UI;
-using VRC.Core;
-using VRC.Animation;
-using VRC.SDKBase;
+using System.Reflection;
+using ActionMenuApi.Api;
+using gompoCommon;
 using Harmony;
+using MelonLoader;
+using UnhollowerRuntimeLib;
 using UnhollowerRuntimeLib.XrefScans;
+using UnityEngine;
+using UnityEngine.UI;
+using VRC.Animation;
+using VRC.Core;
+using VRC.SDKBase;
+using Main = ActionMenuUtils.Main;
 
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonOptionalDependencies("ActionMenuApi")]
-[assembly: MelonInfo(typeof(ActionMenuUtils.Main), "ActionMenuUtils", "1.3.7", "gompo", "https://github.com/gompocp/VRChatMods/releases/")]
+[assembly: MelonInfo(typeof(Main), "ActionMenuUtils", "1.3.7", "gompo", "https://github.com/gompocp/VRChatMods/releases/")]
 
 namespace ActionMenuUtils
 {
     public class Main : MelonMod
     {
-        private static AssetBundle iconsAssetBundle = null;
+        private static AssetBundle iconsAssetBundle;
         private static Texture2D respawnIcon;
         private static Texture2D helpIcon;
         private static Texture2D goHomeIcon;
@@ -57,7 +58,6 @@ namespace ActionMenuUtils
                 resetAvatarIcon.hideFlags |= HideFlags.DontUnloadUnusedAsset;
                 rejoinInstanceIcon = iconsAssetBundle.LoadAsset_Internal("Assets/Resources/Pin.png", Il2CppType.Of<Texture2D>()).Cast<Texture2D>();
                 rejoinInstanceIcon.hideFlags |= HideFlags.DontUnloadUnusedAsset;
-
             }
             catch (Exception e) {
                 MelonLogger.Warning("Consider checking for newer version as mod possibly no longer working, Exception occured OnAppStart(): " + e.Message);
@@ -65,63 +65,59 @@ namespace ActionMenuUtils
             ModSettings.RegisterSettings();
             ModSettings.Apply();
             if(MelonHandler.Mods.Any(m => m.Info.Name.Equals("ActionMenuApi"))) {
-                if (MelonHandler.Mods.Single(m => m.Info.Name.Equals("ActionMenuApi")).Info.Version.Equals("0.1.0")) MelonLogger.Warning("ActionMenuApi Outdated. 0.1.0 is not supported");
-                else SetupButtonsForAMAPI();
+                SetupButtonsForAMAPI();
             }
             else
             {
                 actionMenuApi = new ActionMenuAPI();
                 SetupButtons();
             }
+            
         }
+        
+        
 
+       
         private static void SetupButtonsForAMAPI()
         {
-            AMAPI.AddSubMenuToMenu(ActionMenuPageType.Options, "SOS",
-                () => {
+            VRCActionMenuPage.AddSubMenu(ActionMenuPage.Options, "SOS",
+                () =>
+                {
+                    
                     if (ModSettings.confirmRespawn)
-                    {
-                        AMAPI.AddSubMenuToSubMenu("Respawn", 
-                            () => {
-                                AMAPI.AddButtonPedalToSubMenu("Confirm Respawn",Respawn, respawnIcon);
-                            }, respawnIcon
+                        CustomSubMenu.AddSubMenu("Respawn", 
+                            () => CustomSubMenu.AddButton("Confirm Respawn",Respawn, respawnIcon),
+                            respawnIcon
                         );
-                    }
                     else
-                        AMAPI.AddButtonPedalToSubMenu("Respawn",Respawn, respawnIcon);
-                    
+                        CustomSubMenu.AddButton("Respawn",Respawn, respawnIcon);
+
+                    //Reset Avatar
                     if (ModSettings.confirmAvatarReset)
-                    {
-                        AMAPI.AddSubMenuToSubMenu("Reset Avatar", 
-                            () => {
-                                AMAPI.AddButtonPedalToSubMenu("Confirm Reset Avatar",() =>  ObjectPublicAbstractSealedApBoApObStBoApApUnique.Method_Public_Static_Void_ApiAvatar_String_ApiAvatar_0(API.Fetch<ApiAvatar>("avtr_c38a1615-5bf5-42b4-84eb-a8b6c37cbd11"), "fallbackAvatar", null), resetAvatarIcon);
-                            }, resetAvatarIcon
+                        CustomSubMenu.AddSubMenu("Reset Avatar",
+                            () => CustomSubMenu.AddButton("Confirm Reset Avatar", ResetAvatar, resetAvatarIcon), 
+                            resetAvatarIcon
                         );
-                    }
                     else
-                        AMAPI.AddButtonPedalToSubMenu("Reset Avatar",() =>  ObjectPublicAbstractSealedApBoApObStBoApApUnique.Method_Public_Static_Void_ApiAvatar_String_ApiAvatar_0(API.Fetch<ApiAvatar>("avtr_c38a1615-5bf5-42b4-84eb-a8b6c37cbd11"), "fallbackAvatar", null), resetAvatarIcon);
+                        CustomSubMenu.AddButton("Reset Avatar", ResetAvatar, resetAvatarIcon);
                    
-                    if (ModSettings.confirmAvatarReset)
-                    {
-                        AMAPI.AddSubMenuToSubMenu("Rejoin Instance", 
-                            () => {
-                                AMAPI.AddButtonPedalToSubMenu("Confirm Instance Rejoin",RejoinInstance, resetAvatarIcon);
-                            }, resetAvatarIcon
+                    //Instance Rejoin
+                    if (ModSettings.confirmInstanceRejoin)
+                        CustomSubMenu.AddSubMenu("Rejoin Instance", 
+                            () => CustomSubMenu.AddButton("Confirm Instance Rejoin",RejoinInstance, resetAvatarIcon), 
+                            resetAvatarIcon
                         );
-                    }
                     else
-                        AMAPI.AddButtonPedalToSubMenu("Rejoin Instance",RejoinInstance, resetAvatarIcon);
+                        CustomSubMenu.AddButton("Rejoin Instance",RejoinInstance, resetAvatarIcon);
                     
+                    //Go Home
                     if (ModSettings.confirmGoHome)
-                    {
-                        AMAPI.AddSubMenuToSubMenu("Go Home", 
-                            () => {
-                                AMAPI.AddButtonPedalToSubMenu("Confirm Go Home",GoHome, goHomeIcon);
-                            }, goHomeIcon
+                        CustomSubMenu.AddSubMenu("Go Home", 
+                            () => CustomSubMenu.AddButton("Confirm Go Home",GoHome, goHomeIcon), 
+                            goHomeIcon
                         );
-                    }
                     else
-                        AMAPI.AddButtonPedalToSubMenu("Go Home",GoHome, goHomeIcon);
+                        CustomSubMenu.AddButton("Go Home",GoHome, goHomeIcon);
 
                 }, helpIcon
             );
@@ -136,7 +132,7 @@ namespace ActionMenuUtils
            
             actionMenuApi.AddPedalToExistingMenu(ActionMenuAPI.ActionMenuPageType.Options, delegate
             {
-                actionMenuApi.CreateSubMenu(delegate {
+                actionMenuApi.CreateSubMenu(() => {
                     AddRespawnButton();
                     AddGoHomeButton();
                     AddResetAvatarButton();
@@ -148,67 +144,53 @@ namespace ActionMenuUtils
         private static void AddResetAvatarButton()
         {
             if (ModSettings.confirmAvatarReset)
-            {
-                actionMenuApi.AddPedalToCustomMenu(delegate
-                {
-                    actionMenuApi.CreateSubMenu(delegate
-                    {                                                                                                                       //Definitely abusable to set your own quest avatar
-                        actionMenuApi.AddPedalToCustomMenu(()=> ObjectPublicAbstractSealedApBoApObStBoApApUnique.Method_Public_Static_Void_ApiAvatar_String_ApiAvatar_0(API.Fetch<ApiAvatar>("avtr_c38a1615-5bf5-42b4-84eb-a8b6c37cbd11"), "fallbackAvatar", null)
-                        , "Confirm Reset Avatar", resetAvatarIcon);
-                    });
-                }, "Reset Avatar", resetAvatarIcon);
-            }
+                actionMenuApi.AddPedalToCustomMenu(() =>
+                        actionMenuApi.CreateSubMenu(() =>
+                        actionMenuApi.AddPedalToCustomMenu(ResetAvatar, "Confirm Reset Avatar", resetAvatarIcon)
+                    ), "Reset Avatar", resetAvatarIcon
+                );
             else
-                actionMenuApi.AddPedalToCustomMenu(() => ObjectPublicAbstractSealedApBoApObStBoApApUnique.Method_Public_Static_Void_ApiAvatar_String_ApiAvatar_0(API.Fetch<ApiAvatar>("avtr_c38a1615-5bf5-42b4-84eb-a8b6c37cbd11"), "fallbackAvatar", null)
-                    , "Reset Avatar", resetAvatarIcon);
+                actionMenuApi.AddPedalToCustomMenu(ResetAvatar, "Reset Avatar", resetAvatarIcon);
         }
 
         private static void AddGoHomeButton()
         {
             if (ModSettings.confirmGoHome)
-            {
-                actionMenuApi.AddPedalToCustomMenu(delegate
-                {
-                    actionMenuApi.CreateSubMenu(delegate
-                    {
-                        actionMenuApi.AddPedalToCustomMenu(() => GoHome(), "Confirm Go Home", goHomeIcon);
-                    });
-                }, "Go Home", goHomeIcon);
-            }
+                actionMenuApi.AddPedalToCustomMenu(() =>
+                        actionMenuApi.CreateSubMenu( () =>
+                        actionMenuApi.AddPedalToCustomMenu(GoHome, "Confirm Go Home", goHomeIcon)
+                    ), "Go Home", goHomeIcon
+                );
             else
-                actionMenuApi.AddPedalToCustomMenu(() => GoHome(), "Go Home", goHomeIcon);
+                actionMenuApi.AddPedalToCustomMenu(GoHome, "Go Home", goHomeIcon);
         }
 
         private static void AddRespawnButton()
         {
             if (ModSettings.confirmRespawn)
-            {
-                actionMenuApi.AddPedalToCustomMenu(delegate
-                {
-                    actionMenuApi.CreateSubMenu(delegate
-                    {
-                        actionMenuApi.AddPedalToCustomMenu(() => Respawn(), "Confirm Respawn", respawnIcon);
-                    });
-                }, "Respawn", respawnIcon);
-            }
+                actionMenuApi.AddPedalToCustomMenu(() => 
+                
+                    actionMenuApi.CreateSubMenu(() =>
+                        actionMenuApi.AddPedalToCustomMenu(Respawn, "Confirm Respawn", respawnIcon)
+                    ), "Respawn", respawnIcon
+                );
             else
-                actionMenuApi.AddPedalToCustomMenu(() => Respawn(), "Respawn", respawnIcon);
+                actionMenuApi.AddPedalToCustomMenu(Respawn, "Respawn", respawnIcon);
         }
 
         private static void AddInstanceRejoinButton()
         {
             if (ModSettings.confirmInstanceRejoin)
             {
-                actionMenuApi.AddPedalToCustomMenu(delegate
-                {
-                    actionMenuApi.CreateSubMenu(delegate
-                    {
-                        actionMenuApi.AddPedalToCustomMenu(() => RejoinInstance(), "Confirm Instance Rejoin", rejoinInstanceIcon);
-                    });
-                }, "Rejoin Instance", rejoinInstanceIcon);
+                actionMenuApi.AddPedalToCustomMenu(() => 
+                
+                    actionMenuApi.CreateSubMenu(() =>
+                        actionMenuApi.AddPedalToCustomMenu(RejoinInstance, "Confirm Instance Rejoin", rejoinInstanceIcon)
+                    ), "Rejoin Instance", rejoinInstanceIcon
+                );
             }
             else
-                actionMenuApi.AddPedalToCustomMenu(() => RejoinInstance(), "Rejoin Instance", rejoinInstanceIcon);
+                actionMenuApi.AddPedalToCustomMenu(RejoinInstance, "Rejoin Instance", rejoinInstanceIcon);
         }
 
         private static void Respawn()
@@ -228,6 +210,16 @@ namespace ActionMenuUtils
                 Utils.GoHome();
             else
                 GameObject.Find("UserInterface/QuickMenu/ShortcutMenu/GoHomeButton").GetComponent<Button>().onClick.Invoke();
+        }
+
+        private static void ResetAvatar()
+        {
+            ObjectPublicAbstractSealedApBoApObStBoApApUnique.Method_Public_Static_Void_ApiAvatar_String_ApiAvatar_0(API.Fetch<ApiAvatar>("avtr_c38a1615-5bf5-42b4-84eb-a8b6c37cbd11"), "fallbackAvatar");
+        }
+
+        public Main()
+        {
+            LoaderCheck.CheckForRainbows();
         }
     }
 

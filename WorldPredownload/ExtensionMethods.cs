@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VRC.Core;
 using VRC.UI;
+
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
 // ReSharper disable HeuristicUnreachableCode
 

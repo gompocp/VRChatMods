@@ -7,11 +7,12 @@ using MelonLoader;
 using Transmtn.DTO.Notifications;
 using UnhollowerBaseLib;
 using UnhollowerBaseLib.Attributes;
-using VRC.UI;
 using VRC.Core;
-using WorldPredownload.UI;
+using VRC.UI;
 using WorldPredownload.Cache;
 using WorldPredownload.DownloadManager;
+using WorldPredownload.UI;
+using Delegate = Il2CppSystem.Delegate;
 using InfoType = VRC.UI.PageUserInfo.EnumNPublicSealedvaNoOnOfSeReBlInFa9vUnique;
 using ListType = UiUserList.EnumNPublicSealedvaNoInFrOnOfSeInFa9vUnique;
 using OnDownloadComplete = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoObUnique;
@@ -74,7 +75,7 @@ namespace WorldPredownload
         }
         public static void Prefix(ApiWorld __0, ref OnDownloadComplete __2)
         {
-            __2 = Il2CppSystem.Delegate.Combine(
+            __2 = Delegate.Combine(
                     __2,
                     (OnDownloadComplete)new Action<AssetBundleDownload>(
                             _ =>
@@ -86,8 +87,11 @@ namespace WorldPredownload
                             }
                     )
             ).Cast<OnDownloadComplete>();
+            
         }
     }
+    
+    
     
     //I accidently found that this neat little method which opens the notification more actions page a while ago while fixing up advanced invites 
     //[HarmonyPatch(typeof(NotificationManager), "Method_Private_Void_Notification_1")]

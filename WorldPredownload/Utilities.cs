@@ -1,23 +1,24 @@
-﻿using MelonLoader;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Il2CppSystem;
+using MelonLoader;
 using Transmtn.DTO.Notifications;
 using UnhollowerRuntimeLib.XrefScans;
 using UnityEngine;
-using OnDownloadComplete = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoObUnique;
-using OnDownloadProgress = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoUnUnique;
-using OnDownloadError = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoStObStUnique;
-using UnpackType = AssetBundleDownloadManager.EnumNInternalSealedva3vUnique;
-using VRC.Core;
 using UnityEngine.EventSystems;
+using VRC.Core;
 using VRC.SDKBase;
 using WorldPredownload.DownloadManager;
 using Delegate = System.Delegate;
 using Exception = System.Exception;
+using OnDownloadComplete = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoObUnique;
+using OnDownloadProgress = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoUnUnique;
+using OnDownloadError = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoStObStUnique;
 using StringComparison = System.StringComparison;
+using UnpackType = AssetBundleDownloadManager.EnumNInternalSealedva3vUnique;
 
 namespace WorldPredownload
 {
@@ -176,12 +177,12 @@ namespace WorldPredownload
         public static void ClearErrors() => GetClearErrorsDelegate();
  
 
-        public static void ShowOptionPopup(string title, string body, string leftButtonText, Il2CppSystem.Action leftButtonAction, string rightButtonText, Il2CppSystem.Action rightButtonAction)
+        public static void ShowOptionPopup(string title, string body, string leftButtonText, Action leftButtonAction, string rightButtonText, Action rightButtonAction)
         {
             GetShowOptionsPopupDelegate(title, body, leftButtonText, leftButtonAction, rightButtonText, rightButtonAction);
         }
 
-        public static void ShowDismissPopup(string title, string body, string middleButtonText, Il2CppSystem.Action buttonAction)
+        public static void ShowDismissPopup(string title, string body, string middleButtonText, Action buttonAction)
         {
             GetShowDismissPopupDelegate(title, body, middleButtonText, buttonAction);
         }
@@ -325,18 +326,18 @@ namespace WorldPredownload
             string title, 
             string body, 
             string leftButtonText, 
-            Il2CppSystem.Action leftButtonAction, 
+            Action leftButtonAction, 
             string rightButtonText, 
-            Il2CppSystem.Action rightButtonAction, 
-            Il2CppSystem.Action<VRCUiPopup> additionalSetup = null
+            Action rightButtonAction, 
+            Action<VRCUiPopup> additionalSetup = null
         );
 
         private delegate void ShowDismissPopupDelegate(
             string title, 
             string body, 
             string middleButtonText, 
-            Il2CppSystem.Action middleButtonAction, 
-            Il2CppSystem.Action<VRCUiPopup> additionalSetup = null
+            Action middleButtonAction, 
+            Action<VRCUiPopup> additionalSetup = null
         );
         
 

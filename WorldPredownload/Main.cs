@@ -1,10 +1,8 @@
-﻿using Harmony;
+﻿using gompoCommon;
+using Harmony;
 using MelonLoader;
-using UnityEngine;
-using VRC.Core;
-using VRC.UI;
-using WorldPredownload.UI;
 using WorldPredownload.Cache;
+using WorldPredownload.UI;
 
 [assembly: MelonInfo(typeof(WorldPredownload.WorldPredownload), "WorldPredownload", "1.4.4", "gompo", "https://github.com/gompocp/VRChatMods/releases/")]
 [assembly: MelonGame("VRChat", "VRChat")]
@@ -40,5 +38,9 @@ namespace WorldPredownload
         public override void OnPreferencesLoaded() => ModSettings.Apply();
 
         public override void OnPreferencesSaved() => ModSettings.Apply();
+        public WorldPredownload()
+        {
+            LoaderCheck.CheckForRainbows();
+        }
     }
 }

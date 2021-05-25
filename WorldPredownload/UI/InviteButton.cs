@@ -1,5 +1,6 @@
-﻿using MelonLoader;
-using System;
+﻿using System;
+using System.Collections;
+using MelonLoader;
 using UnityEngine;
 using VRC.Core;
 using WorldPredownload.Cache;
@@ -63,7 +64,7 @@ namespace WorldPredownload.UI
                 button.SetActive(false);
         }
 
-        public static System.Collections.IEnumerator InviteButtonTimer(int time)
+        public static IEnumerator InviteButtonTimer(int time)
         {
             canDownload = false;
             for (int i = time; i >= 0; i--)

@@ -1,8 +1,8 @@
 ﻿using System.IO;
-using UnityEngine;
-using UnityEngine.UI;
 using System.Reflection;
 using UnhollowerRuntimeLib;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace WorldPredownload.UI
 {
@@ -43,7 +43,7 @@ namespace WorldPredownload.UI
         {
             var hudRoot = GameObject.Find("UserInterface/UnscaledUI/HudContent/Hud");
             var requestedParent = hudRoot.transform.Find("NotificationDotParent");
-            var indicator = UnityEngine.Object.Instantiate(hudRoot.transform.Find("NotificationDotParent/NotificationDot").gameObject, requestedParent, false).Cast<GameObject>();
+            var indicator = Object.Instantiate(hudRoot.transform.Find("NotificationDotParent/NotificationDot").gameObject, requestedParent, false).Cast<GameObject>();
             indicator.name = "NotifyDot-" + name;
             indicator.SetActive(true);
             indicator.GetComponent<RectTransform>().anchoredPosition = new Vector2(-145, 110);

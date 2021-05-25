@@ -1,16 +1,15 @@
 ﻿//using AssetBundleDownload = CustomYieldInstructionPublicObAsByStInStCoBoObInUnique;
+using System;
+using MelonLoader;
+using UnityEngine;
+using UnityEngine.UI;
+using VRC.Core;
+using WorldPredownload.UI;
 using OnDownloadComplete = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoObUnique;
 using OnDownloadProgress = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoUnUnique;
 using OnDownloadError = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoStObStUnique;
 //using LoadErrorReason = EnumPublicSealedvaNoMiFiUnCoSeAsDuAsUnique;
 using UnpackType = AssetBundleDownloadManager.EnumNInternalSealedva3vUnique;
-using WorldPredownload.UI;
-using System;
-using Harmony;
-using VRC.Core;
-using UnityEngine;
-using UnityEngine.UI;
-using MelonLoader;
 
 namespace WorldPredownload.DownloadManager
 {

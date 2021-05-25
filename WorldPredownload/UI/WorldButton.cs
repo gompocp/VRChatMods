@@ -1,8 +1,8 @@
 ﻿using System;
+using MelonLoader;
 using UnityEngine;
 using VRC.Core;
 using VRC.UI;
-using MelonLoader;
 using WorldPredownload.Cache;
 using WorldPredownload.DownloadManager;
 
@@ -67,7 +67,7 @@ namespace WorldPredownload.UI
 
         private static PageWorldInfo GetWorldInfo()
         {
-            return GameObject.Find(PATH_TO_WORLDINFO).GetComponent<VRC.UI.PageWorldInfo>();
+            return GameObject.Find(PATH_TO_WORLDINFO).GetComponent<PageWorldInfo>();
         }
         
         public static Action onClick = delegate

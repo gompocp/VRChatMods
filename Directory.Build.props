@@ -3,6 +3,9 @@
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
     <ItemGroup>
+        <EmbeddedResource Include="$(MsBuildThisFileDirectory)Common\_dummy_.dll"/>
+        <EmbeddedResource Include="$(MsBuildThisFileDirectory)Common\_dummy2_.dll"/>
+        <Compile Include="$(MsBuildThisFileDirectory)Common\LoaderCheck.cs" />
         <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
             <SpecificVersion>false</SpecificVersion>
             <Private>false</Private>
@@ -124,6 +127,11 @@
             <SpecificVersion>false</SpecificVersion>
             <Private>false</Private>
             <HintPath>$(MsBuildThisFileDirectory)Libs\Assembly-CSharp-firstpass.dll</HintPath>
+        </Reference>
+        <Reference Include="DOTween, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <SpecificVersion>false</SpecificVersion>
+            <Private>false</Private>
+            <HintPath>$(MsBuildThisFileDirectory)Libs\DOTween.dll</HintPath>
         </Reference>
         <Reference Include="Transmtn, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
             <SpecificVersion>false</SpecificVersion>

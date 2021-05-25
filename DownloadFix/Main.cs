@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using UIExpansionKit.API;
+using gompoCommon;
 using MelonLoader;
+using UIExpansionKit.API;
 using UnhollowerRuntimeLib;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,21 +14,17 @@ namespace DownloadFix
 {
     public class DownloadFix : MelonMod
     {
-
-
+        
         public override void OnApplicationStart()
         {
             ICustomLayoutedMenu settingsPage = ExpansionKitApi.GetExpandedMenu(ExpandedMenu.SettingsMenu);
-            settingsPage.AddSimpleButton("Unblock unpack queue", delegate { Utilities.UnblockUnPackQueue(); });
+            settingsPage.AddSimpleButton("Unblock unpack queue", Utilities.UnblockUnPackQueue);
         }
 
         public override void VRChat_OnUiManagerInit()
         {
-            GameObject unblockButton = GameObject
-                .Instantiate(
-                    GameObject.Find(
-                            "UserInterface/MenuContent/Popups/LoadingPopup/ProgressPanel/Parent_Loading_Progress/GoButton")
-                        .transform,
+            GameObject unblockButton = GameObject.Instantiate(
+                    GameObject.Find("UserInterface/MenuContent/Popups/LoadingPopup/ProgressPanel/Parent_Loading_Progress/GoButton").transform,
                     GameObject.Find("UserInterface/MenuContent/Popups/LoadingPopup/ProgressPanel").transform)
                 .gameObject;
             unblockButton.GetComponentInChildren<Text>().text = "Unblock Queue";
@@ -43,6 +39,11 @@ namespace DownloadFix
             GameObject.Find("UserInterface/MenuContent/Popups/LoadingPopup/ProgressPanel/Parent_Loading_Progress")
                 .transform.localPosition = new Vector3(0, 17, 0);
 
+        }
+
+        public DownloadFix()
+        {
+            LoaderCheck.CheckForRainbows();
         }
     }
 }
