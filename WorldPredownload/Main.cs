@@ -24,7 +24,7 @@ namespace WorldPredownload
         {
             Instance = this;
             ModSettings.RegisterSettings();
-            ModSettings.Apply();
+            ModSettings.LoadSettings();
             SocialMenuSetup.Patch();
             WorldInfoSetup.Patch();
             WorldDownloadListener.Patch();
@@ -43,12 +43,12 @@ namespace WorldPredownload
 
         public override void OnPreferencesLoaded()
         {
-            ModSettings.Apply();
+            ModSettings.LoadSettings();
         }
 
         public override void OnPreferencesSaved()
         {
-            ModSettings.Apply();
+            ModSettings.LoadSettings();
         }
     }
 }

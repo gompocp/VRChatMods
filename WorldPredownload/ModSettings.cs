@@ -7,15 +7,9 @@ namespace WorldPredownload
     public static class ModSettings
     {
         private static readonly string categoryName = "WorldPredownload";
-        internal static MelonPreferences_Entry<bool> AutoFollowInvites;
-        internal static MelonPreferences_Entry<bool> AutoFollowFriends = null;
-        internal static MelonPreferences_Entry<bool> AutoFollowWorlds = null;
-        internal static MelonPreferences_Entry<bool> ShowStatusOnQM = null;
-        internal static MelonPreferences_Entry<bool> HideQMStatusWhenInActive = null;
-        internal static MelonPreferences_Entry<bool> ShowHudMessages = null;
-        internal static MelonPreferences_Entry<bool> ShowStatusOnHud = null;
-        internal static MelonPreferences_Entry<bool> ShowPopupsOnComplete = null;
-        internal static MelonPreferences_Entry<bool> TryUseAdvancedInvitePopup = null;
+        internal static MelonPreferences_Entry<bool> AutoFollowInvites, AutoFollowFriends, AutoFollowWorlds, 
+                                                     ShowStatusOnQM, HideQMStatusWhenInActive, ShowHudMessages, 
+                                                     ShowStatusOnHud , ShowPopupsOnComplete, TryUseAdvancedInvitePopup, CVRStyle;
         public static bool autoFollowInvites { get; private set; }
         public static bool autoFollowFriends { get; private set; }
         public static bool autoFollowWorlds { get; private set; }
@@ -25,48 +19,42 @@ namespace WorldPredownload
         public static bool showStatusOnHud { get; private set; } = true;
         public static bool showPopupsOnComplete { get; private set; } = true;
         public static bool tryUseAdvancedInvitePopup { get; private set; } = true;
+        public static bool cvrStyle { get; private set; }
         public static bool AdvancedInvites { get; private set; }
+        
 
         public static void RegisterSettings()
         {
             if (Utilities.HasMod("AdvancedInvites"))
                 AdvancedInvites = true;
             var category = MelonPreferences.CreateCategory(categoryName, categoryName);
-            AutoFollowInvites =
-                (MelonPreferences_Entry<bool>) category.CreateEntry("AutoFollowInvites", false,
-                    "Auto Follow Invite Predownloads");
-            //TODO: Sort this mess out
-            MelonPreferences.CreateEntry(categoryName, "AutoFollowWorlds", autoFollowInvites,
-                "Auto Join World Predownloads");
-            MelonPreferences.CreateEntry(categoryName, "AutoFollowFriends", autoFollowFriends,
-                "Auto Join Friend Predownloads");
-            MelonPreferences.CreateEntry(categoryName, "ShowStatusOnQM", showStatusOnQM,
-                "Display download status on QM");
-            MelonPreferences.CreateEntry(categoryName, "HideQMStatusWhenInActive", hideQMStatusWhenInActive,
-                "Hide status on QM when not downloading");
-            MelonPreferences.CreateEntry(categoryName, "ShowStatusOnHud", showStatusOnHud,
-                "Display download status on HUD");
-            MelonPreferences.CreateEntry(categoryName, "ShowHudMessages", showHudMessages, "Show Hud Messages");
-            MelonPreferences.CreateEntry(categoryName, "ShowPopupsOnComplete", showPopupsOnComplete,
-                "Show Popup On Complete");
+            AutoFollowInvites = category.CreateEntry("AutoFollowInvites", autoFollowInvites, "Auto Follow Invite Predownloads") as MelonPreferences_Entry<bool>;
+            AutoFollowWorlds = category.CreateEntry("AutoFollowWorlds", autoFollowWorlds, "Auto Join World Predownloads") as MelonPreferences_Entry<bool>;
+            AutoFollowFriends = category.CreateEntry("AutoFollowFriends", autoFollowFriends, "Auto Join Friend Predownloads") as MelonPreferences_Entry<bool>;
+            ShowStatusOnQM = category.CreateEntry("ShowStatusOnQM", showStatusOnQM, "Display download status on QM") as MelonPreferences_Entry<bool>;
+            HideQMStatusWhenInActive = category.CreateEntry("HideQMStatusWhenInActive", hideQMStatusWhenInActive, "Hide status on QM when not downloading") as MelonPreferences_Entry<bool>;
+            ShowStatusOnHud = category.CreateEntry("ShowStatusOnHud", showStatusOnHud, "Display download status on HUD") as MelonPreferences_Entry<bool>;
+            ShowHudMessages = category.CreateEntry("ShowHudMessages", showHudMessages, "Show Hud Messages") as MelonPreferences_Entry<bool>;
+            ShowPopupsOnComplete = category.CreateEntry("ShowPopupsOnComplete", showPopupsOnComplete, "Show Popup On Complete") as MelonPreferences_Entry<bool>;
+            CVRStyle = category.CreateEntry("OverrideVRChatJoinWorldButtons", cvrStyle, "Override VRChat Join Buttons (CVR Style  & Requires Restart to Apply)") as MelonPreferences_Entry<bool>;
             if (AdvancedInvites)
-                MelonPreferences.CreateEntry(categoryName, "UseAdvancedInvitesPopup", tryUseAdvancedInvitePopup,
-                    "Accept invites using AdvancedInvites popup");
+                TryUseAdvancedInvitePopup = category.CreateEntry("UseAdvancedInvitesPopup", tryUseAdvancedInvitePopup, "Accept invites using AdvancedInvites popup") as MelonPreferences_Entry<bool>;
+
         }
 
-        public static void Apply()
+        public static void LoadSettings()
         {
-            autoFollowInvites = MelonPreferences.GetEntryValue<bool>(categoryName, "AutoFollowInvites");
-            autoFollowWorlds = MelonPreferences.GetEntryValue<bool>(categoryName, "AutoFollowWorlds");
-            autoFollowFriends = MelonPreferences.GetEntryValue<bool>(categoryName, "AutoFollowFriends");
-            showStatusOnQM = MelonPreferences.GetEntryValue<bool>(categoryName, "ShowStatusOnQM");
-            hideQMStatusWhenInActive = MelonPreferences.GetEntryValue<bool>(categoryName, "HideQMStatusWhenInActive");
-            showStatusOnHud = MelonPreferences.GetEntryValue<bool>(categoryName, "ShowStatusOnHud");
-            showHudMessages = MelonPreferences.GetEntryValue<bool>(categoryName, "ShowHudMessages");
-            showPopupsOnComplete = MelonPreferences.GetEntryValue<bool>(categoryName, "ShowPopupsOnComplete");
+            autoFollowInvites = AutoFollowInvites.Value;
+            autoFollowWorlds = AutoFollowWorlds.Value;
+            autoFollowFriends = AutoFollowFriends.Value;
+            showStatusOnQM = ShowStatusOnQM.Value;
+            hideQMStatusWhenInActive = HideQMStatusWhenInActive.Value;
+            showStatusOnHud = ShowStatusOnHud.Value;
+            showHudMessages = ShowHudMessages.Value;
+            showPopupsOnComplete = ShowPopupsOnComplete.Value;
+            cvrStyle = CVRStyle.Value;
             if (AdvancedInvites)
-                tryUseAdvancedInvitePopup =
-                    MelonPreferences.GetEntryValue<bool>(categoryName, "UseAdvancedInvitesPopup");
+                tryUseAdvancedInvitePopup = TryUseAdvancedInvitePopup.Value;
             if (showStatusOnQM)
                 WorldDownloadStatus.Enable();
             else
