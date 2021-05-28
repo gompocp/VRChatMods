@@ -104,11 +104,11 @@ namespace ActionMenuUtils
                     //Instance Rejoin
                     if (ModSettings.confirmInstanceRejoin)
                         CustomSubMenu.AddSubMenu("Rejoin Instance", 
-                            () => CustomSubMenu.AddButton("Confirm Instance Rejoin",RejoinInstance, resetAvatarIcon), 
-                            resetAvatarIcon
+                            () => CustomSubMenu.AddButton("Confirm Instance Rejoin",RejoinInstance, rejoinInstanceIcon), 
+                            rejoinInstanceIcon
                         );
                     else
-                        CustomSubMenu.AddButton("Rejoin Instance",RejoinInstance, resetAvatarIcon);
+                        CustomSubMenu.AddButton("Rejoin Instance",RejoinInstance, rejoinInstanceIcon);
                     
                     //Go Home
                     if (ModSettings.confirmGoHome)
