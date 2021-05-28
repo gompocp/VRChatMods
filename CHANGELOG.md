@@ -1,3 +1,7 @@
+### ActionMenuUtils v1.3.8
+- Fixed incorrect textures on pedals when using ActionMenuApi
+
+
 ### WorldPredownload v1.4.4
 - Build 1093 compatibility fix
 - Fixed issue with cache checking
