@@ -1,6 +1,8 @@
+### DownloadFix v1.0.3
+- Switched to UIX 0.3.0+ UIManagerInit Event (ML v0.3.1 compatibility update)
+
 ### ActionMenuUtils v1.3.8
 - Fixed incorrect textures on pedals when using ActionMenuApi
-
 
 ### WorldPredownload v1.4.4
 - Build 1093 compatibility fix
