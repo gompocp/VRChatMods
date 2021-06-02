@@ -1,6 +1,7 @@
 ﻿using gompoCommon;
 using Harmony;
 using MelonLoader;
+using UIExpansionKit.API;
 using WorldPredownload.Cache;
 using WorldPredownload.UI;
 
@@ -12,12 +13,7 @@ namespace WorldPredownload
     public class WorldPredownload : MelonMod
     {
         private static MelonMod Instance;
-
-        public WorldPredownload()
-        {
-            LoaderCheck.CheckForRainbows();
-        }
-
+        
         public static HarmonyInstance HarmonyInstance => Instance.Harmony;
 
         public override void OnApplicationStart()
@@ -29,9 +25,10 @@ namespace WorldPredownload
             WorldInfoSetup.Patch();
             WorldDownloadListener.Patch();
             NotificationMoreActions.Patch();
+            ExpansionKitApi.OnUiManagerInit += UiManagerInit;
         }
 
-        public override void VRChat_OnUiManagerInit()
+        public void UiManagerInit()
         {
             InviteButton.Setup();
             FriendButton.Setup();
@@ -49,6 +46,11 @@ namespace WorldPredownload
         public override void OnPreferencesSaved()
         {
             ModSettings.LoadSettings();
+        }
+        
+        public WorldPredownload()
+        {
+            LoaderCheck.CheckForRainbows();
         }
     }
 }

@@ -2,5 +2,6 @@
 obj/
 .idea
 Libs/*dll
+Libs/*db
 packages
 BadAppleFramesProcessor
