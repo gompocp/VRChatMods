@@ -7,9 +7,16 @@ namespace WorldPredownload
     public static class ModSettings
     {
         private static readonly string categoryName = "WorldPredownload";
-        internal static MelonPreferences_Entry<bool> AutoFollowInvites, AutoFollowFriends, AutoFollowWorlds, 
-                                                     ShowStatusOnQM, HideQMStatusWhenInActive, ShowHudMessages, 
-                                                     ShowStatusOnHud , ShowPopupsOnComplete, TryUseAdvancedInvitePopup, CVRStyle;
+
+        internal static MelonPreferences_Entry<bool> AutoFollowInvites,
+            AutoFollowFriends,
+            AutoFollowWorlds,
+            ShowStatusOnQM,
+            HideQMStatusWhenInActive,
+            ShowHudMessages,
+            ShowStatusOnHud,
+            ShowPopupsOnComplete,
+            TryUseAdvancedInvitePopup; //CVRStyle;
         public static bool autoFollowInvites { get; private set; }
         public static bool autoFollowFriends { get; private set; }
         public static bool autoFollowWorlds { get; private set; }
@@ -19,7 +26,7 @@ namespace WorldPredownload
         public static bool showStatusOnHud { get; private set; } = true;
         public static bool showPopupsOnComplete { get; private set; } = true;
         public static bool tryUseAdvancedInvitePopup { get; private set; } = true;
-        public static bool cvrStyle { get; private set; }
+        //public static bool cvrStyle { get; private set; }
         public static bool AdvancedInvites { get; private set; }
         
 
@@ -36,7 +43,7 @@ namespace WorldPredownload
             ShowStatusOnHud = category.CreateEntry("ShowStatusOnHud", showStatusOnHud, "Display download status on HUD") as MelonPreferences_Entry<bool>;
             ShowHudMessages = category.CreateEntry("ShowHudMessages", showHudMessages, "Show Hud Messages") as MelonPreferences_Entry<bool>;
             ShowPopupsOnComplete = category.CreateEntry("ShowPopupsOnComplete", showPopupsOnComplete, "Show Popup On Complete") as MelonPreferences_Entry<bool>;
-            CVRStyle = category.CreateEntry("OverrideVRChatJoinWorldButtons", cvrStyle, "Override VRChat Join Buttons (CVR Style  & Requires Restart to Apply)") as MelonPreferences_Entry<bool>;
+            //CVRStyle = category.CreateEntry("OverrideVRChatJoinWorldButtons", cvrStyle, "Override VRChat Join Buttons (CVR Style  & Requires Restart to Apply)") as MelonPreferences_Entry<bool>;
             if (AdvancedInvites)
                 TryUseAdvancedInvitePopup = category.CreateEntry("UseAdvancedInvitesPopup", tryUseAdvancedInvitePopup, "Accept invites using AdvancedInvites popup") as MelonPreferences_Entry<bool>;
 
@@ -52,7 +59,7 @@ namespace WorldPredownload
             showStatusOnHud = ShowStatusOnHud.Value;
             showHudMessages = ShowHudMessages.Value;
             showPopupsOnComplete = ShowPopupsOnComplete.Value;
-            cvrStyle = CVRStyle.Value;
+            //cvrStyle = CVRStyle.Value;
             if (AdvancedInvites)
                 tryUseAdvancedInvitePopup = TryUseAdvancedInvitePopup.Value;
             if (showStatusOnQM)
