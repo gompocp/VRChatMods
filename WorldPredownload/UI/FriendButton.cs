@@ -11,20 +11,15 @@ namespace WorldPredownload.UI
 {
     public class FriendButton
     {
-        private const string PATH_TO_GAMEOBJECT_TO_CLONE =
-            "UserInterface/MenuContent/Screens/UserInfo/User Panel/Playlists";
+        private const string PATH_TO_GAMEOBJECT_TO_CLONE = "UserInterface/MenuContent/Screens/UserInfo/OnlineFriendButtons/Invite";
 
-        private const string PATH_TO_CLONE_PARENT = "UserInterface/MenuContent/Screens/UserInfo/User Panel";
-        private const string GAMEOBJECT_NAME = "PreloadUserButton";
+        private const string PATH_TO_CLONE_PARENT = "UserInterface/MenuContent/Screens/UserInfo/OnlineFriendButtons";
+        private const string GAMEOBJECT_NAME = "PredownloadUserButton";
         private const string BUTTON_DEFAULT_TEXT = "Predownload";
-
-        private const string PATH_TO_GAMEOBJECT_TO_DESTROY =
-            "UserInterface/MenuContent/Screens/UserInfo/User Panel/PreloadWorld/PlaylistsButton/Image/Icon_New";
-
-        private const string PATH_TO_USERINFO = "UserInterface/MenuContent/Screens/UserInfo";
-        private const string PATH_TO_BACKGROUND = "UserInterface/MenuContent/Screens/UserInfo/User Panel/Panel";
-        private const string PATH_TO_INFO_PANEL = "UserInterface/MenuContent/Screens/UserInfo/User Panel";
+        
         private const string CLICK_ERROR_MESSAGE = "User may have clicked too quickly";
+        
+        private const string PATH_TO_USERINFO = "UserInterface/MenuContent/Screens/UserInfo";
 
 
         public static Action onClick = delegate
@@ -63,17 +58,6 @@ namespace WorldPredownload.UI
             button.SetName(GAMEOBJECT_NAME);
             button.SetText(BUTTON_DEFAULT_TEXT);
             button.SetButtonActionInChildren(onClick);
-            Object.Destroy(GameObject.Find(PATH_TO_GAMEOBJECT_TO_DESTROY));
-
-            var background = GameObject.Find(PATH_TO_BACKGROUND).transform;
-            background.localScale = new Vector3(background.localScale.x, Constants.FRIEND_PANEL_YSCALE,
-                background.localScale.z);
-            background.localPosition = new Vector3(background.localPosition.x, Constants.FRIEND_PANEL_YPOS,
-                background.localPosition.z);
-
-            var userInfoPanel = GameObject.Find(PATH_TO_INFO_PANEL).transform;
-            userInfoPanel.localPosition = new Vector3(userInfoPanel.localPosition.x, Constants.SOCIAL_PANEL_YPOS,
-                userInfoPanel.localPosition.z);
             button.SetActive(true);
             initialised = true;
         }

@@ -1,3 +1,6 @@
+### WorldPredownload v1.4.6
+- Build 1101 compatibility fix
+
 ### WorldPredownload v1.4.5
 - Switched to UIX 0.3.0+ UIManagerInit Event (ML v0.3.1 compatibility update)
 

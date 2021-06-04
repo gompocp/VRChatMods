@@ -52,8 +52,8 @@ namespace WorldPredownload.DownloadManager
                     GameObject.Find("UserInterface/QuickMenu/ShortcutMenu/WorldsButton").GetComponent<Button>().onClick
                         .Invoke();
                     Utilities.ShowPage(DownloadInfo.PageWorldInfo);
-                    DownloadInfo.PageWorldInfo.Method_Public_Void_ApiWorld_ApiWorldInstance_Boolean_Boolean_0(
-                        DownloadInfo.ApiWorld, DownloadInfo.PageWorldInfo.field_Public_ApiWorldInstance_0);
+                    
+                    DownloadInfo.PageWorldInfo.Method_Public_Void_ApiWorld_ApiWorldInstance_Boolean_Boolean_Boolean_0(DownloadInfo.ApiWorld, DownloadInfo.PageWorldInfo.field_Public_ApiWorldInstance_0);
                     ClearDownload();
                 }),
                 Constants.DOWNLOAD_SUCCESS_RIGHT_BTN_TEXT,

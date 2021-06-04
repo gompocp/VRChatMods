@@ -13,7 +13,7 @@ using WorldPredownload.Cache;
 using WorldPredownload.DownloadManager;
 using WorldPredownload.UI;
 using Delegate = Il2CppSystem.Delegate;
-using InfoType = VRC.UI.PageUserInfo.EnumNPublicSealedvaNoOnOfSeReBlInFa9vUnique;
+using InfoType = VRC.UI.PageUserInfo.EnumNPublicSealedvaNoOnOfSeReBlInFa10Unique;
 using ListType = UiUserList.EnumNPublicSealedvaNoInFrOnOfSeInFa9vUnique;
 using OnDownloadComplete = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoObUnique;
 
