@@ -1,3 +1,6 @@
+### WorldPredownload v1.4.7
+- Fixed friend Predownload button placement
+
 ### WorldPredownload v1.4.6
 - Build 1101 compatibility fix
 
