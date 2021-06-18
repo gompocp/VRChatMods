@@ -1,3 +1,6 @@
+### ActionMenuUtils v1.3.9
+- Fixed compatibility problems with Build 1106
+
 ### WorldPredownload v1.4.7
 - Fixed friend Predownload button placement
 

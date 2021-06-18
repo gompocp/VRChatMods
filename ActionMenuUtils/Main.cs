@@ -220,8 +220,7 @@ namespace ActionMenuUtils
         public static void RejoinInstance()
         {
             var instance = RoomManager.field_Internal_Static_ApiWorldInstance_0;
-            MelonLogger.Msg(instance.instanceId);
-            Networking.GoToRoom($"{instance.instanceId}");
+            Networking.GoToRoom($"{instance.world.id}:{instance.instanceId}");
         }
 
         public static void Home()
