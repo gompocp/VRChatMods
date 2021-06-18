@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using MelonLoader;
 using Transmtn.DTO.Notifications;
 using UnhollowerBaseLib.Attributes;
+using UnhollowerRuntimeLib.XrefScans;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.Core;
@@ -106,12 +108,108 @@ namespace WorldPredownload
 
         public static string GetInstanceIDWithTags(this ApiWorld apiWorld)
         {
-            return apiWorld.currentInstanceIdWithTags.Split(':')[1];
+            return apiWorld.id.Split(':')[1];
         }
 
         public static void LoadUser(this PageUserInfo pageUserInfo, APIUser apiUser)
         {
             GetLoadUserDelegate(pageUserInfo, apiUser);
+        }
+
+        public static bool HasStringLiterals(this MethodInfo m)
+        {
+            foreach (var instance in XrefScanner.XrefScan(m))
+                try
+                {
+                    if (instance.Type == XrefType.Global && instance.ReadAsObject() != null) return true;
+                }
+                catch
+                {
+                }
+
+            return false;
+        }
+
+        public static bool CheckStringsCount(this MethodInfo m, int count)
+        {
+            var total = 0;
+            foreach (var instance in XrefScanner.XrefScan(m))
+                try
+                {
+                    if (instance.Type == XrefType.Global && instance.ReadAsObject() != null) total++;
+                }
+                catch
+                {
+                }
+
+            return total == count;
+        }
+
+        public static bool HasMethodCallWithName(this MethodInfo m, string txt)
+        {
+            foreach (var instance in XrefScanner.XrefScan(m))
+                try
+                {
+                    if (instance.Type == XrefType.Method && instance.TryResolve() != null)
+                        try
+                        {
+                            if (instance.TryResolve().Name.Contains(txt)) return true;
+                        }
+                        catch (Exception e)
+                        {
+                            MelonLogger.Warning(e);
+                        }
+                }
+                catch
+                {
+                }
+
+            return false;
+        }
+
+        public static bool SameClassMethodCallCount(this MethodInfo m, int calls)
+        {
+            var count = 0;
+            foreach (var instance in XrefScanner.XrefScan(m))
+                try
+                {
+                    if (instance.Type == XrefType.Method && instance.TryResolve() != null)
+                        try
+                        {
+                            if (m.DeclaringType == instance.TryResolve().DeclaringType) count++;
+                        }
+                        catch (Exception e)
+                        {
+                            MelonLogger.Warning(e);
+                        }
+                }
+                catch
+                {
+                }
+
+            return count == calls;
+        }
+
+        public static bool HasMethodWithDeclaringType(this MethodInfo m, Type declaringType)
+        {
+            foreach (var instance in XrefScanner.XrefScan(m))
+                try
+                {
+                    if (instance.Type == XrefType.Method && instance.TryResolve() != null)
+                        try
+                        {
+                            if (declaringType == instance.TryResolve().DeclaringType) return true;
+                        }
+                        catch (Exception e)
+                        {
+                            MelonLogger.Warning(e);
+                        }
+                }
+                catch
+                {
+                }
+
+            return false;
         }
 
         private delegate void LoadUserDelegate(PageUserInfo pageUserInfo, APIUser apiUser);

@@ -17,7 +17,7 @@ using Main = ActionMenuUtils.Main;
 
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonOptionalDependencies("ActionMenuApi")]
-[assembly: MelonInfo(typeof(Main), "ActionMenuUtils", "1.3.8", "gompo", "https://github.com/gompocp/VRChatMods/releases/")]
+[assembly: MelonInfo(typeof(Main), "ActionMenuUtils", "1.3.9", "gompo", "https://github.com/gompocp/VRChatMods/releases/")]
 
 namespace ActionMenuUtils
 {
@@ -220,7 +220,8 @@ namespace ActionMenuUtils
         public static void RejoinInstance()
         {
             var instance = RoomManager.field_Internal_Static_ApiWorldInstance_0;
-            Networking.GoToRoom($"{instance.instanceWorld.id}:{instance.idWithTags}");
+            MelonLogger.Msg(instance.instanceId);
+            Networking.GoToRoom($"{instance.instanceId}");
         }
 
         public static void Home()
@@ -233,7 +234,7 @@ namespace ActionMenuUtils
 
         public static void ResetAvatar()
         {
-            ObjectPublicAbstractSealedApBoApObStBoApApUnique.Method_Public_Static_Void_ApiAvatar_String_ApiAvatar_0(API.Fetch<ApiAvatar>("avtr_c38a1615-5bf5-42b4-84eb-a8b6c37cbd11"), "fallbackAvatar");
+            ObjectPublicAbstractSealedApObApStApApUnique.Method_Public_Static_Void_ApiAvatar_String_ApiAvatar_0(API.Fetch<ApiAvatar>("avtr_c38a1615-5bf5-42b4-84eb-a8b6c37cbd11"), "fallbackAvatar");
         }
     }
 }

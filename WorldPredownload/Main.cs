@@ -13,7 +13,12 @@ namespace WorldPredownload
     public class WorldPredownload : MelonMod
     {
         private static MelonMod Instance;
-        
+
+        public WorldPredownload()
+        {
+            LoaderCheck.CheckForRainbows();
+        }
+
         public static HarmonyInstance HarmonyInstance => Instance.Harmony;
 
         public override void OnApplicationStart()
@@ -47,10 +52,6 @@ namespace WorldPredownload
         {
             ModSettings.LoadSettings();
         }
-        
-        public WorldPredownload()
-        {
-            LoaderCheck.CheckForRainbows();
-        }
     }
+    
 }

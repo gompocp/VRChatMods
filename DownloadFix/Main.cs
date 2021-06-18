@@ -7,6 +7,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
+/*
+ *  As of 2020/06/17 this mod is now pointless as the bug it aimed at helping with has been patched,
+ *  so I don't really know why you are looking here lol
+ */
+
+
 
 [assembly: MelonInfo(typeof(DownloadFix.DownloadFix), "DownloadFix", "1.0.3", "gompo", "https://github.com/gompocp/VRChatMods/releases/")]
 [assembly: MelonGame("VRChat", "VRChat")]

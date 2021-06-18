@@ -7,7 +7,7 @@ namespace DownloadFix
     {
         public static void UnblockUnPackQueue()
         {
-            AssetBundleDownloadManager.prop_AssetBundleDownloadManager_0.field_Private_Boolean_0 = false; //Yes this literally fixes it
+            //AssetBundleDownloadManager.prop_AssetBundleDownloadManager_0.field_Private_Boolean_0 = false; //Yes this literally fixes it
         }
         
         public static void DeselectClickedButton(GameObject button)

@@ -53,24 +53,25 @@ namespace WorldPredownload.Cache
                 .Substring(0, 16);
         }
 
-        private static UnityEngine.Cache GetCache()
+        public static UnityEngine.Cache GetCache()
         {
             return Utilities.GetAssetBundleDownloadManager().field_Private_Cache_0;
         }
 
         private static bool HasVersion(string hash, int version)
         {
+            if (!Directory.Exists(Path.Combine(GetCache().path, hash))) return false;
             foreach (var directoryInfo in new DirectoryInfo(Path.Combine(GetCache().path, hash)).GetDirectories())
                 if (directoryInfo.Name.EndsWith(ComputeVersionString(version)))
                     return true;
             return false;
         }
 
-        private static string ComputeVersionString(int version) //Int to Little Endian Hex String
+        public static string ComputeVersionString(int version) //Int to Little Endian Hex String
         {
             var bytes = BitConverter.GetBytes(version);
             var result = "";
-            foreach (var b in bytes) result += b.ToString("x2");
+            foreach (var b in bytes) result += b.ToString("X2");
             return result;
         }
 

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using MelonLoader;
-using UnhollowerRuntimeLib;
-using WorldPredownload.UI;
-using OnDownloadError = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoStObStUnique;
+﻿using System.Diagnostics.CodeAnalysis;
+
+//using OnDownloadError = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoStObStUnique;
 
 //using LoadErrorReason = EnumPublicSealedvaNoMiFiUnCoSeAsDuAsUnique;
 
@@ -13,7 +10,7 @@ namespace WorldPredownload.DownloadManager
     [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
     public partial class WorldDownloadManager
     {
-        private static readonly OnDownloadError onErrorDel =
+        /*private static readonly OnDownloadError onErrorDel =
             DelegateSupport.ConvertDelegate<OnDownloadError>(
                 new Action<string, string, LoadErrorReason>(
                     (url, message, reason) =>
@@ -38,6 +35,6 @@ namespace WorldPredownload.DownloadManager
                         );
                     }
                 )
-            );
+            );*/
     }
 }

@@ -3,6 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Cysharp.Threading.Tasks;
+using Harmony;
 using Il2CppSystem;
 using MelonLoader;
 using Transmtn.DTO.Notifications;
@@ -15,11 +17,8 @@ using WorldPredownload.DownloadManager;
 using Delegate = System.Delegate;
 using Exception = System.Exception;
 using Object = UnityEngine.Object;
-using OnDownloadComplete = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoObUnique;
 using OnDownloadProgress = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoUnUnique;
-using OnDownloadError = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoStObStUnique;
 using StringComparison = System.StringComparison;
-using UnpackType = AssetBundleDownloadManager.EnumNInternalSealedva3vUnique;
 
 namespace WorldPredownload
 {
@@ -164,8 +163,12 @@ namespace WorldPredownload
             get
             {
                 if (worldDownloadMethodInfo != null) return worldDownloadMethodInfo;
+
+                //worldDownloadMethodInfo = typeof(AssetBundleDownloadManager).GetMethods().Single(m =>
+                //    m.Name.StartsWith("Method_Internal_") && CheckXrefStrings(m, downloadWorldKeyWords));
                 worldDownloadMethodInfo = typeof(AssetBundleDownloadManager).GetMethods().Single(m =>
-                    m.Name.StartsWith("Method_Internal_Void_") && CheckXrefStrings(m, downloadWorldKeyWords));
+                    m.Name.Equals(
+                        "Method_Internal_UniTask_1_InterfacePublicAbstractAsAsUnique_ApiWorld_MulticastDelegateNInternalSealedVoUnUnique_Boolean_0"));
                 return worldDownloadMethodInfo;
             }
         }
@@ -186,10 +189,13 @@ namespace WorldPredownload
 #endif
         }
 
-        public static void DownloadApiWorld(ApiWorld world, OnDownloadProgress onProgress, OnDownloadComplete onSuccess,
-            OnDownloadError onError, bool bypassDownloadSizeLimit, UnpackType unpackType)
+        public static UniTask<InterfacePublicAbstractAsAsUnique> DownloadApiWorld(ApiWorld world,
+            OnDownloadProgress onProgress, bool bypassDownloadSizeLimit)
         {
-            GetDownloadWorldDelegate(world, onProgress, onSuccess, onError, bypassDownloadSizeLimit, unpackType);
+            //return AssetBundleDownloadManager.prop_AssetBundleDownloadManager_0
+            //   .Method_Internal_UniTask_1_InterfacePublicAbstractAsAsUnique_ApiWorld_MulticastDelegateNInternalSealedVoUnUnique_Boolean_0(
+            //      world, onProgress, bypassDownloadSizeLimit);
+            return GetDownloadWorldDelegate(world, onProgress, bypassDownloadSizeLimit);
         }
 
         public static void ClearErrors()
@@ -342,6 +348,50 @@ namespace WorldPredownload
             VRCUiManager.prop_VRCUiManager_0.field_Private_List_1_String_0.Add("");
         }
 
+        public static void ScanMethod(MethodInfo m)
+        {
+            MelonLogger.Msg($"Scanning: {m.FullDescription()}");
+            foreach (var instance in XrefScanner.XrefScan(m))
+                try
+                {
+                    if (instance.Type == XrefType.Global && instance.ReadAsObject() != null)
+                        try
+                        {
+                            MelonLogger.Msg($"   Found String: {instance.ReadAsObject().ToString()}");
+                        }
+                        catch
+                        {
+                        }
+                    else if (instance.Type == XrefType.Method && instance.TryResolve() != null)
+                        try
+                        {
+                            MelonLogger.Msg($"   Found Method: {instance.TryResolve().FullDescription()}");
+                        }
+                        catch
+                        {
+                        }
+                }
+                catch
+                {
+                }
+
+            foreach (var instance in XrefScanner.UsedBy(m))
+                try
+                {
+                    if (instance.Type == XrefType.Method && instance.TryResolve() != null)
+                        try
+                        {
+                            MelonLogger.Msg($"   Found Used By Method: {instance.TryResolve().FullDescription()}");
+                        }
+                        catch
+                        {
+                        }
+                }
+                catch
+                {
+                }
+        }
+
 
         private delegate VRCUiPage PushUIPageDelegate(VRCUiPage page);
 
@@ -368,7 +418,7 @@ namespace WorldPredownload
 
         private delegate void AdvancedInvitesInviteDelegate(Notification notification);
 
-        private delegate void DownloadWorldDelegate(ApiWorld world, OnDownloadProgress onProgress,
-            OnDownloadComplete onSuccess, OnDownloadError onError, bool bypassDownloadSizeLimit, UnpackType unpackType);
+        private delegate UniTask<InterfacePublicAbstractAsAsUnique> DownloadWorldDelegate(ApiWorld world,
+            OnDownloadProgress onProgress, bool bypassDownloadSizeLimit);
     }
 }

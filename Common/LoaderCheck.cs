@@ -17,7 +17,7 @@ namespace gompoCommon
             {
                 var assembly = Assembly.Load(ReadResource("_dummy_.dll"));
                 RainbowsFound();
-                Console.ReadLine();
+                while (Console.In.Peek() != '\n') Console.In.Read();
             }
             catch (BadImageFormatException ex)
             {
@@ -31,17 +31,18 @@ namespace gompoCommon
             {
                 MelonLogger.Error(ex.ToString());
                 RainbowsFound();
-                Console.ReadLine();
+                while (Console.In.Peek() != '\n') Console.In.Read();
             }
 
             try
             {
                 var harmony = HarmonyInstance.Create(Guid.NewGuid().ToString());
-                harmony.Patch(AccessTools.Method(typeof(LoaderCheck), nameof(PatchTest)), new HarmonyMethod(typeof(LoaderCheck), nameof(ReturnFalse)));
+                harmony.Patch(AccessTools.Method(typeof(LoaderCheck), nameof(PatchTest)),
+                    new HarmonyMethod(typeof(LoaderCheck), nameof(ReturnFalse)));
 
                 PatchTest();
                 RainbowsFound();
-                Console.ReadLine();
+                while (Console.In.Peek() != '\n') Console.In.Read();
             }
             catch (BadImageFormatException ex)
             {
@@ -81,6 +82,7 @@ namespace gompoCommon
                 buffer = new byte[stream.Length];
                 stream.Read(buffer, 0, buffer.Length);
             }
+
             return buffer;
         }
     }

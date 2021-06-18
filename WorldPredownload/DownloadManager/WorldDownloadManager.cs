@@ -1,24 +1,29 @@
 ﻿//using AssetBundleDownload = CustomYieldInstructionPublicObAsByStInStCoBoObInUnique;
 
 using System;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Net;
 using MelonLoader;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.Core;
+using WorldPredownload.Cache;
 using WorldPredownload.UI;
-using OnDownloadComplete = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoObUnique;
 using OnDownloadProgress = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoUnUnique;
-using OnDownloadError = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoStObStUnique;
+
 //using LoadErrorReason = EnumPublicSealedvaNoMiFiUnCoSeAsDuAsUnique;
-using UnpackType = AssetBundleDownloadManager.EnumNInternalSealedva3vUnique;
 
 namespace WorldPredownload.DownloadManager
 {
     public static partial class WorldDownloadManager
     {
         public static DownloadInfo DownloadInfo;
+
+        private static WebClient webClient;
         public static bool downloading { get; set; }
-        public static bool cancelled { get; set; }
+        private static bool cancelled { get; set; }
 
         public static void CancelDownload()
         {
@@ -26,6 +31,7 @@ namespace WorldPredownload.DownloadManager
             {
                 if (ModSettings.showHudMessages) Utilities.QueueHudMessage("Download Cancelled");
                 cancelled = true;
+                webClient.CancelAsync();
             }
         }
 
@@ -52,8 +58,10 @@ namespace WorldPredownload.DownloadManager
                     GameObject.Find("UserInterface/QuickMenu/ShortcutMenu/WorldsButton").GetComponent<Button>().onClick
                         .Invoke();
                     Utilities.ShowPage(DownloadInfo.PageWorldInfo);
-                    
-                    DownloadInfo.PageWorldInfo.Method_Public_Void_ApiWorld_ApiWorldInstance_Boolean_Boolean_Boolean_0(DownloadInfo.ApiWorld, DownloadInfo.PageWorldInfo.field_Public_ApiWorldInstance_0);
+
+                    DownloadInfo.PageWorldInfo
+                        .Method_Public_Void_ApiWorld_ApiWorldInstance_Boolean_Boolean_Boolean_APIUser_0(
+                            DownloadInfo.ApiWorld, DownloadInfo.PageWorldInfo.field_Public_ApiWorldInstance_0);
                     ClearDownload();
                 }),
                 Constants.DOWNLOAD_SUCCESS_RIGHT_BTN_TEXT,
@@ -94,7 +102,8 @@ namespace WorldPredownload.DownloadManager
                 new Action(delegate
                 {
                     Utilities.HideCurrentPopup();
-                    GameObject.Find("UserInterface/QuickMenu/ShortcutMenu/SocialButton").GetComponent<Button>().onClick.Invoke();
+                    GameObject.Find("UserInterface/QuickMenu/ShortcutMenu/SocialButton").GetComponent<Button>().onClick
+                        .Invoke();
                     _ = DownloadInfo.APIUser ?? throw new NullReferenceException("Friend User Info Null Uh Oh");
                     Utilities.ShowPage(DownloadInfo.PageUserInfo);
                     DownloadInfo.PageUserInfo.LoadUser(DownloadInfo.APIUser);
@@ -110,7 +119,7 @@ namespace WorldPredownload.DownloadManager
             );
         }
 
-        public static void DownloadWorld(ApiWorld apiWorld)
+        private static void DownloadWorld(ApiWorld apiWorld)
         {
             if (!downloading)
             {
@@ -118,14 +127,7 @@ namespace WorldPredownload.DownloadManager
                 if (ModSettings.showStatusOnQM) WorldDownloadStatus.Enable();
                 if (ModSettings.showHudMessages) Utilities.QueueHudMessage("Starting Download");
                 downloading = true;
-                Utilities.DownloadApiWorld(
-                    apiWorld,
-                    onProgressDel,
-                    onCompleteDel,
-                    onErrorDel,
-                    true,
-                    UnpackType.EnumValue1
-                );
+                Download(apiWorld, progress, complete, null);
             }
             else
             {
@@ -142,6 +144,31 @@ namespace WorldPredownload.DownloadManager
             if (downloadInfo.DownloadType == DownloadType.Invite && !downloading)
                 MelonCoroutines.Start(InviteButton.InviteButtonTimer(15));
             DownloadWorld(downloadInfo.ApiWorld);
+        }
+
+        [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
+        public static void Download(ApiWorld apiWorld, DownloadProgressChangedEventHandler progress,
+            DownloadDataCompletedEventHandler complete, CancelEventHandler cancel)
+        {
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            if (webClient == null)
+            {
+                webClient = new WebClient();
+                webClient.Headers.Add("user-agent",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36");
+                webClient.DownloadProgressChanged += progress;
+                webClient.DownloadDataCompleted += complete;
+            }
+
+            var cachePath = CacheManager.GetCache().path;
+            var assetHash = CacheManager.ComputeAssetHash(apiWorld.id);
+            var dir = Path.Combine(cachePath, assetHash);
+            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            var assetVersionDir = Path.Combine(dir,
+                "0000000000000000000000000000" + CacheManager.ComputeVersionString(apiWorld.version));
+            if (!Directory.Exists(assetVersionDir)) Directory.CreateDirectory(assetVersionDir);
+
+            webClient.DownloadFileAsync(new Uri(apiWorld.assetUrl), Path.Combine(assetVersionDir, "__data"));
         }
     }
 }

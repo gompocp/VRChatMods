@@ -32,7 +32,7 @@ namespace WorldPredownload.UI
                 WorldDownloadManager.ProcessDownload(
                     DownloadInfo.CreateWorldPageDownloadInfo(
                         GetWorldInfo().field_Private_ApiWorld_0,
-                        GetWorldInfo().field_Public_ApiWorldInstance_0.tagsOnly,
+                        GetWorldInfo().field_Public_ApiWorldInstance_0.instanceId,
                         DownloadType.World,
                         GetWorldInfo()
                     )

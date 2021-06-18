@@ -5,20 +5,20 @@ using UnityEngine;
 using VRC.UI;
 using WorldPredownload.Cache;
 using WorldPredownload.DownloadManager;
-using Object = UnityEngine.Object;
 
 namespace WorldPredownload.UI
 {
     public class FriendButton
     {
-        private const string PATH_TO_GAMEOBJECT_TO_CLONE = "UserInterface/MenuContent/Screens/UserInfo/OnlineFriendButtons/Invite";
+        private const string PATH_TO_GAMEOBJECT_TO_CLONE =
+            "UserInterface/MenuContent/Screens/UserInfo/OnlineFriendButtons/Invite";
 
         private const string PATH_TO_CLONE_PARENT = "UserInterface/MenuContent/Screens/UserInfo/OnlineFriendButtons";
         private const string GAMEOBJECT_NAME = "PredownloadUserButton";
         private const string BUTTON_DEFAULT_TEXT = "Predownload";
-        
+
         private const string CLICK_ERROR_MESSAGE = "User may have clicked too quickly";
-        
+
         private const string PATH_TO_USERINFO = "UserInterface/MenuContent/Screens/UserInfo";
 
 
@@ -41,9 +41,9 @@ namespace WorldPredownload.UI
                         GetUserInfo()
                     ));
             }
-            catch
+            catch (Exception e)
             {
-                MelonLogger.Warning(CLICK_ERROR_MESSAGE);
+                MelonLogger.Warning(CLICK_ERROR_MESSAGE + $" {e}");
             }
         };
 

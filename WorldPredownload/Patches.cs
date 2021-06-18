@@ -9,13 +9,12 @@ using UnhollowerBaseLib;
 using UnhollowerBaseLib.Attributes;
 using VRC.Core;
 using VRC.UI;
-using WorldPredownload.Cache;
 using WorldPredownload.DownloadManager;
 using WorldPredownload.UI;
-using Delegate = Il2CppSystem.Delegate;
 using InfoType = VRC.UI.PageUserInfo.EnumNPublicSealedvaNoOnOfSeReBlInFa10Unique;
 using ListType = UiUserList.EnumNPublicSealedvaNoInFrOnOfSeInFa9vUnique;
-using OnDownloadComplete = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoObUnique;
+
+//using OnDownloadComplete = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoObUnique;
 
 namespace WorldPredownload
 {
@@ -80,11 +79,11 @@ namespace WorldPredownload
     {
         public static void Patch()
         {
-            WorldPredownload.HarmonyInstance.Patch(Utilities.WorldDownloadMethodInfo,
-                new HarmonyMethod(typeof(WorldDownloadListener).GetMethod(nameof(Prefix))));
+            /*WorldPredownload.HarmonyInstance.Patch(Utilities.WorldDownloadMethodInfo,
+                new HarmonyMethod(typeof(WorldDownloadListener).GetMethod(nameof(Prefix))));*/
         }
 
-        public static void Prefix(ApiWorld __0, ref OnDownloadComplete __2)
+        /*public static void Prefix(ApiWorld __0, ref OnDownloadComplete __2)
         {
             __2 = Delegate.Combine(
                 __2,
@@ -99,7 +98,7 @@ namespace WorldPredownload
                     }
                 )
             ).Cast<OnDownloadComplete>();
-        }
+        }*/
     }
 
 
