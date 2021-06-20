@@ -16,8 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActionMenuUtils", "ActionMe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DownloadFix", "DownloadFix\DownloadFix.csproj", "{F61964B1-1EE3-4AB1-9FC7-3456CCE5DEA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRCKeyboardTweaks", "VRCKeyboardTweaks\VRCKeyboardTweaks.csproj", "{7623AA2F-12BB-4C63-87A4-BA52E7B3E6B1}"
-EndProject
 
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,9 +35,5 @@ Global
 		{F61964B1-1EE3-4AB1-9FC7-3456CCE5DEA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F61964B1-1EE3-4AB1-9FC7-3456CCE5DEA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F61964B1-1EE3-4AB1-9FC7-3456CCE5DEA8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7623AA2F-12BB-4C63-87A4-BA52E7B3E6B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7623AA2F-12BB-4C63-87A4-BA52E7B3E6B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7623AA2F-12BB-4C63-87A4-BA52E7B3E6B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7623AA2F-12BB-4C63-87A4-BA52E7B3E6B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
