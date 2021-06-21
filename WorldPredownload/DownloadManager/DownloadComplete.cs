@@ -1,9 +1,13 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Net;
+﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using Il2CppSystem;
 using MelonLoader;
 using UIExpansionKit.API;
+using UnhollowerRuntimeLib;
+using UnityEngine;
 using WorldPredownload.Cache;
 using WorldPredownload.UI;
+using AsyncOperation = UnityEngine.AsyncOperation;
 
 //using AssetBundleDownload = CustomYieldInstructionPublicObAsByStInStCoBoObInUnique;
 //using OnDownloadComplete = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoObUnique;
@@ -14,7 +18,7 @@ namespace WorldPredownload.DownloadManager
     [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
     public static partial class WorldDownloadManager
     {
-        private static readonly DownloadDataCompletedEventHandler complete = async (sender, args) =>
+        private static readonly AsyncCompletedEventHandler complete = async (sender, args) =>
         {
             await TaskUtilities.YieldToMainThread();
             if (ModSettings.showHudMessages) Utilities.QueueHudMessage("Download Finished");
@@ -27,9 +31,22 @@ namespace WorldPredownload.DownloadManager
             FriendButton.UpdateTextDownloadStopped();
             WorldButton.UpdateTextDownloadStopped();
             WorldDownloadStatus.gameObject.SetText(Constants.DOWNLOAD_STATUS_IDLE_TEXT);
-            MelonLogger.Msg($"Downloaded: {args.Result.Length} bytes");
-
-
+            MelonLogger.Msg($"Finished downloading world");
+            
+            var operation = AssetBundle.RecompressAssetBundleAsync(file, file, new BuildCompression()
+            {
+                compression = CompressionType.Lz4,
+                level = CompressionLevel.High,
+                blockSize = 131072U
+            }, 0, ThreadPriority.Normal);
+            operation.add_completed(DelegateSupport.ConvertDelegate<Action<AsyncOperation>>(new System.Action<AsyncOperation>(
+                delegate(AsyncOperation asyncOperation)
+                {
+                    MelonLogger.Msg($"Finished recompressing world");
+                    CacheManager.CreateInfoFileFor(file);
+                }))
+            );
+            
             switch (DownloadInfo.DownloadType)
             {
                 case DownloadType.Friend:
@@ -69,6 +86,8 @@ namespace WorldPredownload.DownloadManager
 
                     break;
             }
+            
+            
         };
     }
 }

@@ -71,7 +71,7 @@ namespace WorldPredownload.Cache
         {
             var bytes = BitConverter.GetBytes(version);
             var result = "";
-            foreach (var b in bytes) result += b.ToString("X2");
+            foreach (var b in bytes) result += b.ToString("x2");
             return result;
         }
 
@@ -83,6 +83,11 @@ namespace WorldPredownload.Cache
                 if (file.Name.Contains("__data"))
                     return true;
             return false;
+        }
+
+        public static void CreateInfoFileFor(string file)
+        {
+            File.WriteAllText(Path.Combine(Path.GetDirectoryName(file), "__info"), $"-1\n{((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds()}\n1\n__data\n");
         }
     }
 }
