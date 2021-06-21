@@ -21,6 +21,7 @@ namespace WorldPredownload.DownloadManager
         private static readonly AsyncCompletedEventHandler complete = async (sender, args) =>
         {
             await TaskUtilities.YieldToMainThread();
+            
             webClient.Dispose();
             if (ModSettings.showHudMessages) Utilities.QueueHudMessage("Download Finished");
             if (ModSettings.hideQMStatusWhenInActive) WorldDownloadStatus.Disable();
@@ -43,10 +44,11 @@ namespace WorldPredownload.DownloadManager
             operation.add_completed(DelegateSupport.ConvertDelegate<Action<AsyncOperation>>(new System.Action<AsyncOperation>(
                 delegate(AsyncOperation asyncOperation)
                 {
-                    MelonLogger.Msg($"Finished recompressing world");
+                    MelonLogger.Msg($"Finished recompressing world with result: {operation.result}");
                     CacheManager.CreateInfoFileFor(file);
                 }))
             );
+            
             
             switch (DownloadInfo.DownloadType)
             {

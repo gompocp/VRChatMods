@@ -25,10 +25,6 @@ namespace WorldPredownload
     [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
     public static class Utilities
     {
-        private static readonly List<string> downloadWorldKeyWords =
-            new(new[] {"vrcw", "Worlds", "Failed to parse world '", "' UnityVersion '"});
-
-        private static DownloadWorldDelegate downloadWorldDelegate;
 
         private static ClearErrorsDelegate clearErrorsDelegate;
 
@@ -39,22 +35,6 @@ namespace WorldPredownload
         private static PushUIPageDelegate pushUIPageDelegate;
 
         private static AdvancedInvitesInviteDelegate advancedInvitesInviteDelegate;
-
-        public static MethodInfo worldDownloadMethodInfo;
-
-        private static DownloadWorldDelegate GetDownloadWorldDelegate
-        {
-            get
-            {
-                if (downloadWorldDelegate != null) return downloadWorldDelegate;
-                downloadWorldDelegate = (DownloadWorldDelegate) Delegate.CreateDelegate(
-                    typeof(DownloadWorldDelegate),
-                    AssetBundleDownloadManager.prop_AssetBundleDownloadManager_0,
-                    WorldDownloadMethodInfo
-                );
-                return downloadWorldDelegate;
-            }
-        }
 
         private static ClearErrorsDelegate GetClearErrorsDelegate
         {
@@ -158,21 +138,6 @@ namespace WorldPredownload
             }
         }
 
-        public static MethodInfo WorldDownloadMethodInfo
-        {
-            get
-            {
-                if (worldDownloadMethodInfo != null) return worldDownloadMethodInfo;
-
-                //worldDownloadMethodInfo = typeof(AssetBundleDownloadManager).GetMethods().Single(m =>
-                //    m.Name.StartsWith("Method_Internal_") && CheckXrefStrings(m, downloadWorldKeyWords));
-                worldDownloadMethodInfo = typeof(AssetBundleDownloadManager).GetMethods().Single(m =>
-                    m.Name.Equals(
-                        "Method_Internal_UniTask_1_InterfacePublicAbstractAsAsUnique_ApiWorld_MulticastDelegateNInternalSealedVoUnUnique_Boolean_0"));
-                return worldDownloadMethodInfo;
-            }
-        }
-
         public static void AdvancedInvitesHandleInvite(Notification notification)
         {
 #if DEBUG
@@ -188,22 +153,7 @@ namespace WorldPredownload
             GetAdvancedInvitesInviteDelegate(notification);
 #endif
         }
-
-        public static UniTask<InterfacePublicAbstractAsAsUnique> DownloadApiWorld(ApiWorld world,
-            OnDownloadProgress onProgress, bool bypassDownloadSizeLimit)
-        {
-            //return AssetBundleDownloadManager.prop_AssetBundleDownloadManager_0
-            //   .Method_Internal_UniTask_1_InterfacePublicAbstractAsAsUnique_ApiWorld_MulticastDelegateNInternalSealedVoUnUnique_Boolean_0(
-            //      world, onProgress, bypassDownloadSizeLimit);
-            return GetDownloadWorldDelegate(world, onProgress, bypassDownloadSizeLimit);
-        }
-
-        public static void ClearErrors()
-        {
-            GetClearErrorsDelegate();
-        }
-
-
+        
         public static void ShowOptionPopup(string title, string body, string leftButtonText, Action leftButtonAction,
             string rightButtonText, Action rightButtonAction)
         {
@@ -417,8 +367,6 @@ namespace WorldPredownload
         private delegate void ClearErrorsDelegate();
 
         private delegate void AdvancedInvitesInviteDelegate(Notification notification);
-
-        private delegate UniTask<InterfacePublicAbstractAsAsUnique> DownloadWorldDelegate(ApiWorld world,
-            OnDownloadProgress onProgress, bool bypassDownloadSizeLimit);
+        
     }
 }
