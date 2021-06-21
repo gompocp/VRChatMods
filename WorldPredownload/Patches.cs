@@ -7,8 +7,10 @@ using MelonLoader;
 using Transmtn.DTO.Notifications;
 using UnhollowerBaseLib;
 using UnhollowerBaseLib.Attributes;
+using UnityEngine;
 using VRC.Core;
 using VRC.UI;
+using WorldPredownload.Cache;
 using WorldPredownload.DownloadManager;
 using WorldPredownload.UI;
 using InfoType = VRC.UI.PageUserInfo.EnumNPublicSealedvaNoOnOfSeReBlInFa10Unique;
@@ -24,6 +26,15 @@ namespace WorldPredownload
         private static void Prefix()
         {
             WorldDownloadManager.CancelDownload();
+        }
+    }
+    
+    [HarmonyPatch(typeof(NetworkManager), "OnJoinedRoom")]
+    internal class OnJoinedRoomPatch
+    {
+        private static void Prefix()
+        {
+            CacheManager.UpdateDirectories();
         }
     }
 
@@ -74,7 +85,8 @@ namespace WorldPredownload
             byte something1, byte something2, IntPtr additionalJunk);
     }
 
-
+    
+    //TODO: Reimplement this patch (or go back to the old way of recaching everything on world change... oof)
     internal class WorldDownloadListener
     {
         public static void Patch()

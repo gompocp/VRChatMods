@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Il2CppSystem;
 using MelonLoader;
 using UIExpansionKit.API;
@@ -21,20 +22,7 @@ namespace WorldPredownload.DownloadManager
         private static readonly AsyncCompletedEventHandler complete = async (sender, args) =>
         {
             await TaskUtilities.YieldToMainThread();
-            
             webClient.Dispose();
-            if (ModSettings.showHudMessages) Utilities.QueueHudMessage("Download Finished");
-            if (ModSettings.hideQMStatusWhenInActive) WorldDownloadStatus.Disable();
-            DownloadInfo.complete = true;
-            downloading = false;
-            CacheManager.AddDirectory(CacheManager.ComputeAssetHash(DownloadInfo.ApiWorld.id));
-            HudIcon.Disable();
-            InviteButton.UpdateTextDownloadStopped();
-            FriendButton.UpdateTextDownloadStopped();
-            WorldButton.UpdateTextDownloadStopped();
-            WorldDownloadStatus.gameObject.SetText(Constants.DOWNLOAD_STATUS_IDLE_TEXT);
-            MelonLogger.Msg($"Finished downloading world");
-            
             var operation = AssetBundle.RecompressAssetBundleAsync(file, file, new BuildCompression()
             {
                 compression = CompressionType.Lz4,
@@ -46,10 +34,27 @@ namespace WorldPredownload.DownloadManager
                 {
                     MelonLogger.Msg($"Finished recompressing world with result: {operation.result}");
                     CacheManager.CreateInfoFileFor(file);
+                    Task task = new Task(OnRecompress);
+                    // I don't really know how else to ensure that this the recompress operation runs on the main thread, if you know feel free to bonk me for being dumb
+                    task.NoAwait("WorldPredownload OnRecompress");
+                    task.Start();
                 }))
             );
-            
-            
+        };
+        
+        private static async void OnRecompress()
+        {
+            await TaskUtilities.YieldToMainThread();
+            if (ModSettings.showHudMessages) Utilities.QueueHudMessage("Download Finished");
+            if (ModSettings.hideQMStatusWhenInActive) WorldDownloadStatus.Disable();
+            DownloadInfo.complete = true;
+            downloading = false;
+            CacheManager.AddDirectory(CacheManager.ComputeAssetHash(DownloadInfo.ApiWorld.id));
+            HudIcon.Disable();
+            InviteButton.UpdateTextDownloadStopped();
+            FriendButton.UpdateTextDownloadStopped();
+            WorldButton.UpdateTextDownloadStopped();
+            WorldDownloadStatus.gameObject.SetText(Constants.DOWNLOAD_STATUS_IDLE_TEXT);
             switch (DownloadInfo.DownloadType)
             {
                 case DownloadType.Friend:
@@ -89,8 +94,7 @@ namespace WorldPredownload.DownloadManager
 
                     break;
             }
-            
-            
-        };
+        }
     }
+    
 }
