@@ -1,3 +1,9 @@
+### WorldPredownload v1.4.8
+- Fixed 1108 compatibility. A good chunk of the mod was rewritten to support this build
+this introduces possibly more bugs/problems from my end as the mod now handles 
+  all of the downloading process including the post file processing. If there 
+  are any issues let me know.
+
 ### ActionMenuUtils v1.3.9
 - Fixed compatibility problems with Build 1106
 
