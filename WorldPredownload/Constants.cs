@@ -41,7 +41,7 @@ namespace WorldPredownload
 
         public static readonly Vector2 INVITE_BUTTON_POS = new(630f, -208f);
 
-        public static readonly Vector2 WORLD_BUTTON_POS = new(247f, 8f);
+        public static readonly Vector2 WORLD_BUTTON_POS = new(230f, -10f);
 
         //public static readonly Vector2 WORLD_BUTTON_OVERRIDE_POS = new Vector2(-293f, 8f);
         public static readonly Vector2 FRIEND_BUTTON_POS = new(-915f, 458f);
