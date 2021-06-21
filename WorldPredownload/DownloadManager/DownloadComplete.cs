@@ -21,6 +21,7 @@ namespace WorldPredownload.DownloadManager
         private static readonly AsyncCompletedEventHandler complete = async (sender, args) =>
         {
             await TaskUtilities.YieldToMainThread();
+            webClient.Dispose();
             if (ModSettings.showHudMessages) Utilities.QueueHudMessage("Download Finished");
             if (ModSettings.hideQMStatusWhenInActive) WorldDownloadStatus.Disable();
             DownloadInfo.complete = true;

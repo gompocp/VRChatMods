@@ -32,6 +32,7 @@ namespace WorldPredownload.DownloadManager
                 if (ModSettings.showHudMessages) Utilities.QueueHudMessage("Download Cancelled");
                 cancelled = true;
                 webClient.CancelAsync();
+                webClient.Dispose();
             }
         }
 
@@ -151,13 +152,10 @@ namespace WorldPredownload.DownloadManager
             AsyncCompletedEventHandler complete, CancelEventHandler cancel)
         {
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            if (webClient == null)
-            {
-                webClient = new WebClient();
-                webClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36");
-                webClient.DownloadProgressChanged += progress;
-                webClient.DownloadFileCompleted += complete;
-            }
+            webClient = new WebClient();
+            webClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36");
+            webClient.DownloadProgressChanged += progress;
+            webClient.DownloadFileCompleted += complete;
 
             var cachePath = CacheManager.GetCache().path;
             var assetHash = CacheManager.ComputeAssetHash(apiWorld.id);
