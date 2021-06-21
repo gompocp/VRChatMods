@@ -84,36 +84,7 @@ namespace WorldPredownload
         private delegate void WorldInfoSetupDelegate(IntPtr thisPtr, IntPtr apiWorld, IntPtr apiWorldInstance,
             byte something1, byte something2, IntPtr additionalJunk);
     }
-
     
-    //TODO: Reimplement this patch (or go back to the old way of recaching everything on world change... oof)
-    internal class WorldDownloadListener
-    {
-        public static void Patch()
-        {
-            /*WorldPredownload.HarmonyInstance.Patch(Utilities.WorldDownloadMethodInfo,
-                new HarmonyMethod(typeof(WorldDownloadListener).GetMethod(nameof(Prefix))));*/
-        }
-
-        /*public static void Prefix(ApiWorld __0, ref OnDownloadComplete __2)
-        {
-            __2 = Delegate.Combine(
-                __2,
-                (OnDownloadComplete) new Action<AssetBundleDownload>(
-                    _ =>
-                    {
-                        if (CacheManager.WorldFileExists(__0.id))
-                            CacheManager.AddDirectory(CacheManager.ComputeAssetHash(__0.id));
-                        else
-                            MelonLogger.Warning(
-                                $"Failed to verify world {__0.id} was downloaded. No idea why this would happen");
-                    }
-                )
-            ).Cast<OnDownloadComplete>();
-        }*/
-    }
-
-
     //I accidently found that this neat little method which opens the notification more actions page a while ago while fixing up advanced invites 
     //[HarmonyPatch(typeof(NotificationManager), "Method_Private_Void_Notification_1")]
     internal class NotificationMoreActions
@@ -122,9 +93,11 @@ namespace WorldPredownload
 
         public static void Patch()
         {
+            //TODO: This is the last thing holding back this release, once I've got this fixed we're good to go
             var openMoreActionsMethod = typeof(NotificationManager).GetMethods()
                 .Where(m =>
                     m.Name.StartsWith("Method_Private_Void_Notification_") &&
+                    m.XRefScanFor("AcceptNotification for notification:") &&
                     !m.Name.Contains("PDM"))
                 .OrderBy(m => m.GetCustomAttribute<CallerCountAttribute>().Count)
                 .Last();
@@ -135,6 +108,7 @@ namespace WorldPredownload
         public static void Prefix(Notification __0)
         {
             selectedNotification = __0;
+            MelonLogger.Msg("Called patch");
             InviteButton.UpdateText();
         }
     }

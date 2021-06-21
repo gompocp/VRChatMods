@@ -307,7 +307,7 @@ namespace WorldPredownload
                     if (instance.Type == XrefType.Global && instance.ReadAsObject() != null)
                         try
                         {
-                            MelonLogger.Msg($"   Found String: {instance.ReadAsObject().ToString()}");
+                            MelonLogger.Msg($"   Found String: \"{instance.ReadAsObject().ToString()}\"");
                         }
                         catch
                         {

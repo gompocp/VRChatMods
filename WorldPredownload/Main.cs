@@ -28,7 +28,6 @@ namespace WorldPredownload
             ModSettings.LoadSettings();
             SocialMenuSetup.Patch();
             WorldInfoSetup.Patch();
-            WorldDownloadListener.Patch();
             NotificationMoreActions.Patch();
             ExpansionKitApi.OnUiManagerInit += UiManagerInit;
         }
@@ -40,7 +39,6 @@ namespace WorldPredownload
             WorldButton.Setup();
             WorldDownloadStatus.Setup();
             HudIcon.Setup();
-            CacheManager.UpdateDirectories();
         }
 
         public override void OnPreferencesLoaded()
