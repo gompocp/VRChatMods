@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Threading.Tasks;
 using Il2CppSystem;
 using MelonLoader;
@@ -24,7 +25,7 @@ namespace WorldPredownload.DownloadManager
         {
             await TaskUtilities.YieldToMainThread();
             webClient.Dispose();
-            if (!CacheManager.HasDownloadedWorld(DownloadInfo.ApiWorld.id, DownloadInfo.ApiWorld.version))
+            if (!CacheManager.WorldFileExists(DownloadInfo.ApiWorld.id))
             {
                 if (ModSettings.hideQMStatusWhenInActive) WorldDownloadStatus.Disable();
                 DownloadInfo.complete = true;
@@ -34,8 +35,8 @@ namespace WorldPredownload.DownloadManager
                 FriendButton.UpdateTextDownloadStopped();
                 WorldButton.UpdateTextDownloadStopped();
                 WorldDownloadStatus.gameObject.SetText(Constants.DOWNLOAD_STATUS_IDLE_TEXT);
-                MelonLogger.Error(
-                    $"World failed to download. Why you might ask?... I don't know! This exception might help: {args.Error}");
+                if(!string.IsNullOrEmpty(file)) File.Delete(file);
+                if(!args.Cancelled) MelonLogger.Error($"World failed to download. Why you might ask?... I don't know! This exception might help: {args.Error}");
                 return;
             }
 
