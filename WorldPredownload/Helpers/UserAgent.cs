@@ -6,7 +6,7 @@ namespace WorldPredownload.Helpers
     public static class UserAgent
     {
         private static readonly List<string> userAgents =
-            new() //I'm super paranoid about causing easily identifiable user agents - this is probably enough 
+            new() //I'm super paranoid about causing easily identifiable user agents - this is probably overkill so feel free to bonk me for it 
             {
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36",
