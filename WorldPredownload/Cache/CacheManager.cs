@@ -88,7 +88,8 @@ namespace WorldPredownload.Cache
 
         public static void CreateInfoFileFor(string file)
         {
-            File.WriteAllText(Path.Combine(Path.GetDirectoryName(file), "__info"), $"-1\n{((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds()}\n1\n__data\n");
+            File.WriteAllText(Path.Combine(Path.GetDirectoryName(file), "__info"),
+                $"-1\n{((DateTimeOffset) DateTime.Now).ToUnixTimeSeconds()}\n1\n__data\n");
         }
     }
 }

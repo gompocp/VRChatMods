@@ -34,27 +34,30 @@ namespace WorldPredownload.DownloadManager
                 FriendButton.UpdateTextDownloadStopped();
                 WorldButton.UpdateTextDownloadStopped();
                 WorldDownloadStatus.gameObject.SetText(Constants.DOWNLOAD_STATUS_IDLE_TEXT);
-                MelonLogger.Error($"World failed to download. Why you might ask?... I don't know! This exception might help: {args.Error}");
+                MelonLogger.Error(
+                    $"World failed to download. Why you might ask?... I don't know! This exception might help: {args.Error}");
                 return;
             }
-            var operation = AssetBundle.RecompressAssetBundleAsync(file, file, new BuildCompression()
+
+            var operation = AssetBundle.RecompressAssetBundleAsync(file, file, new BuildCompression
             {
                 compression = CompressionType.Lz4,
                 level = CompressionLevel.High,
                 blockSize = 131072U
             }, 0, ThreadPriority.Normal);
-            operation.add_completed(DelegateSupport.ConvertDelegate<Action<AsyncOperation>>(new System.Action<AsyncOperation>(
-                delegate(AsyncOperation asyncOperation)
-                {
-                    MelonLogger.Msg($"Finished recompressing world with result: {operation.result}");
-                    Task task = new Task(OnRecompress);
-                    // I don't really know how else to ensure that this the recompress operation runs on the main thread, if you know feel free to bonk me for being dumb
-                    task.NoAwait("WorldPredownload OnRecompress");
-                    task.Start();
-                }))
+            operation.add_completed(DelegateSupport.ConvertDelegate<Action<AsyncOperation>>(
+                new System.Action<AsyncOperation>(
+                    delegate
+                    {
+                        MelonLogger.Msg($"Finished recompressing world with result: {operation.result}");
+                        var task = new Task(OnRecompress);
+                        // I don't really know how else to ensure that this the recompress operation runs on the main thread, if you know feel free to bonk me for being dumb
+                        task.NoAwait("WorldPredownload OnRecompress");
+                        task.Start();
+                    }))
             );
         };
-        
+
         private static async void OnRecompress()
         {
             await TaskUtilities.YieldToMainThread();
@@ -110,5 +113,4 @@ namespace WorldPredownload.DownloadManager
             }
         }
     }
-    
 }

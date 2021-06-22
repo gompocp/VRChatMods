@@ -7,7 +7,6 @@ using MelonLoader;
 using Transmtn.DTO.Notifications;
 using UnhollowerBaseLib;
 using UnhollowerBaseLib.Attributes;
-using UnityEngine;
 using VRC.Core;
 using VRC.UI;
 using WorldPredownload.Cache;
@@ -29,7 +28,7 @@ namespace WorldPredownload
             WorldDownloadManager.CancelDownload();
         }
     }
-    
+
     [HarmonyPatch(typeof(NetworkManager), "OnJoinedRoom")]
     internal class OnJoinedRoomPatch
     {
@@ -85,7 +84,7 @@ namespace WorldPredownload
         private delegate void WorldInfoSetupDelegate(IntPtr thisPtr, IntPtr apiWorld, IntPtr apiWorldInstance,
             byte something1, byte something2, IntPtr additionalJunk);
     }
-    
+
     //I accidently found that this neat little method which opens the notification more actions page a while ago while fixing up advanced invites 
     //[HarmonyPatch(typeof(NotificationManager), "Method_Private_Void_Notification_1")]
     internal class NotificationMoreActions
@@ -94,7 +93,6 @@ namespace WorldPredownload
 
         public static void Patch()
         {
-            //TODO: This is the last thing holding back this release, once I've got this fixed we're good to go
             var openMoreActionsMethod = typeof(NotificationManager).GetMethods()
                 .Where(m =>
                     m.Name.StartsWith("Method_Private_Void_Notification_") &&

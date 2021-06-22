@@ -54,7 +54,8 @@ namespace WorldPredownload
             ShowStatusOnHud =
                 category.CreateEntry("ShowStatusOnHud", showStatusOnHud, "Display download status on HUD");
             ShowHudMessages = category.CreateEntry("ShowHudMessages", showHudMessages, "Show Hud Messages");
-            ShowPopupsOnComplete = category.CreateEntry("ShowPopupsOnComplete", showPopupsOnComplete, "Show Popup On Complete");
+            ShowPopupsOnComplete =
+                category.CreateEntry("ShowPopupsOnComplete", showPopupsOnComplete, "Show Popup On Complete");
             DownloadUserAgent = category.CreateEntry("DownloadUserAgent", downloadUserAgent, null, null, true);
             //CVRStyle = category.CreateEntry("OverrideVRChatJoinWorldButtons", cvrStyle, "Override VRChat Join Buttons (CVR Style  & Requires Restart to Apply)") as MelonPreferences_Entry<bool>;
             if (AdvancedInvites)

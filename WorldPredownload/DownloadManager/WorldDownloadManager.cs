@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
-using BestHTTP.SecureProtocol.Org.BouncyCastle.Math.Field;
 using MelonLoader;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,6 +23,8 @@ namespace WorldPredownload.DownloadManager
         public static DownloadInfo DownloadInfo;
 
         private static WebClient webClient;
+
+        private static string file;
         public static bool downloading { get; set; }
         private static bool cancelled { get; set; }
 
@@ -156,7 +157,8 @@ namespace WorldPredownload.DownloadManager
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             webClient?.Dispose();
             webClient = new WebClient();
-            webClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36");
+            webClient.Headers.Add("user-agent",
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36");
             webClient.DownloadProgressChanged += progress;
             webClient.DownloadFileCompleted += complete;
 
@@ -164,7 +166,8 @@ namespace WorldPredownload.DownloadManager
             var assetHash = CacheManager.ComputeAssetHash(apiWorld.id);
             var dir = Path.Combine(cachePath, assetHash);
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-            var assetVersionDir = Path.Combine(dir, "000000000000000000000000" + CacheManager.ComputeVersionString(apiWorld.version));
+            var assetVersionDir = Path.Combine(dir,
+                "000000000000000000000000" + CacheManager.ComputeVersionString(apiWorld.version));
             if (!Directory.Exists(assetVersionDir)) Directory.CreateDirectory(assetVersionDir);
 
             var fileName = Path.Combine(assetVersionDir, "__data");
@@ -172,12 +175,8 @@ namespace WorldPredownload.DownloadManager
             file = fileName;
 
             if (string.IsNullOrEmpty(apiWorld.assetUrl))
-            {
                 MelonLogger.Error("World asset link missing! Did VRChat fail to load the world info quick enough?");
-            }
             webClient.DownloadFileAsync(new Uri(apiWorld.assetUrl), fileName);
         }
-
-        private static string file;
     }
 }

@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Harmony;
 using Il2CppSystem;
 using MelonLoader;
 using Transmtn.DTO.Notifications;
-using UnhollowerRuntimeLib.XrefScans;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using VRC.Core;
@@ -16,14 +13,12 @@ using WorldPredownload.DownloadManager;
 using Delegate = System.Delegate;
 using Exception = System.Exception;
 using Object = UnityEngine.Object;
-using StringComparison = System.StringComparison;
 
 namespace WorldPredownload.Helpers
 {
     [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
     public static class Utilities
     {
-
         private static ClearErrorsDelegate clearErrorsDelegate;
 
         private static ShowDismissPopupDelegate showDismissPopupDelegate;
@@ -151,7 +146,7 @@ namespace WorldPredownload.Helpers
             GetAdvancedInvitesInviteDelegate(notification);
 #endif
         }
-        
+
         public static void ShowOptionPopup(string title, string body, string leftButtonText, Action leftButtonAction,
             string rightButtonText, Action rightButtonAction)
         {
@@ -275,6 +270,5 @@ namespace WorldPredownload.Helpers
         private delegate void ClearErrorsDelegate();
 
         private delegate void AdvancedInvitesInviteDelegate(Notification notification);
-        
     }
 }
