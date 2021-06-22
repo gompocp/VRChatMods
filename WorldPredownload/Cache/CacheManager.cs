@@ -5,6 +5,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using MelonLoader;
+using WorldPredownload.Helpers;
 
 namespace WorldPredownload.Cache
 {

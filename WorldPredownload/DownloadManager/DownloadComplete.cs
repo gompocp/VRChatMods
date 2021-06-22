@@ -7,6 +7,7 @@ using UIExpansionKit.API;
 using UnhollowerRuntimeLib;
 using UnityEngine;
 using WorldPredownload.Cache;
+using WorldPredownload.Helpers;
 using WorldPredownload.UI;
 using AsyncOperation = UnityEngine.AsyncOperation;
 
@@ -23,6 +24,19 @@ namespace WorldPredownload.DownloadManager
         {
             await TaskUtilities.YieldToMainThread();
             webClient.Dispose();
+            if (!CacheManager.HasDownloadedWorld(DownloadInfo.ApiWorld.id, DownloadInfo.ApiWorld.version))
+            {
+                if (ModSettings.hideQMStatusWhenInActive) WorldDownloadStatus.Disable();
+                DownloadInfo.complete = true;
+                downloading = false;
+                HudIcon.Disable();
+                InviteButton.UpdateTextDownloadStopped();
+                FriendButton.UpdateTextDownloadStopped();
+                WorldButton.UpdateTextDownloadStopped();
+                WorldDownloadStatus.gameObject.SetText(Constants.DOWNLOAD_STATUS_IDLE_TEXT);
+                MelonLogger.Error($"World failed to download. Why you might ask?... I don't know! This exception might help: {args.Error}");
+                return;
+            }
             var operation = AssetBundle.RecompressAssetBundleAsync(file, file, new BuildCompression()
             {
                 compression = CompressionType.Lz4,
@@ -33,7 +47,6 @@ namespace WorldPredownload.DownloadManager
                 delegate(AsyncOperation asyncOperation)
                 {
                     MelonLogger.Msg($"Finished recompressing world with result: {operation.result}");
-                    CacheManager.CreateInfoFileFor(file);
                     Task task = new Task(OnRecompress);
                     // I don't really know how else to ensure that this the recompress operation runs on the main thread, if you know feel free to bonk me for being dumb
                     task.NoAwait("WorldPredownload OnRecompress");
@@ -45,6 +58,7 @@ namespace WorldPredownload.DownloadManager
         private static async void OnRecompress()
         {
             await TaskUtilities.YieldToMainThread();
+            CacheManager.CreateInfoFileFor(file);
             if (ModSettings.showHudMessages) Utilities.QueueHudMessage("Download Finished");
             if (ModSettings.hideQMStatusWhenInActive) WorldDownloadStatus.Disable();
             DownloadInfo.complete = true;

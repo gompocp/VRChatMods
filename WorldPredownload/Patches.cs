@@ -12,6 +12,7 @@ using VRC.Core;
 using VRC.UI;
 using WorldPredownload.Cache;
 using WorldPredownload.DownloadManager;
+using WorldPredownload.Helpers;
 using WorldPredownload.UI;
 using InfoType = VRC.UI.PageUserInfo.EnumNPublicSealedvaNoOnOfSeReBlInFa10Unique;
 using ListType = UiUserList.EnumNPublicSealedvaNoInFrOnOfSeInFa9vUnique;

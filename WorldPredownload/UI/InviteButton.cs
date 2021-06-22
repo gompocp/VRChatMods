@@ -5,6 +5,7 @@ using UnityEngine;
 using VRC.Core;
 using WorldPredownload.Cache;
 using WorldPredownload.DownloadManager;
+using WorldPredownload.Helpers;
 
 namespace WorldPredownload.UI
 {

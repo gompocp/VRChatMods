@@ -5,11 +5,13 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
+using BestHTTP.SecureProtocol.Org.BouncyCastle.Math.Field;
 using MelonLoader;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.Core;
 using WorldPredownload.Cache;
+using WorldPredownload.Helpers;
 using WorldPredownload.UI;
 using OnDownloadProgress = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoUnUnique;
 
@@ -168,7 +170,11 @@ namespace WorldPredownload.DownloadManager
             var fileName = Path.Combine(assetVersionDir, "__data");
             MelonLogger.Msg($"Starting world download for: {apiWorld.name}");
             file = fileName;
-            
+
+            if (string.IsNullOrEmpty(apiWorld.assetUrl))
+            {
+                MelonLogger.Error("World asset link missing! Did VRChat fail to load the world info quick enough?");
+            }
             webClient.DownloadFileAsync(new Uri(apiWorld.assetUrl), fileName);
         }
 

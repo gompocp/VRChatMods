@@ -13,7 +13,7 @@ using VRC.UI;
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
 // ReSharper disable HeuristicUnreachableCode
 
-namespace WorldPredownload
+namespace WorldPredownload.Helpers
 {
     public static class ExtensionMethods
     {

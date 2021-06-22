@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Cysharp.Threading.Tasks;
 using Harmony;
 using Il2CppSystem;
 using MelonLoader;
@@ -17,10 +16,9 @@ using WorldPredownload.DownloadManager;
 using Delegate = System.Delegate;
 using Exception = System.Exception;
 using Object = UnityEngine.Object;
-using OnDownloadProgress = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoUnUnique;
 using StringComparison = System.StringComparison;
 
-namespace WorldPredownload
+namespace WorldPredownload.Helpers
 {
     [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
     public static class Utilities
@@ -245,101 +243,11 @@ namespace WorldPredownload
             return MelonHandler.Mods.Any(mod => mod.Info.Name.Equals(modName));
         }
 
-        public static bool CheckXrefStrings(MethodBase m, List<string> keywords)
-        {
-            try
-            {
-                foreach (var keyword in keywords)
-                    if (!XrefScanner.XrefScan(m).Any(
-                        instance => instance.Type == XrefType.Global && instance.ReadAsObject() != null && instance
-                            .ReadAsObject().ToString()
-                            .Equals(keyword, StringComparison.OrdinalIgnoreCase)))
-                        return false;
-                return true;
-            }
-            catch
-            {
-            }
-
-            return false;
-        }
-
-        public static bool XRefScanFor(this MethodBase methodBase, string searchTerm)
-        {
-            return XrefScanner.XrefScan(methodBase).Any(
-                xref => xref.Type == XrefType.Global && xref.ReadAsObject()?.ToString()
-                    .IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0);
-        }
-
-        private static bool checkXrefNoStrings(MethodBase m)
-        {
-            try
-            {
-                foreach (var instance in XrefScanner.XrefScan(m))
-                {
-                    if (instance.Type != XrefType.Global || instance.ReadAsObject() == null) continue;
-                    return false;
-                }
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                MelonLogger.Msg("For loop failed:" + e);
-            }
-
-            return false;
-        }
-
 
         public static void QueueHudMessage(string msg)
         {
             VRCUiManager.prop_VRCUiManager_0.field_Private_List_1_String_0.Add(msg);
             VRCUiManager.prop_VRCUiManager_0.field_Private_List_1_String_0.Add("");
-        }
-
-        public static void ScanMethod(MethodInfo m)
-        {
-            MelonLogger.Msg($"Scanning: {m.FullDescription()}");
-            foreach (var instance in XrefScanner.XrefScan(m))
-                try
-                {
-                    if (instance.Type == XrefType.Global && instance.ReadAsObject() != null)
-                        try
-                        {
-                            MelonLogger.Msg($"   Found String: \"{instance.ReadAsObject().ToString()}\"");
-                        }
-                        catch
-                        {
-                        }
-                    else if (instance.Type == XrefType.Method && instance.TryResolve() != null)
-                        try
-                        {
-                            MelonLogger.Msg($"   Found Method: {instance.TryResolve().FullDescription()}");
-                        }
-                        catch
-                        {
-                        }
-                }
-                catch
-                {
-                }
-
-            foreach (var instance in XrefScanner.UsedBy(m))
-                try
-                {
-                    if (instance.Type == XrefType.Method && instance.TryResolve() != null)
-                        try
-                        {
-                            MelonLogger.Msg($"   Found Used By Method: {instance.TryResolve().FullDescription()}");
-                        }
-                        catch
-                        {
-                        }
-                }
-                catch
-                {
-                }
         }
 
 

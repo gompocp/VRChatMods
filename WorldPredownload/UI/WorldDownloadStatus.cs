@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using VRC.UI;
+using WorldPredownload.Helpers;
 
 namespace WorldPredownload.UI
 {
