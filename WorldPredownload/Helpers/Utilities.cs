@@ -19,118 +19,6 @@ namespace WorldPredownload.Helpers
     [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
     public static class Utilities
     {
-        private static ClearErrorsDelegate clearErrorsDelegate;
-
-        private static ShowDismissPopupDelegate showDismissPopupDelegate;
-
-        private static ShowOptionsPopupDelegate showOptionsPopupDelegate;
-
-        private static PushUIPageDelegate pushUIPageDelegate;
-
-        private static AdvancedInvitesInviteDelegate advancedInvitesInviteDelegate;
-
-        private static ClearErrorsDelegate GetClearErrorsDelegate
-        {
-            get
-            {
-                if (clearErrorsDelegate != null) return clearErrorsDelegate;
-                var clearErrors = typeof(AssetBundleDownloadManager).GetMethods().First(
-                    m => m.Name.StartsWith("Method_Internal_Void_")
-                         && !m.Name.Contains("PDM")
-                         && m.ReturnType == typeof(void)
-                         && m.GetParameters().Length == 0);
-                clearErrorsDelegate = (ClearErrorsDelegate) Delegate.CreateDelegate(
-                    typeof(ClearErrorsDelegate),
-                    AssetBundleDownloadManager.prop_AssetBundleDownloadManager_0,
-                    clearErrors
-                );
-                return clearErrorsDelegate;
-            }
-        }
-
-        private static ShowDismissPopupDelegate GetShowDismissPopupDelegate
-        {
-            get
-            {
-                if (showDismissPopupDelegate != null) return showDismissPopupDelegate;
-                var popupMethod = typeof(VRCUiPopupManager).GetMethods(BindingFlags.Public | BindingFlags.Instance)
-                    .First(
-                        m =>
-                            m.GetParameters().Length == 5
-                            && m.XRefScanFor("Popups/StandardPopupV2")
-                    );
-
-                showDismissPopupDelegate = (ShowDismissPopupDelegate) Delegate.CreateDelegate(
-                    typeof(ShowDismissPopupDelegate),
-                    VRCUiPopupManager.field_Private_Static_VRCUiPopupManager_0,
-                    popupMethod
-                );
-                return showDismissPopupDelegate;
-            }
-        }
-
-        private static ShowOptionsPopupDelegate GetShowOptionsPopupDelegate
-        {
-            get
-            {
-                if (showOptionsPopupDelegate != null) return showOptionsPopupDelegate;
-                var popupMethod = typeof(VRCUiPopupManager).GetMethods(BindingFlags.Public | BindingFlags.Instance)
-                    .Single(
-                        m => m.GetParameters().Length == 7 && m.XRefScanFor("Popups/StandardPopupV2"));
-
-                showOptionsPopupDelegate = (ShowOptionsPopupDelegate) Delegate.CreateDelegate(
-                    typeof(ShowOptionsPopupDelegate),
-                    VRCUiPopupManager.field_Private_Static_VRCUiPopupManager_0,
-                    popupMethod
-                );
-                return showOptionsPopupDelegate;
-            }
-        }
-
-        private static PushUIPageDelegate GetPushUIPageDelegate
-        {
-            get
-            {
-                if (pushUIPageDelegate != null) return pushUIPageDelegate;
-                var pushPageMethod = typeof(VRCUiManager).GetMethods().First(
-                    m => m.GetParameters().Length == 1
-                         && m.GetParameters()[0].ParameterType == typeof(VRCUiPage)
-                         && !m.Name.Contains("PDM")
-                         && m.ReturnType == typeof(VRCUiPage)
-                );
-
-                pushUIPageDelegate = (PushUIPageDelegate) Delegate.CreateDelegate(
-                    typeof(PushUIPageDelegate),
-                    VRCUiManager.prop_VRCUiManager_0,
-                    pushPageMethod
-                );
-                return pushUIPageDelegate;
-            }
-        }
-
-        private static AdvancedInvitesInviteDelegate GetAdvancedInvitesInviteDelegate
-        {
-            get
-            {
-                if (advancedInvitesInviteDelegate != null) return advancedInvitesInviteDelegate;
-
-                //InviteHandler
-                var handleNotificationMethod = MelonHandler.Mods.First(
-                    m => m.Info.Name.Equals("AdvancedInvites")).Assembly.GetTypes().Single(
-                    t => t.Name.Equals("InviteHandler")).GetMethods(BindingFlags.Public | BindingFlags.Static).Single(
-                    me => me.GetParameters().Length == 1
-                          && me.GetParameters()[0].ParameterType ==
-                          typeof(Notification) // Could probably use method name here but ¯\_(ツ)_/¯ 
-                );
-
-                advancedInvitesInviteDelegate = (AdvancedInvitesInviteDelegate) Delegate.CreateDelegate(
-                    typeof(AdvancedInvitesInviteDelegate),
-                    handleNotificationMethod
-                );
-                return advancedInvitesInviteDelegate;
-            }
-        }
-
         public static void AdvancedInvitesHandleInvite(Notification notification)
         {
 #if DEBUG
@@ -143,26 +31,26 @@ namespace WorldPredownload.Helpers
                 MelonLogger.LogError($"Beep boop, Something went wrong trying to used advanced invites {e}");
             }
 #else
-            GetAdvancedInvitesInviteDelegate(notification);
+            Delegates.GetAdvancedInvitesInviteDelegate(notification);
 #endif
         }
 
         public static void ShowOptionPopup(string title, string body, string leftButtonText, Action leftButtonAction,
             string rightButtonText, Action rightButtonAction)
         {
-            GetShowOptionsPopupDelegate(title, body, leftButtonText, leftButtonAction, rightButtonText,
+            Delegates.GetShowOptionsPopupDelegate(title, body, leftButtonText, leftButtonAction, rightButtonText,
                 rightButtonAction);
         }
 
         public static void ShowDismissPopup(string title, string body, string middleButtonText, Action buttonAction)
         {
-            GetShowDismissPopupDelegate(title, body, middleButtonText, buttonAction);
+            Delegates.GetShowDismissPopupDelegate(title, body, middleButtonText, buttonAction);
         }
 
 
         public static void ShowPage(VRCUiPage page)
         {
-            GetPushUIPageDelegate(page);
+            Delegates.GetPushUIPageDelegate(page);
         }
 
         public static AssetBundleDownloadManager GetAssetBundleDownloadManager()
@@ -201,7 +89,7 @@ namespace WorldPredownload.Helpers
                 if (ModSettings.tryUseAdvancedInvitePopup && ModSettings.AdvancedInvites)
                     try
                     {
-                        GetAdvancedInvitesInviteDelegate(WorldDownloadManager.DownloadInfo.Notification);
+                        Delegates.GetAdvancedInvitesInviteDelegate(WorldDownloadManager.DownloadInfo.Notification);
                     }
                     catch (Exception e)
                     {
@@ -244,31 +132,5 @@ namespace WorldPredownload.Helpers
             VRCUiManager.prop_VRCUiManager_0.field_Private_List_1_String_0.Add(msg);
             VRCUiManager.prop_VRCUiManager_0.field_Private_List_1_String_0.Add("");
         }
-
-
-        private delegate VRCUiPage PushUIPageDelegate(VRCUiPage page);
-
-        private delegate void ShowOptionsPopupDelegate(
-            string title,
-            string body,
-            string leftButtonText,
-            Action leftButtonAction,
-            string rightButtonText,
-            Action rightButtonAction,
-            Action<VRCUiPopup> additionalSetup = null
-        );
-
-        private delegate void ShowDismissPopupDelegate(
-            string title,
-            string body,
-            string middleButtonText,
-            Action middleButtonAction,
-            Action<VRCUiPopup> additionalSetup = null
-        );
-
-
-        private delegate void ClearErrorsDelegate();
-
-        private delegate void AdvancedInvitesInviteDelegate(Notification notification);
     }
 }
