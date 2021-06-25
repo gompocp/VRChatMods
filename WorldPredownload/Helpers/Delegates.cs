@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
+using Il2CppSystem;
 using MelonLoader;
 using Transmtn.DTO.Notifications;
 using UnhollowerBaseLib.Attributes;
 using VRC.Core;
 using VRC.UI;
-using Action = Il2CppSystem.Action;
+using Delegate = System.Delegate;
 
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
 
@@ -14,7 +14,35 @@ namespace WorldPredownload.Helpers
 {
     public static class Delegates
     {
+        public delegate void AdvancedInvitesInviteDelegate(Notification notification);
+
+        public delegate void LoadUserDelegate(PageUserInfo pageUserInfo, APIUser apiUser);
+
+        public delegate VRCUiPage PushUIPageDelegate(VRCUiPage page);
+
+        public delegate void ShowDismissPopupDelegate(
+            string title,
+            string body,
+            string middleButtonText,
+            Action middleButtonAction, Action<VRCUiPopup> additionalSetup = null
+        );
+
+        public delegate void ShowOptionsPopupDelegate(
+            string title,
+            string body,
+            string leftButtonText,
+            Action leftButtonAction,
+            string rightButtonText,
+            Action rightButtonAction, Action<VRCUiPopup> additionalSetup = null
+        );
+
         private static LoadUserDelegate loadUserDelegate;
+
+        private static ClearErrorsDelegate clearErrorsDelegate;
+        private static ShowDismissPopupDelegate showDismissPopupDelegate;
+        private static ShowOptionsPopupDelegate showOptionsPopupDelegate;
+        private static PushUIPageDelegate pushUIPageDelegate;
+        private static AdvancedInvitesInviteDelegate advancedInvitesInviteDelegate;
 
         public static LoadUserDelegate GetLoadUserDelegate
         {
@@ -35,14 +63,6 @@ namespace WorldPredownload.Helpers
                 return loadUserDelegate;
             }
         }
-
-        public delegate void LoadUserDelegate(PageUserInfo pageUserInfo, APIUser apiUser);
-
-        private static ClearErrorsDelegate clearErrorsDelegate;
-        private static ShowDismissPopupDelegate showDismissPopupDelegate;
-        private static ShowOptionsPopupDelegate showOptionsPopupDelegate;
-        private static PushUIPageDelegate pushUIPageDelegate;
-        private static AdvancedInvitesInviteDelegate advancedInvitesInviteDelegate;
 
         private static ClearErrorsDelegate GetClearErrorsDelegate
         {
@@ -146,26 +166,6 @@ namespace WorldPredownload.Helpers
             }
         }
 
-        public delegate VRCUiPage PushUIPageDelegate(VRCUiPage page);
-
-        public delegate void ShowOptionsPopupDelegate(
-            string title,
-            string body,
-            string leftButtonText,
-            Action leftButtonAction,
-            string rightButtonText,
-            Action rightButtonAction, Il2CppSystem.Action<VRCUiPopup> additionalSetup = null
-        );
-
-        public delegate void ShowDismissPopupDelegate(
-            string title,
-            string body,
-            string middleButtonText,
-            Action middleButtonAction, Il2CppSystem.Action<VRCUiPopup> additionalSetup = null
-        );
-
         private delegate void ClearErrorsDelegate();
-
-        public delegate void AdvancedInvitesInviteDelegate(Notification notification);
     }
 }

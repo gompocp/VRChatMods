@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using Il2CppSystem;
 using MelonLoader;
@@ -10,7 +9,6 @@ using UnityEngine.EventSystems;
 using VRC.Core;
 using VRC.SDKBase;
 using WorldPredownload.DownloadManager;
-using Delegate = System.Delegate;
 using Exception = System.Exception;
 using Object = UnityEngine.Object;
 

@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
-using MelonLoader;
 using Transmtn.DTO.Notifications;
-using UnhollowerBaseLib.Attributes;
-using UnhollowerRuntimeLib.XrefScans;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.Core;
