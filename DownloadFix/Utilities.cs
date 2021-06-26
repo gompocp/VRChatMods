@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace DownloadFix
@@ -7,6 +8,7 @@ namespace DownloadFix
     {
         public static void UnblockUnPackQueue()
         {
+            AssetBundleDownloadManager.prop_AssetBundleDownloadManager_0.field_Private_Nullable_1_UniTask_0.Value.Forget();
             //AssetBundleDownloadManager.prop_AssetBundleDownloadManager_0.field_Private_Boolean_0 = false; //Yes this literally fixes it
         }
         

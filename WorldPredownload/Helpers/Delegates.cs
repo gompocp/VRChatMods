@@ -37,8 +37,6 @@ namespace WorldPredownload.Helpers
         );
 
         private static LoadUserDelegate loadUserDelegate;
-
-        private static ClearErrorsDelegate clearErrorsDelegate;
         private static ShowDismissPopupDelegate showDismissPopupDelegate;
         private static ShowOptionsPopupDelegate showOptionsPopupDelegate;
         private static PushUIPageDelegate pushUIPageDelegate;
@@ -63,26 +61,7 @@ namespace WorldPredownload.Helpers
                 return loadUserDelegate;
             }
         }
-
-        private static ClearErrorsDelegate GetClearErrorsDelegate
-        {
-            get
-            {
-                if (clearErrorsDelegate != null) return clearErrorsDelegate;
-                var clearErrors = typeof(AssetBundleDownloadManager).GetMethods().First(
-                    m => m.Name.StartsWith("Method_Internal_Void_")
-                         && !m.Name.Contains("PDM")
-                         && m.ReturnType == typeof(void)
-                         && m.GetParameters().Length == 0);
-                clearErrorsDelegate = (ClearErrorsDelegate) Delegate.CreateDelegate(
-                    typeof(ClearErrorsDelegate),
-                    AssetBundleDownloadManager.prop_AssetBundleDownloadManager_0,
-                    clearErrors
-                );
-                return clearErrorsDelegate;
-            }
-        }
-
+        
         public static ShowDismissPopupDelegate GetShowDismissPopupDelegate
         {
             get
@@ -165,7 +144,6 @@ namespace WorldPredownload.Helpers
                 return advancedInvitesInviteDelegate;
             }
         }
-
-        private delegate void ClearErrorsDelegate();
+        
     }
 }
