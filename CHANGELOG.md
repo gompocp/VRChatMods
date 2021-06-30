@@ -1,3 +1,6 @@
+### WorldPredownload v1.5.1
+- Minor bug fix for null asset url 
+
 ### WorldPredownload v1.5.0
 - Fixed 1108 compatibility. A good chunk of the mod was rewritten to support this build
 this introduces possibly more bugs/problems from my end as the mod now handles 
