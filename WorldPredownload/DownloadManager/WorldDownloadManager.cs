@@ -144,6 +144,11 @@ namespace WorldPredownload.DownloadManager
 
         public static void ProcessDownload(DownloadInfo downloadInfo)
         {
+            if (string.IsNullOrEmpty(downloadInfo.ApiWorld.assetUrl))
+            {
+                MelonLogger.Error("World asset link missing! Did VRChat fail to load the world info?, maybe try refreshing the world info page. Anyway... skipping this download request");
+                return;
+            }
             DownloadInfo = downloadInfo;
             if (downloadInfo.DownloadType == DownloadType.Invite && !downloading)
                 MelonCoroutines.Start(InviteButton.InviteButtonTimer(15));
@@ -173,8 +178,7 @@ namespace WorldPredownload.DownloadManager
             MelonLogger.Msg($"Starting world download for: {apiWorld.name}");
             file = fileName;
 
-            if (string.IsNullOrEmpty(apiWorld.assetUrl))
-                MelonLogger.Error("World asset link missing! Did VRChat fail to load the world info quick enough?");
+           
             webClient.DownloadFileAsync(new Uri(apiWorld.assetUrl), fileName);
         }
     }
