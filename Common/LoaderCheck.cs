@@ -1,11 +1,11 @@
 using System;
 using System.Reflection;
-using Harmony;
+using HarmonyLib;
 using MelonLoader;
 
 namespace gompoCommon
 {
-    [HarmonyShield]
+    [PatchShield]
     internal static class LoaderCheck
     {
         private static readonly string currentAssemblyName = $"{Assembly.GetExecutingAssembly().GetName().Name}";
@@ -36,7 +36,7 @@ namespace gompoCommon
 
             try
             {
-                var harmony = HarmonyInstance.Create(Guid.NewGuid().ToString());
+                var harmony = new HarmonyLib.Harmony(Guid.NewGuid().ToString());
                 harmony.Patch(AccessTools.Method(typeof(LoaderCheck), nameof(PatchTest)),
                     new HarmonyMethod(typeof(LoaderCheck), nameof(ReturnFalse)));
 

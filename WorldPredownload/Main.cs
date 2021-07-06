@@ -1,5 +1,5 @@
 ﻿using gompoCommon;
-using Harmony;
+using HarmonyLib;
 using MelonLoader;
 using UIExpansionKit.API;
 using WorldPredownload.UI;
@@ -18,7 +18,7 @@ namespace WorldPredownload
             LoaderCheck.CheckForRainbows();
         }
 
-        public static HarmonyInstance HarmonyInstance => Instance.Harmony;
+        public new static HarmonyLib.Harmony HarmonyInstance => Instance.HarmonyInstance;
 
         public override void OnApplicationStart()
         {

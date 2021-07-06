@@ -1,6 +1,4 @@
-﻿//using AssetBundleDownload = CustomYieldInstructionPublicObAsByStInStCoBoObInUnique;
-
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -13,8 +11,6 @@ using WorldPredownload.Cache;
 using WorldPredownload.Helpers;
 using WorldPredownload.UI;
 using OnDownloadProgress = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoUnUnique;
-
-//using LoadErrorReason = EnumPublicSealedvaNoMiFiUnCoSeAsDuAsUnique;
 
 namespace WorldPredownload.DownloadManager
 {
@@ -146,7 +142,18 @@ namespace WorldPredownload.DownloadManager
         {
             if (string.IsNullOrEmpty(downloadInfo.ApiWorld.assetUrl))
             {
-                MelonLogger.Error("World asset link missing! Did VRChat fail to load the world info?, maybe try refreshing the world info page. Anyway... skipping this download request");
+                MelonLogger.Warning("World asset link missing! Did VRChat fail to load the world info?, trying to refetch world...");
+                API.Fetch<ApiWorld>(downloadInfo.ApiWorld.id,new Action<ApiContainer>(container =>
+                {
+                    ApiWorld apiWorld = container.Model.Cast<ApiWorld>();
+                    if (string.IsNullOrEmpty(apiWorld.assetUrl))
+                    {
+                        MelonLogger.Error("Well... the apiworld asset url was still missing after refetching sooo uhhh, skipping download");
+                        return;
+                    }
+                    downloadInfo.ApiWorld.assetUrl = apiWorld.assetUrl;
+                    ProcessDownload(downloadInfo);
+                }));
                 return;
             }
             DownloadInfo = downloadInfo;
@@ -170,8 +177,7 @@ namespace WorldPredownload.DownloadManager
             var assetHash = CacheManager.ComputeAssetHash(apiWorld.id);
             var dir = Path.Combine(cachePath, assetHash);
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-            var assetVersionDir = Path.Combine(dir,
-                "000000000000000000000000" + CacheManager.ComputeVersionString(apiWorld.version));
+            var assetVersionDir = Path.Combine(dir, "000000000000000000000000" + CacheManager.ComputeVersionString(apiWorld.version));
             if (!Directory.Exists(assetVersionDir)) Directory.CreateDirectory(assetVersionDir);
 
             var fileName = Path.Combine(assetVersionDir, "__data");
