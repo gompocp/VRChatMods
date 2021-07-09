@@ -7,7 +7,8 @@ using UnhollowerBaseLib.Attributes;
 using VRC.Core;
 using VRC.UI;
 using Delegate = System.Delegate;
-
+// ReSharper disable HeuristicUnreachableCode
+// ReSharper disable NotNullMemberIsNotInitialized
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
 
 namespace WorldPredownload.Helpers
@@ -24,7 +25,7 @@ namespace WorldPredownload.Helpers
             string title,
             string body,
             string middleButtonText,
-            Action middleButtonAction, Action<VRCUiPopup> additionalSetup = null
+            Action middleButtonAction, Action<VRCUiPopup> additionalSetup = null!
         );
 
         public delegate void ShowOptionsPopupDelegate(
@@ -33,7 +34,7 @@ namespace WorldPredownload.Helpers
             string leftButtonText,
             Action leftButtonAction,
             string rightButtonText,
-            Action rightButtonAction, Action<VRCUiPopup> additionalSetup = null
+            Action rightButtonAction, Action<VRCUiPopup> additionalSetup = null!
         );
 
         private static LoadUserDelegate loadUserDelegate;

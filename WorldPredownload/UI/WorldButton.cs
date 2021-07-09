@@ -23,7 +23,7 @@ namespace WorldPredownload.UI
             try
             {
                 Utilities.DeselectClickedButton(button);
-                if (WorldDownloadManager.downloading ||
+                if (WorldDownloadManager.Downloading ||
                     button.GetTextComponentInChildren().text.Equals(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT))
                 {
                     WorldDownloadManager.CancelDownload();
@@ -62,7 +62,7 @@ namespace WorldPredownload.UI
 
         public static void UpdateText(ApiWorld world)
         {
-            if (WorldDownloadManager.downloading)
+            if (WorldDownloadManager.Downloading)
             {
                 if (world.id.Equals(WorldDownloadManager.DownloadInfo.ApiWorld.id))
                 {

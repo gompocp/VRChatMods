@@ -23,7 +23,7 @@ namespace WorldPredownload.UI
         public static Action onClick = delegate
         {
             Utilities.DeselectClickedButton(button);
-            if (WorldDownloadManager.downloading || button.GetTextComponentInChildren().text
+            if (WorldDownloadManager.Downloading || button.GetTextComponentInChildren().text
                 .Equals(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT))
             {
                 WorldDownloadManager.CancelDownload();
@@ -82,7 +82,7 @@ namespace WorldPredownload.UI
             if (Utilities.GetSelectedNotification().notificationType.Equals("invite"))
             {
                 button.SetActive(true);
-                if (WorldDownloadManager.downloading)
+                if (WorldDownloadManager.Downloading)
                 {
                     if (Utilities.GetSelectedNotification().GetWorldID()
                         .Equals(WorldDownloadManager.DownloadInfo.ApiWorld.id))
@@ -113,7 +113,7 @@ namespace WorldPredownload.UI
             canDownload = false;
             for (var i = time; i >= 0; i--)
             {
-                if (!WorldDownloadManager.downloading)
+                if (!WorldDownloadManager.Downloading)
                     button.SetText($"Time Left:{i}");
                 yield return new WaitForSeconds(1);
             }

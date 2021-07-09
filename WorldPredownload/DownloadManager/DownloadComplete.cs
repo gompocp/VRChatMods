@@ -12,24 +12,20 @@ using WorldPredownload.Helpers;
 using WorldPredownload.UI;
 using AsyncOperation = UnityEngine.AsyncOperation;
 
-//using AssetBundleDownload = CustomYieldInstructionPublicObAsByStInStCoBoObInUnique;
-//using OnDownloadComplete = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoObUnique;
-
 namespace WorldPredownload.DownloadManager
 {
     [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalse")]
     [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
     public static partial class WorldDownloadManager
     {
-        private static readonly AsyncCompletedEventHandler complete = async (sender, args) =>
+        private static readonly AsyncCompletedEventHandler complete = async (_, args) =>
         {
             await TaskUtilities.YieldToMainThread();
             webClient.Dispose();
             if (!CacheManager.WorldFileExists(DownloadInfo.ApiWorld.id))
             {
                 if (ModSettings.hideQMStatusWhenInActive) WorldDownloadStatus.Disable();
-                DownloadInfo.complete = true;
-                downloading = false;
+                Downloading = false;
                 HudIcon.Disable();
                 InviteButton.UpdateTextDownloadStopped();
                 FriendButton.UpdateTextDownloadStopped();
@@ -67,8 +63,7 @@ namespace WorldPredownload.DownloadManager
             CacheManager.CreateInfoFileFor(file);
             if (ModSettings.showHudMessages) Utilities.QueueHudMessage("Download Finished");
             if (ModSettings.hideQMStatusWhenInActive) WorldDownloadStatus.Disable();
-            DownloadInfo.complete = true;
-            downloading = false;
+            Downloading = false;
             CacheManager.AddDirectory(CacheManager.ComputeAssetHash(DownloadInfo.ApiWorld.id));
             HudIcon.Disable();
             InviteButton.UpdateTextDownloadStopped();
@@ -87,8 +82,8 @@ namespace WorldPredownload.DownloadManager
                     {
                         Utilities.GoToWorld(DownloadInfo.ApiWorld, DownloadInfo.InstanceIDTags, false);
                     }
-
                     break;
+                
                 case DownloadType.Invite:
                     if (!ModSettings.autoFollowInvites)
                     {
@@ -99,8 +94,8 @@ namespace WorldPredownload.DownloadManager
                     {
                         Utilities.GoToWorld(DownloadInfo.ApiWorld, DownloadInfo.InstanceIDTags, true);
                     }
-
                     break;
+                
                 case DownloadType.World:
                     if (!ModSettings.autoFollowWorlds)
                     {
@@ -111,8 +106,8 @@ namespace WorldPredownload.DownloadManager
                     {
                         Utilities.GoToWorld(DownloadInfo.ApiWorld, DownloadInfo.InstanceIDTags, false);
                     }
-
                     break;
+                
             }
         }
     }

@@ -10,9 +10,9 @@ namespace WorldPredownload.DownloadManager
             ApiWorld ApiWorld,
             string InstanceIDTags,
             DownloadType DownloadType,
-            PageUserInfo PageUserInfo = null,
-            PageWorldInfo PageWorldInfo = null,
-            Notification Notification = null)
+            PageUserInfo PageUserInfo = null!,
+            PageWorldInfo PageWorldInfo = null!,
+            Notification Notification = null!)
         {
             this.ApiWorld = ApiWorld;
             this.InstanceIDTags = InstanceIDTags;
@@ -23,7 +23,6 @@ namespace WorldPredownload.DownloadManager
             this.Notification = Notification;
         }
 
-        public bool complete { get; set; } = false;
         public ApiWorld ApiWorld { get; set; }
         public string InstanceIDTags { get; set; }
         public DownloadType DownloadType { get; set; }

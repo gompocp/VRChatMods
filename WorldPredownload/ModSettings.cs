@@ -76,7 +76,7 @@ namespace WorldPredownload
                 WorldDownloadStatus.Enable();
             else
                 WorldDownloadStatus.Disable();
-            if (hideQMStatusWhenInActive && !WorldDownloadManager.downloading)
+            if (hideQMStatusWhenInActive && !WorldDownloadManager.Downloading)
                 WorldDownloadStatus.Disable();
             else
                 WorldDownloadStatus.Enable();

@@ -28,7 +28,7 @@ namespace WorldPredownload.UI
             Utilities.DeselectClickedButton(button);
             try
             {
-                if (WorldDownloadManager.downloading || button.GetTextComponentInChildren().text
+                if (WorldDownloadManager.Downloading || button.GetTextComponentInChildren().text
                     .Equals(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT))
                 {
                     WorldDownloadManager.CancelDownload();
@@ -72,7 +72,7 @@ namespace WorldPredownload.UI
         {
             while (GetUserInfo().field_Private_Boolean_0 != true) yield return null;
             button.SetActive(true);
-            if (WorldDownloadManager.downloading)
+            if (WorldDownloadManager.Downloading)
             {
                 if (GetUserInfo().field_Public_APIUser_0.id.Equals(WorldDownloadManager.DownloadInfo.APIUser.id))
                 {

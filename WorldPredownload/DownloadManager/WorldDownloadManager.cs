@@ -21,15 +21,13 @@ namespace WorldPredownload.DownloadManager
         private static WebClient webClient;
 
         private static string file;
-        public static bool downloading { get; set; }
-        private static bool cancelled { get; set; }
+        public static bool Downloading { get; private set; }
 
         public static void CancelDownload()
         {
-            if (downloading)
+            if (Downloading)
             {
                 if (ModSettings.showHudMessages) Utilities.QueueHudMessage("Download Cancelled");
-                cancelled = true;
                 webClient.CancelAsync();
                 webClient.Dispose();
             }
@@ -121,17 +119,16 @@ namespace WorldPredownload.DownloadManager
 
         private static void DownloadWorld(ApiWorld apiWorld)
         {
-            if (!downloading)
+            if (!Downloading)
             {
                 if (ModSettings.showStatusOnHud) HudIcon.Enable();
                 if (ModSettings.showStatusOnQM) WorldDownloadStatus.Enable();
                 if (ModSettings.showHudMessages) Utilities.QueueHudMessage("Starting Download");
-                downloading = true;
+                Downloading = true;
                 Download(apiWorld, progress, complete, null);
             }
             else
             {
-                cancelled = true;
                 InviteButton.button.SetText(Constants.BUTTON_IDLE_TEXT);
                 WorldButton.button.SetText(Constants.BUTTON_IDLE_TEXT);
                 FriendButton.button.SetText(Constants.BUTTON_IDLE_TEXT);
@@ -157,7 +154,7 @@ namespace WorldPredownload.DownloadManager
                 return;
             }
             DownloadInfo = downloadInfo;
-            if (downloadInfo.DownloadType == DownloadType.Invite && !downloading)
+            if (downloadInfo.DownloadType == DownloadType.Invite && !Downloading)
                 MelonCoroutines.Start(InviteButton.InviteButtonTimer(15));
             DownloadWorld(downloadInfo.ApiWorld);
         }

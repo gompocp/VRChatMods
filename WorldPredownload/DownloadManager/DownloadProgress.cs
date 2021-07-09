@@ -11,15 +11,15 @@ namespace WorldPredownload.DownloadManager
     [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
     public static partial class WorldDownloadManager
     {
-        private static readonly DownloadProgressChangedEventHandler progress = async (sender, args) =>
+        private static readonly DownloadProgressChangedEventHandler progress = async (_, args) =>
         {
             await TaskUtilities.YieldToMainThread();
-            if (!downloading) return;
-            var progress = $"Progress:{args.ProgressPercentage} %";
-            if (ModSettings.showStatusOnQM) WorldDownloadStatus.gameObject.SetText(progress);
-            if (InviteButton.canChangeText) InviteButton.button.SetText(progress);
-            if (FriendButton.canChangeText) FriendButton.button.SetText(progress);
-            if (WorldButton.canChangeText) WorldButton.button.SetText(progress);
+            if (!Downloading) return;
+            var text = $"Progress:{args.ProgressPercentage} %";
+            if (ModSettings.showStatusOnQM) WorldDownloadStatus.gameObject.SetText(text);
+            if (InviteButton.canChangeText) InviteButton.button.SetText(text);
+            if (FriendButton.canChangeText) FriendButton.button.SetText(text);
+            if (WorldButton.canChangeText) WorldButton.button.SetText(text);
             if (ModSettings.showStatusOnHud) HudIcon.Update(args.ProgressPercentage / 100f);
         };
     }
