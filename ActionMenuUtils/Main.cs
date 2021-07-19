@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using ActionMenuApi.Api;
-using HarmonyLib;
 using MelonLoader;
 using UnhollowerRuntimeLib;
 using UnhollowerRuntimeLib.XrefScans;
@@ -223,7 +222,7 @@ namespace ActionMenuUtils
         public static void Home()
         {
             if (ModSettings.forceGoHome)
-                Utils.GoHome();
+                GoHome();
             else
                 GameObject.Find("UserInterface/QuickMenu/ShortcutMenu/GoHomeButton").GetComponent<Button>().onClick.Invoke();
         }

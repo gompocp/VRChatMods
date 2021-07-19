@@ -1,9 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Text;
-using HarmonyLib;
-using MelonLoader;
+﻿using MelonLoader;
 using UIExpansionKit.API;
 using WorldPredownload.UI;
 
@@ -51,6 +46,5 @@ namespace WorldPredownload
         }
         
         private static string ID = "gompo";
-        
     }
 }

@@ -5,3 +5,4 @@ Libs/*dll
 Libs/*db
 packages
 BadAppleFramesProcessor
+*.user
