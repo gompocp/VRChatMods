@@ -7,7 +7,7 @@ using MelonLoader;
 using UIExpansionKit.API;
 using WorldPredownload.UI;
 
-[assembly: MelonInfo(typeof(WorldPredownload.WorldPredownload), "WorldPredownload", "1.5.1", "gompo", "https://github.com/gompocp/VRChatMods/releases/")]
+[assembly: MelonInfo(typeof(WorldPredownload.WorldPredownload), "WorldPredownload", "1.5.2", "gompo", "https://github.com/gompocp/VRChatMods/releases/")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 namespace WorldPredownload
@@ -16,7 +16,6 @@ namespace WorldPredownload
     {
         private static MelonMod Instance;
         
-
         public new static HarmonyLib.Harmony HarmonyInstance => Instance.HarmonyInstance;
 
         public override void OnApplicationStart()
