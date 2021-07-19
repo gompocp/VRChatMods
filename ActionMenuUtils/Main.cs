@@ -17,6 +17,7 @@ using Main = ActionMenuUtils.Main;
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonOptionalDependencies("ActionMenuApi")]
 [assembly: MelonInfo(typeof(Main), "ActionMenuUtils", "1.3.10", "gompo", "https://github.com/gompocp/VRChatMods/releases/")]
+[assembly: VerifyLoaderVersion(0, 4, 2, true)]
 
 namespace ActionMenuUtils
 {

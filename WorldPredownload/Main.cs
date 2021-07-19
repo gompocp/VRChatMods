@@ -9,6 +9,7 @@ using WorldPredownload.UI;
 
 [assembly: MelonInfo(typeof(WorldPredownload.WorldPredownload), "WorldPredownload", "1.5.2", "gompo", "https://github.com/gompocp/VRChatMods/releases/")]
 [assembly: MelonGame("VRChat", "VRChat")]
+[assembly: VerifyLoaderVersion(0, 4, 2, true)]
 
 namespace WorldPredownload
 {
