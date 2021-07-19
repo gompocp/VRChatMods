@@ -21,7 +21,7 @@ namespace WorldPredownload.DownloadManager
         private static WebClient webClient;
 
         private static string file;
-        public static bool Downloading { get; private set; }
+        public static bool Downloading { get; set; }
 
         public static void CancelDownload()
         {

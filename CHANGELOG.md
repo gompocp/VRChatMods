@@ -1,3 +1,10 @@
+### ActionMenuUtils v1.3.10
+- Resubmit
+
+### WorldPredownload v1.5.2
+- Added retry logic for null asset url
+- If UI gets stuck now (for some magical reason) a world rejoin should fix it
+
 ### WorldPredownload v1.5.1
 - Minor bug fix for null asset url 
 
