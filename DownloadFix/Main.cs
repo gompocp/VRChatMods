@@ -1,11 +1,13 @@
-﻿using System;
-using gompoCommon;
+﻿using System.IO;
+using Il2CppSystem;
 using MelonLoader;
 using UIExpansionKit.API;
 using UnhollowerRuntimeLib;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
+using Action = System.Action;
 
 /*
  *  As of 2020/06/17 this mod is now pointless as the bug it aimed at helping with has been patched,
@@ -19,7 +21,7 @@ using UnityEngine.Events;
 
 namespace DownloadFix
 {
-    public class DownloadFix : MelonMod
+    public partial class DownloadFix : MelonMod
     {
         
         public override void OnApplicationStart()
@@ -27,6 +29,7 @@ namespace DownloadFix
             ICustomLayoutedMenu settingsPage = ExpansionKitApi.GetExpandedMenu(ExpandedMenu.SettingsMenu);
             settingsPage.AddSimpleButton("Unblock unpack queue", Utilities.UnblockUnPackQueue);
             ExpansionKitApi.OnUiManagerInit += OnUiManagerInit;
+            HarmonyInstance.PatchAll();
         }
 
         public void OnUiManagerInit()
@@ -47,11 +50,6 @@ namespace DownloadFix
             unblockButton.GetComponent<Transform>().localPosition = new Vector3(-2.4f, -124f, 0);
             GameObject.Find("UserInterface/MenuContent/Popups/LoadingPopup/ProgressPanel/Parent_Loading_Progress").transform.localPosition = new Vector3(0, 17, 0);
 
-        }
-
-        public DownloadFix()
-        {
-            LoaderCheck.CheckForRainbows();
         }
     }
 }

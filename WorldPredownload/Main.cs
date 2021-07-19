@@ -1,4 +1,7 @@
-﻿using gompoCommon;
+﻿using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Text;
 using HarmonyLib;
 using MelonLoader;
 using UIExpansionKit.API;
@@ -9,14 +12,10 @@ using WorldPredownload.UI;
 
 namespace WorldPredownload
 {
-    public class WorldPredownload : MelonMod
+    internal partial class WorldPredownload : MelonMod
     {
         private static MelonMod Instance;
-
-        public WorldPredownload()
-        {
-            LoaderCheck.CheckForRainbows();
-        }
+        
 
         public new static HarmonyLib.Harmony HarmonyInstance => Instance.HarmonyInstance;
 
@@ -31,8 +30,9 @@ namespace WorldPredownload
             ExpansionKitApi.OnUiManagerInit += UiManagerInit;
         }
 
-        public void UiManagerInit()
+        private void UiManagerInit()
         {
+            if (string.IsNullOrEmpty(ID)) return;
             InviteButton.Setup();
             FriendButton.Setup();
             WorldButton.Setup();
@@ -49,5 +49,8 @@ namespace WorldPredownload
         {
             ModSettings.LoadSettings();
         }
+        
+        private static string ID = "gompo";
+        
     }
 }

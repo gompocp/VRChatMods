@@ -3,8 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using ActionMenuApi.Api;
-using gompoCommon;
-using Harmony;
+using HarmonyLib;
 using MelonLoader;
 using UnhollowerRuntimeLib;
 using UnhollowerRuntimeLib.XrefScans;
@@ -21,7 +20,7 @@ using Main = ActionMenuUtils.Main;
 
 namespace ActionMenuUtils
 {
-    public class Main : MelonMod
+    public partial class Main : MelonMod
     {
         private static AssetBundle iconsAssetBundle;
         private static Texture2D respawnIcon;
@@ -31,7 +30,7 @@ namespace ActionMenuUtils
         private static Texture2D rejoinInstanceIcon;
         private static ActionMenuAPI actionMenuApi;
         private static MelonMod Instance;
-        public static HarmonyInstance HarmonyInstance => Instance.Harmony;
+        public new static HarmonyLib.Harmony HarmonyInstance => Instance.HarmonyInstance;
 
 
         public override void OnApplicationStart()
@@ -39,6 +38,7 @@ namespace ActionMenuUtils
             Instance = this;
             try
             {
+                if (string.IsNullOrEmpty(ID)) return;
                 //Adapted from knah's JoinNotifier mod found here: https://github.com/knah/VRCMods/blob/master/JoinNotifier/JoinNotifierMod.cs 
                 using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ActionMenuUtils.icons"))
                 using (var tempStream = new MemoryStream((int)stream.Length))
@@ -177,11 +177,7 @@ namespace ActionMenuUtils
                 });
             }, "Help", helpIcon);
         }
-        
-        public Main()
-        {
-            LoaderCheck.CheckForRainbows();
-        }
+        private static string ID = "gompo";
     }
 
     static class Utils

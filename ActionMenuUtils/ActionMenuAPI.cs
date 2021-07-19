@@ -8,7 +8,7 @@ using System.Linq;
 using PedalOptionTriggerEvent = PedalOption.MulticastDelegateNPublicSealedBoUnique; //Will this change?, ¯\_(ツ)_/¯
 using ActionMenuPage = ActionMenu.ObjectNPublicAcTeAcStGaUnique;  //Will this change?, ¯\_(ツ)_/¯x2
 using UnityEngine;
-using Harmony;
+using HarmonyLib;
 using System.Reflection;
 using UnhollowerRuntimeLib.XrefScans;
 using MelonLoader;

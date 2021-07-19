@@ -169,7 +169,6 @@ namespace WorldPredownload.DownloadManager
             webClient.Headers.Add("user-agent", ModSettings.downloadUserAgent);
             webClient.DownloadProgressChanged += progress;
             webClient.DownloadFileCompleted += complete;
-
             var cachePath = CacheManager.GetCache().path;
             var assetHash = CacheManager.ComputeAssetHash(apiWorld.id);
             var dir = Path.Combine(cachePath, assetHash);

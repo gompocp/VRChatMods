@@ -5,7 +5,6 @@
     <ItemGroup>
         <EmbeddedResource Include="$(MsBuildThisFileDirectory)Common\_dummy_.dll"/>
         <EmbeddedResource Include="$(MsBuildThisFileDirectory)Common\_dummy2_.dll"/>
-        <Compile Include="$(MsBuildThisFileDirectory)Common\LoaderCheck.cs" />
         <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
             <SpecificVersion>false</SpecificVersion>
             <Private>false</Private>
@@ -91,11 +90,6 @@
             <Private>false</Private>
             <HintPath>$(MsBuildThisFileDirectory)Libs\UniTask.dll</HintPath>
         </Reference>
-        <Reference Include="MelonLoader, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-            <SpecificVersion>false</SpecificVersion>
-            <Private>false</Private>
-            <HintPath>$(MsBuildThisFileDirectory)Libs\MelonLoader.dll</HintPath>
-        </Reference>
         <Reference Include="UnhollowerBaseLib, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
             <SpecificVersion>false</SpecificVersion>
             <Private>false</Private>
@@ -122,6 +116,11 @@
             <SpecificVersion>false</SpecificVersion>
             <Private>false</Private>
             <HintPath>$(MsBuildThisFileDirectory)Libs\ActionMenuApi.dll</HintPath>
+        </Reference>
+        <Reference Include="MelonLoader, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <SpecificVersion>false</SpecificVersion>
+            <Private>false</Private>
+            <HintPath>$(MsBuildThisFileDirectory)Libs\MelonLoader.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
             <SpecificVersion>false</SpecificVersion>
@@ -178,4 +177,12 @@
     <PropertyGroup>
         <OutputPath>$(MsBuildThisFileDirectory)\Output\$(Configuration)\</OutputPath>
     </PropertyGroup>
+    <ItemGroup Condition="'$(NoModReferences)' != 'true'">
+        <ProjectReference Include="$(MsBuildThisFileDirectory)/IntegrityCheckGenerator/IntegrityCheckGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="$(MsBuildThisFileDirectory)IntegrityCheckWeaver\IntegrityCheckWeaver.csproj" PrivateAssets="all"/>
+    </ItemGroup>
+
+    <Target Name="RandomizeIntegrityChecks" AfterTargets="PostBuildEvent" Condition="'$(NoModReferences)' != 'true'">
+        <Exec Command="$(MsBuildThisFileDirectory)\Output\$(Configuration)\IntegrityCheckWeaver.exe $(OutputPath)/$(AssemblyName).dll" />
+    </Target>
 </Project>
