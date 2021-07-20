@@ -18,7 +18,7 @@ namespace WorldPredownload.DownloadManager
     [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
     public static partial class WorldDownloadManager
     {
-        private static readonly AsyncCompletedEventHandler complete = async (_, args) =>
+        private static readonly AsyncCompletedEventHandler OnComplete = async (_, args) =>
         {
             await TaskUtilities.YieldToMainThread();
             webClient.Dispose();

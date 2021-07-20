@@ -11,6 +11,7 @@ using WorldPredownload.Cache;
 using WorldPredownload.Helpers;
 using WorldPredownload.UI;
 using OnDownloadProgress = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoUnUnique;
+// ReSharper disable NotNullMemberIsNotInitialized
 
 namespace WorldPredownload.DownloadManager
 {
@@ -33,12 +34,12 @@ namespace WorldPredownload.DownloadManager
             }
         }
 
-        public static void ClearDownload()
+        private static void ClearDownload()
         {
             //DownloadInfo = null; Ignore this lel
         }
 
-        public static void DisplayWorldPopup()
+        private static void DisplayWorldPopup()
         {
             if (GameObject.Find("UserInterface/MenuContent/Screens/WorldInfo").active)
             {
@@ -55,7 +56,7 @@ namespace WorldPredownload.DownloadManager
                     Utilities.HideCurrentPopup();
                     GameObject.Find("UserInterface/QuickMenu/ShortcutMenu/WorldsButton").GetComponent<Button>().onClick
                         .Invoke();
-                    Utilities.ShowPage(DownloadInfo.PageWorldInfo);
+                    Utilities.ShowPage(DownloadInfo.PageWorldInfo!);
 
                     DownloadInfo.PageWorldInfo
                         .Method_Public_Void_ApiWorld_ApiWorldInstance_Boolean_Boolean_Boolean_APIUser_0(
@@ -71,7 +72,7 @@ namespace WorldPredownload.DownloadManager
             );
         }
 
-        public static void DisplayInvitePopup()
+        private static void DisplayInvitePopup()
         {
             Utilities.ShowDismissPopup(
                 Constants.DOWNLOAD_SUCCESS_TITLE,
@@ -85,7 +86,7 @@ namespace WorldPredownload.DownloadManager
             );
         }
 
-        public static void DisplayFriendPopup()
+        private static void DisplayFriendPopup()
         {
             if (GameObject.Find("UserInterface/MenuContent/Screens/UserInfo").active)
             {
@@ -103,7 +104,7 @@ namespace WorldPredownload.DownloadManager
                     GameObject.Find("UserInterface/QuickMenu/ShortcutMenu/SocialButton").GetComponent<Button>().onClick
                         .Invoke();
                     _ = DownloadInfo.APIUser ?? throw new NullReferenceException("Friend User Info Null Uh Oh");
-                    Utilities.ShowPage(DownloadInfo.PageUserInfo);
+                    Utilities.ShowPage(DownloadInfo.PageUserInfo!);
                     DownloadInfo.PageUserInfo.LoadUser(DownloadInfo.APIUser);
                     //FriendButton.UpdateTextDownloadStopped();
                     ClearDownload();
@@ -125,7 +126,7 @@ namespace WorldPredownload.DownloadManager
                 if (ModSettings.showStatusOnQM) WorldDownloadStatus.Enable();
                 if (ModSettings.showHudMessages) Utilities.QueueHudMessage("Starting Download");
                 Downloading = true;
-                Download(apiWorld, progress, complete, null);
+                Download(apiWorld, OnProgress, OnComplete);
             }
             else
             {
@@ -160,15 +161,15 @@ namespace WorldPredownload.DownloadManager
         }
 
         [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
-        public static void Download(ApiWorld apiWorld, DownloadProgressChangedEventHandler progress,
-            AsyncCompletedEventHandler complete, CancelEventHandler cancel)
+        private static void Download(ApiWorld apiWorld, DownloadProgressChangedEventHandler progress, AsyncCompletedEventHandler compete)
         {
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             webClient?.Dispose();
             webClient = new WebClient();
             webClient.Headers.Add("user-agent", ModSettings.downloadUserAgent);
             webClient.DownloadProgressChanged += progress;
-            webClient.DownloadFileCompleted += complete;
+            webClient.DownloadFileCompleted += compete;
+            
             var cachePath = CacheManager.GetCache().path;
             var assetHash = CacheManager.ComputeAssetHash(apiWorld.id);
             var dir = Path.Combine(cachePath, assetHash);

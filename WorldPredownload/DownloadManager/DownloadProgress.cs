@@ -11,7 +11,7 @@ namespace WorldPredownload.DownloadManager
     [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
     public static partial class WorldDownloadManager
     {
-        private static readonly DownloadProgressChangedEventHandler progress = async (_, args) =>
+        private static readonly DownloadProgressChangedEventHandler OnProgress = async (_, args) =>
         {
             await TaskUtilities.YieldToMainThread();
             if (!Downloading) return;
