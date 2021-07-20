@@ -33,21 +33,21 @@ namespace WorldPredownload.DownloadManager
         public Notification? Notification { get; set; }
 
         public static DownloadInfo CreateInviteDownloadInfo(
-            ApiWorld ApiWorld,
-            string InstanceIDTags,
-            DownloadType DownloadType,
-            Notification Notification)
+            ApiWorld apiWorld,
+            string instanceIDTags,
+            DownloadType downloadType,
+            Notification notification)
         {
-            return new(ApiWorld, InstanceIDTags, DownloadType, null, null, Notification);
+            return new(apiWorld, instanceIDTags, downloadType, null!, null!, notification);
         }
-
+        
         public static DownloadInfo CreateWorldPageDownloadInfo(
-            ApiWorld ApiWorld,
-            string InstanceIDTags,
-            DownloadType DownloadType,
-            PageWorldInfo PageWorldInfo)
+            ApiWorld apiWorld,
+            string instanceIDTags,
+            DownloadType downloadType,
+            PageWorldInfo pageWorldInfo)
         {
-            return new(ApiWorld, InstanceIDTags, DownloadType, null, PageWorldInfo);
+            return new(apiWorld, instanceIDTags, downloadType, null!, pageWorldInfo);
         }
 
         public static DownloadInfo CreateUserPageDownloadInfo(
