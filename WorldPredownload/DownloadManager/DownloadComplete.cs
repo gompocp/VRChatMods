@@ -30,7 +30,7 @@ namespace WorldPredownload.DownloadManager
                 InviteButton.UpdateTextDownloadStopped();
                 FriendButton.UpdateTextDownloadStopped();
                 WorldButton.UpdateTextDownloadStopped();
-                WorldDownloadStatus.gameObject.SetText(Constants.DOWNLOAD_STATUS_IDLE_TEXT);
+                WorldDownloadStatus.GameObject.SetText(Constants.STATUS_IDLE_TEXT);
                 if (!string.IsNullOrEmpty(file)) File.Delete(file);
                 if (!args.Cancelled)
                     MelonLogger.Error(
@@ -69,7 +69,7 @@ namespace WorldPredownload.DownloadManager
             InviteButton.UpdateTextDownloadStopped();
             FriendButton.UpdateTextDownloadStopped();
             WorldButton.UpdateTextDownloadStopped();
-            WorldDownloadStatus.gameObject.SetText(Constants.DOWNLOAD_STATUS_IDLE_TEXT);
+            WorldDownloadStatus.GameObject.SetText(Constants.STATUS_IDLE_TEXT);
             switch (DownloadInfo.DownloadType)
             {
                 case DownloadType.Friend:

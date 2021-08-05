@@ -10,8 +10,8 @@ namespace WorldPredownload.UI
     {
         private static AssetBundle iconsAssetBundle;
         private static Sprite hudIcon;
-        private static Image Heavy;
-        private static Image Fade;
+        private static Image heavy;
+        private static Image fade;
 
         public static void Setup()
         {
@@ -27,15 +27,15 @@ namespace WorldPredownload.UI
             hudIcon = iconsAssetBundle.LoadAsset_Internal("Assets/DownloadIcon.png", Il2CppType.Of<Sprite>())
                 .Cast<Sprite>();
             hudIcon.hideFlags |= HideFlags.DontUnloadUnusedAsset;
-            var Main = CreateImage("DownloadStatusProgress");
-            var Secondary = CreateImage("DownloadStatusTransparent");
-            Secondary.color = new Color(1, 1, 1, 0.4f);
-            Main.type = Image.Type.Filled;
-            Main.fillMethod = Image.FillMethod.Horizontal;
-            Main.fillOrigin = (int) Image.OriginHorizontal.Left;
-            Main.fillAmount = 0f;
-            Heavy = Main;
-            Fade = Secondary;
+            var main = CreateImage("DownloadStatusProgress");
+            var secondary = CreateImage("DownloadStatusTransparent");
+            secondary.color = new Color(1, 1, 1, 0.4f);
+            main.type = Image.Type.Filled;
+            main.fillMethod = Image.FillMethod.Horizontal;
+            main.fillOrigin = (int) Image.OriginHorizontal.Left;
+            main.fillAmount = 0f;
+            heavy = main;
+            fade = secondary;
             Disable();
         }
 
@@ -57,19 +57,19 @@ namespace WorldPredownload.UI
 
         public static void Enable()
         {
-            Heavy.gameObject.SetActive(true);
-            Fade.gameObject.SetActive(true);
+            heavy.gameObject.SetActive(true);
+            fade.gameObject.SetActive(true);
         }
 
         public static void Disable()
         {
-            Heavy.gameObject.SetActive(false);
-            Fade.gameObject.SetActive(false);
+            heavy.gameObject.SetActive(false);
+            fade.gameObject.SetActive(false);
         }
 
         public static void Update(float f)
         {
-            Heavy.fillAmount = f;
+            heavy.fillAmount = f;
         }
     }
 }

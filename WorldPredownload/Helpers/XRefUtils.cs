@@ -36,7 +36,7 @@ namespace WorldPredownload.Helpers
                     .IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
-        private static bool checkXrefNoStrings(MethodBase m)
+        private static bool CheckXrefNoStrings(MethodBase m)
         {
             try
             {

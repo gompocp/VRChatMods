@@ -41,7 +41,7 @@ namespace WorldPredownload
             InviteButton.UpdateTextDownloadStopped();
             FriendButton.UpdateTextDownloadStopped();
             WorldButton.UpdateTextDownloadStopped();
-            WorldDownloadStatus.gameObject.SetText(Constants.DOWNLOAD_STATUS_IDLE_TEXT);
+            WorldDownloadStatus.GameObject.SetText(Constants.STATUS_IDLE_TEXT);
         }
     }
 
@@ -61,8 +61,7 @@ namespace WorldPredownload
                     .Last();
 
                 // Thanks to Knah
-                var originalMethod = *(IntPtr*) (IntPtr) UnhollowerUtils
-                    .GetIl2CppMethodInfoPointerFieldForGeneratedMethod(setupMethod).GetValue(null);
+                var originalMethod = *(IntPtr*) (IntPtr) UnhollowerUtils.GetIl2CppMethodInfoPointerFieldForGeneratedMethod(setupMethod).GetValue(null);
 
                 MelonUtils.NativeHookAttach((IntPtr) (&originalMethod),
                     typeof(WorldInfoSetup).GetMethod(nameof(Postfix), BindingFlags.Static | BindingFlags.Public)!
@@ -72,13 +71,11 @@ namespace WorldPredownload
             }
         }
 
-        public static void Postfix(IntPtr thisPtr, IntPtr apiWorldPtr, IntPtr apiWorldInstancePtr, byte something1,
-            byte something2, IntPtr additionalJunkPtr)
+        public static void Postfix(IntPtr thisPtr, IntPtr apiWorldPtr, IntPtr apiWorldInstancePtr, byte something1, byte something2, IntPtr additionalJunkPtr)
         {
             try
             {
-                worldInfoSetupDelegate(thisPtr, apiWorldPtr, apiWorldInstancePtr, something1, something2,
-                    additionalJunkPtr);
+                worldInfoSetupDelegate(thisPtr, apiWorldPtr, apiWorldInstancePtr, something1, something2, additionalJunkPtr);
                 if (apiWorldPtr != IntPtr.Zero) WorldButton.UpdateText(new ApiWorld(apiWorldPtr));
             }
             catch (Exception e)
@@ -96,7 +93,7 @@ namespace WorldPredownload
     //[HarmonyPatch(typeof(NotificationManager), "Method_Private_Void_Notification_1")]
     internal class NotificationMoreActions
     {
-        public static Notification selectedNotification { get; private set; }
+        public static Notification SelectedNotification { get; private set; }
 
         public static void Patch()
         {
@@ -113,7 +110,7 @@ namespace WorldPredownload
 
         public static void Prefix(Notification __0)
         {
-            selectedNotification = __0;
+            SelectedNotification = __0;
             MelonLogger.Msg("Called patch");
             InviteButton.UpdateText();
         }
@@ -142,21 +139,21 @@ namespace WorldPredownload
             if (__0 == null) return;
             if (__0.location == null)
             {
-                FriendButton.button.SetActive(false);
+                FriendButton.Button.SetActive(false);
                 return;
             }
 
             if (!__0.isFriend ||
-                Utilities.isInSameWorld(__0) ||
+                Utilities.IsInSameWorld(__0) ||
                 __0.location.ToLower().Equals("private") ||
                 __0.location.ToLower().Equals("offline")
             )
             {
-                FriendButton.button.SetActive(false);
+                FriendButton.Button.SetActive(false);
             }
             else
             {
-                FriendButton.button.SetActive(true);
+                FriendButton.Button.SetActive(true);
                 MelonCoroutines.Start(FriendButton.UpdateText());
             }
         }

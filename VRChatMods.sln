@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrityCheckWeaver", "Int
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrityCheckGenerator", "IntegrityCheckGenerator\IntegrityCheckGenerator.csproj", "{E2E254FC-EBB1-4F5D-B2F3-26FAED02B77F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmarks", "Benchmarks\Benchmarks.csproj", "{ACEC9F98-2C00-495C-BE34-D01942DE21ED}"
+EndProject
 
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,5 +49,9 @@ Global
 		{E2E254FC-EBB1-4F5D-B2F3-26FAED02B77F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2E254FC-EBB1-4F5D-B2F3-26FAED02B77F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2E254FC-EBB1-4F5D-B2F3-26FAED02B77F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACEC9F98-2C00-495C-BE34-D01942DE21ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACEC9F98-2C00-495C-BE34-D01942DE21ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACEC9F98-2C00-495C-BE34-D01942DE21ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACEC9F98-2C00-495C-BE34-D01942DE21ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

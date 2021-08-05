@@ -17,14 +17,14 @@ namespace WorldPredownload.UI
         private const string PATH_TO_CLONE_PARENT = "UserInterface/MenuContent/Screens/WorldInfo/WorldButtons";
         private const string PATH_TO_WORLDINFO = "UserInterface/MenuContent/Screens/WorldInfo";
 
-        public static Action onClick = delegate
+        public static Action ONClick = delegate
         {
-            Utilities.DeselectClickedButton(button);
+            Utilities.DeselectClickedButton(Button);
             try
             {
-                Utilities.DeselectClickedButton(button);
+                Utilities.DeselectClickedButton(Button);
                 if (WorldDownloadManager.Downloading ||
-                    button.GetTextComponentInChildren().text.Equals(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT))
+                    Button.GetTextComponentInChildren().text.Equals(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT))
                 {
                     WorldDownloadManager.CancelDownload();
                     return;
@@ -45,19 +45,19 @@ namespace WorldPredownload.UI
             }
         };
 
-        public static bool canChangeText { get; set; } = true;
-        public static bool initialised { get; set; }
-        public static GameObject button { get; set; }
+        public static bool CanChangeText { get; set; } = true;
+        public static bool Initialised { get; set; }
+        public static GameObject Button { get; set; }
 
         public static void Setup()
         {
-            button = Utilities.CloneGameObject(PATH_TO_GAMEOBJECT_TO_CLONE, PATH_TO_CLONE_PARENT);
-            button.GetRectTrans().SetAnchoredPos(Constants.WORLD_BUTTON_POS);
-            button.SetName(Constants.WORLD_BUTTON_NAME);
-            button.SetText(Constants.BUTTON_IDLE_TEXT);
-            button.SetButtonAction(onClick);
-            button.SetActive(true);
-            initialised = true;
+            Button = Utilities.CloneGameObject(PATH_TO_GAMEOBJECT_TO_CLONE, PATH_TO_CLONE_PARENT);
+            Button.GetRectTrans().SetAnchoredPos(Constants.WorldButtonPos);
+            Button.SetName(Constants.WORLD_BUTTON_NAME);
+            Button.SetText(Constants.BUTTON_IDLE_TEXT);
+            Button.SetButtonAction(ONClick);
+            Button.SetActive(true);
+            Initialised = true;
         }
 
         public static void UpdateText(ApiWorld world)
@@ -66,20 +66,20 @@ namespace WorldPredownload.UI
             {
                 if (world.id.Equals(WorldDownloadManager.DownloadInfo.ApiWorld.id))
                 {
-                    canChangeText = true;
+                    CanChangeText = true;
                 }
                 else
                 {
-                    canChangeText = false;
-                    button.SetText(Constants.BUTTON_BUSY_TEXT);
+                    CanChangeText = false;
+                    Button.SetText(Constants.BUTTON_BUSY_TEXT);
                 }
             }
             else
             {
                 if (CacheManager.HasDownloadedWorld(world.id, world.version))
-                    button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
+                    Button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
                 else
-                    button.SetText(Constants.BUTTON_IDLE_TEXT);
+                    Button.SetText(Constants.BUTTON_IDLE_TEXT);
             }
         }
 
@@ -89,10 +89,10 @@ namespace WorldPredownload.UI
             if (worldInfo == null || worldInfo.field_Private_ApiWorld_0?.id == null) return;
             if (CacheManager.HasDownloadedWorld(worldInfo.field_Private_ApiWorld_0.id,
                 worldInfo.field_Private_ApiWorld_0.version))
-                button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
+                Button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
             else
-                button.SetText(Constants.BUTTON_IDLE_TEXT);
-            canChangeText = true;
+                Button.SetText(Constants.BUTTON_IDLE_TEXT);
+            CanChangeText = true;
         }
 
         private static PageWorldInfo GetWorldInfo()

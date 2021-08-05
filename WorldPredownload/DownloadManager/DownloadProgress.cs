@@ -16,10 +16,10 @@ namespace WorldPredownload.DownloadManager
             await TaskUtilities.YieldToMainThread();
             if (!Downloading) return;
             var text = $"Progress:{args.ProgressPercentage} %";
-            if (ModSettings.showStatusOnQM) WorldDownloadStatus.gameObject.SetText(text);
-            if (InviteButton.canChangeText) InviteButton.button.SetText(text);
-            if (FriendButton.canChangeText) FriendButton.button.SetText(text);
-            if (WorldButton.canChangeText) WorldButton.button.SetText(text);
+            if (ModSettings.showStatusOnQM) WorldDownloadStatus.GameObject.SetText(text);
+            if (InviteButton.CanChangeText) InviteButton.Button.SetText(text);
+            if (FriendButton.CanChangeText) FriendButton.Button.SetText(text);
+            if (WorldButton.CanChangeText) WorldButton.Button.SetText(text);
             if (ModSettings.showStatusOnHud) HudIcon.Update(args.ProgressPercentage / 100f);
         };
     }

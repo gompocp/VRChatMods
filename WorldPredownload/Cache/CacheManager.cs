@@ -11,22 +11,23 @@ namespace WorldPredownload.Cache
 {
     public class CacheManager
     {
-        private static readonly HashSet<string> directories = new();
+        private static readonly HashSet<string> Directories = new();
+        private static readonly Stopwatch Stopwatch = new();
 
         public static void UpdateDirectories()
         {
-            var timer = new Stopwatch();
-            timer.Start();
-            directories.Clear();
-            foreach (var entry in Directory.EnumerateDirectories(GetCache().path))
-                directories.Add(new DirectoryInfo(entry).Name);
-            timer.Stop();
-            MelonLogger.Msg($"Finished getting {directories.Count} cache entries in {timer.ElapsedMilliseconds}ms");
+            Stopwatch.Restart();
+            Directories.Clear();
+            var files = Directory.GetDirectories(GetCache().path, "*", SearchOption.TopDirectoryOnly);
+            for (int i = 0; i < files.Length; i++)
+                Directories.Add(Path.GetFileName(files[i]));
+            Stopwatch.Stop();
+            MelonLogger.Msg($"Finished getting {Directories.Count} cache entries in {Stopwatch.ElapsedMilliseconds}ms");
         }
 
         public static void AddDirectory(string hash)
         {
-            directories.Add(hash);
+            Directories.Add(hash);
         }
 
 
@@ -38,7 +39,7 @@ namespace WorldPredownload.Cache
         public static bool HasDownloadedWorld(string id, int version)
         {
             var hash = ComputeAssetHash(id);
-            if (directories.Contains(hash))
+            if (Directories.Contains(hash))
             {
                 if (HasVersion(hash, version))
                     return true;

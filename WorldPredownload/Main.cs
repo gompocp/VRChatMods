@@ -10,13 +10,13 @@ namespace WorldPredownload
 {
     internal partial class WorldPredownload : MelonMod
     {
-        private static MelonMod Instance;
+        private static MelonMod instance;
         
-        public new static HarmonyLib.Harmony HarmonyInstance => Instance.HarmonyInstance;
+        public new static HarmonyLib.Harmony HarmonyInstance => instance.HarmonyInstance;
 
         public override void OnApplicationStart()
         {
-            Instance = this;
+            instance = this;
             ModSettings.RegisterSettings();
             ModSettings.LoadSettings();
             SocialMenuSetup.Patch();
@@ -45,6 +45,6 @@ namespace WorldPredownload
             ModSettings.LoadSettings();
         }
         
-        private static string ID = "gompo";
+        private static readonly string ID = "gompo";
     }
 }

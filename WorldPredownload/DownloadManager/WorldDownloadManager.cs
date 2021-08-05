@@ -48,9 +48,9 @@ namespace WorldPredownload.DownloadManager
             }
 
             Utilities.ShowOptionPopup(
-                Constants.DOWNLOAD_SUCCESS_TITLE,
-                Constants.DOWNLOAD_SUCCESS_MSG,
-                Constants.DOWNLOAD_SUCCESS_LEFT_BTN_TEXT,
+                Constants.SUCCESS_TITLE,
+                Constants.SUCCESS_MSG,
+                Constants.SUCCESS_LEFT_BTN_TEXT,
                 new Action(delegate
                 {
                     Utilities.HideCurrentPopup();
@@ -63,7 +63,7 @@ namespace WorldPredownload.DownloadManager
                             DownloadInfo.ApiWorld, DownloadInfo.PageWorldInfo.field_Public_ApiWorldInstance_0);
                     ClearDownload();
                 }),
-                Constants.DOWNLOAD_SUCCESS_RIGHT_BTN_TEXT,
+                Constants.SUCCESS_RIGHT_BTN_TEXT,
                 new Action(delegate
                 {
                     Utilities.HideCurrentPopup();
@@ -75,9 +75,9 @@ namespace WorldPredownload.DownloadManager
         private static void DisplayInvitePopup()
         {
             Utilities.ShowDismissPopup(
-                Constants.DOWNLOAD_SUCCESS_TITLE,
-                Constants.DOWNLOAD_SUCCESS_MSG,
-                Constants.DOWNLOAD_SUCCESS_RIGHT_BTN_TEXT,
+                Constants.SUCCESS_TITLE,
+                Constants.SUCCESS_MSG,
+                Constants.SUCCESS_RIGHT_BTN_TEXT,
                 new Action(delegate
                 {
                     Utilities.HideCurrentPopup();
@@ -95,9 +95,9 @@ namespace WorldPredownload.DownloadManager
             }
 
             Utilities.ShowOptionPopup(
-                Constants.DOWNLOAD_SUCCESS_TITLE,
-                Constants.DOWNLOAD_SUCCESS_MSG,
-                Constants.DOWNLOAD_SUCCESS_LEFT_BTN_TEXT_F,
+                Constants.SUCCESS_TITLE,
+                Constants.SUCCESS_MSG,
+                Constants.SUCCESS_LEFT_BTN_TEXT_F,
                 new Action(delegate
                 {
                     Utilities.HideCurrentPopup();
@@ -109,7 +109,7 @@ namespace WorldPredownload.DownloadManager
                     //FriendButton.UpdateTextDownloadStopped();
                     ClearDownload();
                 }),
-                Constants.DOWNLOAD_SUCCESS_RIGHT_BTN_TEXT,
+                Constants.SUCCESS_RIGHT_BTN_TEXT,
                 new Action(delegate
                 {
                     Utilities.HideCurrentPopup();
@@ -130,9 +130,9 @@ namespace WorldPredownload.DownloadManager
             }
             else
             {
-                InviteButton.button.SetText(Constants.BUTTON_IDLE_TEXT);
-                WorldButton.button.SetText(Constants.BUTTON_IDLE_TEXT);
-                FriendButton.button.SetText(Constants.BUTTON_IDLE_TEXT);
+                InviteButton.Button.SetText(Constants.BUTTON_IDLE_TEXT);
+                WorldButton.Button.SetText(Constants.BUTTON_IDLE_TEXT);
+                FriendButton.Button.SetText(Constants.BUTTON_IDLE_TEXT);
             }
         }
 

@@ -64,7 +64,7 @@ namespace WorldPredownload.Helpers
 
         public static Notification GetSelectedNotification()
         {
-            return NotificationMoreActions.selectedNotification;
+            return NotificationMoreActions.SelectedNotification;
         }
 
         public static GameObject CloneGameObject(string pathToGameObject, string pathToParent)
@@ -104,7 +104,7 @@ namespace WorldPredownload.Helpers
             }
         }
 
-        public static bool isInSameWorld(APIUser user)
+        public static bool IsInSameWorld(APIUser user)
         {
             if (user.location.Contains(RoomManager.field_Internal_Static_ApiWorld_0.id))
                 return true;

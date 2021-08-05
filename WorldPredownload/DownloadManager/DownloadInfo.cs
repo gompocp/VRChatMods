@@ -7,20 +7,20 @@ namespace WorldPredownload.DownloadManager
     public class DownloadInfo
     {
         public DownloadInfo(
-            ApiWorld ApiWorld,
-            string InstanceIDTags,
-            DownloadType DownloadType,
-            PageUserInfo PageUserInfo = null!,
-            PageWorldInfo PageWorldInfo = null!,
-            Notification Notification = null!)
+            ApiWorld apiWorld,
+            string instanceIDTags,
+            DownloadType downloadType,
+            PageUserInfo pageUserInfo = null!,
+            PageWorldInfo pageWorldInfo = null!,
+            Notification notification = null!)
         {
-            this.ApiWorld = ApiWorld;
-            this.InstanceIDTags = InstanceIDTags;
-            this.DownloadType = DownloadType;
-            this.PageUserInfo = PageUserInfo;
-            if (PageUserInfo != null) APIUser = PageUserInfo.field_Public_APIUser_0;
-            this.PageWorldInfo = PageWorldInfo;
-            this.Notification = Notification;
+            this.ApiWorld = apiWorld;
+            this.InstanceIDTags = instanceIDTags;
+            this.DownloadType = downloadType;
+            this.PageUserInfo = pageUserInfo;
+            if (pageUserInfo != null) APIUser = pageUserInfo.field_Public_APIUser_0;
+            this.PageWorldInfo = pageWorldInfo;
+            this.Notification = notification;
         }
 
         public ApiWorld ApiWorld { get; set; }
@@ -51,12 +51,12 @@ namespace WorldPredownload.DownloadManager
         }
 
         public static DownloadInfo CreateUserPageDownloadInfo(
-            ApiWorld ApiWorld,
-            string InstanceIDTags,
-            DownloadType DownloadType,
-            PageUserInfo PageUserInfo)
+            ApiWorld apiWorld,
+            string instanceIDTags,
+            DownloadType downloadType,
+            PageUserInfo pageUserInfo)
         {
-            return new(ApiWorld, InstanceIDTags, DownloadType, PageUserInfo);
+            return new(apiWorld, instanceIDTags, downloadType, pageUserInfo);
         }
     }
 }
