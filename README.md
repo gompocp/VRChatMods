@@ -6,8 +6,10 @@ Modding the VRChat client is against VRChat's Terms of Service. Therefore use th
 <ol>
   <li><a href="#actionmenuapi">ActionMenuApi</a></li>
   <li><a href="#actionmenuutils">ActionMenuUtils</a></li>
-  <li><a href="#downloadfix">DownloadFix </a></li>
+  <li><a href="#downloadfix">DownloadFix (Depracated)</a></li>
+<li><a href="#standalonethirdperson">StandaloneThirdPerson</a></li>
   <li><a href="#worldpredownload">WorldPredownload</a></li>
+  
 </ol>
 
 ## Canny Posts
