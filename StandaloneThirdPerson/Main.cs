@@ -48,7 +48,7 @@ namespace StandaloneThirdPerson
 	        var originalCameraTransform = vrcCamera.transform;
 	        thirdPersonCamera = new GameObject("Standalone ThirdPerson Camera").AddComponent<Camera>();
 	        thirdPersonCamera.fieldOfView = 80f;
-	        thirdPersonCamera.nearClipPlane /= 5f;
+	        thirdPersonCamera.nearClipPlane = 0.01f;
 	        thirdPersonCamera.enabled = false;
 	        thirdPersonCamera.transform.parent = originalCameraTransform.parent;
 

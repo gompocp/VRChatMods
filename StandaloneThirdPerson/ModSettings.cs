@@ -15,7 +15,7 @@ namespace StandaloneThirdPerson
 
         public static KeyCode KeyBind { get; private set; } = KeyCode.T;
         public static float FOV { get; private set; } = 80;
-        public static float NearClipPlane { get; private set; } = 5;
+        public static float NearClipPlane { get; private set; } = 0.01f;
 
 
         public static void RegisterSettings()
