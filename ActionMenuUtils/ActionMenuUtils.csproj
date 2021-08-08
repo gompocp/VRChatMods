@@ -5,6 +5,7 @@
         <VrcReferences>true</VrcReferences>
         <Version>1.3.10.0</Version>
         <LangVersion>9</LangVersion>
+        <CopyToMods>true</CopyToMods>
     </PropertyGroup>
     
     <ItemGroup>

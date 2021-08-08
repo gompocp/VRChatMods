@@ -27,8 +27,8 @@ I highly recommend checking out the canny posts linked below and upvoting if you
 
 To Build simply
 1. Clone repo using git
-2. Copy `*.dlls` from `MelonLoader\Managed` to `Libs` folder
-3. Copy in `MelonLoader.dll`,`ActionMenuApi.dll` and `UIExpansionKit.dll` too
+2. Open solution in an ide that supports C#
+3. Inside `Directory.Build.props` edit the path inside `<VRChatFolder>` to the path of your own game install
 4. Build Solution
 
 ## ActionMenuApi
@@ -66,6 +66,13 @@ More information [here](https://github.com/gompocp/ActionMenuApi)
 - Yeah its literally a one line fix for the loading bug  <br>
 - Adds a button to the UIX settings page and to the world loading screen <br>
 - Don't really know what else to say about it so yeah <br>
+
+
+## StandaloneThirdPerson
+- KeyBind configurable via uix/the config file. Valid values can be found [here](https://docs.unity3d.com/ScriptReference/KeyCode.html) (exluding `None`)
+- Third person camera fov and nearclipplane value can be edited as well via uix/the config file
+- Credit to [Knah](https://github.com/knah/) for [EnableDisable Listener](https://github.com/knah/VRCMods/blob/master/UIExpansionKit/Components/EnableDisableListener.cs)
+- Credit to [Psychloor and emmVRC team](https://github.com/Psychloor/PlayerRotater/blob/master/PlayerRotater/Utilities.cs#L76) for world check
 
 ## WorldPredownload<br>
 - Credit to [Psychloor](https://github.com/Psychloor/AdvancedInvites/blob/master/AdvancedInvites/InviteHandler.cs) for method to convert worldID to apiWorld instance + much much more, and some of the way stuff is structured is also inspired by his utilities file
