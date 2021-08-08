@@ -47,8 +47,8 @@ namespace StandaloneThirdPerson
 	        vrcCamera = temp.GetComponent<Camera>();
 	        var originalCameraTransform = vrcCamera.transform;
 	        thirdPersonCamera = new GameObject("Standalone ThirdPerson Camera").AddComponent<Camera>();
-	        thirdPersonCamera.fieldOfView = 80f;
-	        thirdPersonCamera.nearClipPlane = 0.01f;
+	        thirdPersonCamera.fieldOfView = ModSettings.FOV;
+	        thirdPersonCamera.nearClipPlane = ModSettings.NearClipPlane;
 	        thirdPersonCamera.enabled = false;
 	        thirdPersonCamera.transform.parent = originalCameraTransform.parent;
 
