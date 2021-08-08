@@ -1,3 +1,6 @@
+### StandaloneThirdPerson v1.0.1
+- Quick patch for vr
+
 ### StandaloneThirdPerson v1.0.0
 - Initial Release
 

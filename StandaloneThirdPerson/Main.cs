@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using HarmonyLib;
 using MelonLoader;
 using UIExpansionKit.API;
@@ -7,7 +8,7 @@ using UnityEngine;
 using Main = StandaloneThirdPerson.Main;
 
 [assembly: MelonGame("VRChat", "VRChat")]
-[assembly: MelonInfo(typeof(Main), "StandaloneThirdPerson", "1.0.0", "gompo", "https://github.com/gompocp/VRChatMods/releases/")]
+[assembly: MelonInfo(typeof(Main), "StandaloneThirdPerson", "1.0.1", "gompo", "https://github.com/gompocp/VRChatMods/releases/")]
 
 namespace StandaloneThirdPerson
 {
@@ -17,6 +18,9 @@ namespace StandaloneThirdPerson
 
         public override void OnApplicationStart()
         {
+	        //Credits to Psychloor https://github.com/Psychloor/PlayerRotater/blob/master/PlayerRotater/ModMain.cs#L40
+	        if (Environment.GetCommandLineArgs()
+		        .All(args => !args.Equals("--no-vr", StringComparison.OrdinalIgnoreCase))) return;
 	        ModSettings.RegisterSettings();
 	        ModSettings.LoadSettings();
 	        MelonCoroutines.Start(WaitForUIInit());
