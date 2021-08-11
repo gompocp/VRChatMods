@@ -1,6 +1,5 @@
 ﻿using System;
 using MelonLoader;
-using UnhollowerBaseLib.Attributes;
 using UnityEngine;
 
 namespace StandaloneThirdPerson
@@ -8,9 +7,8 @@ namespace StandaloneThirdPerson
     [RegisterTypeInIl2Cpp]
     public class QMEnableDisableListener : MonoBehaviour
     {
-
         public static bool Enabled;
-        
+
         public QMEnableDisableListener(IntPtr obj0) : base(obj0)
         {
         }

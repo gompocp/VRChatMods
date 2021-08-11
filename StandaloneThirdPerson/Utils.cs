@@ -1,34 +1,31 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using MelonLoader;
 using UnityEngine;
 using UnityEngine.Networking;
 using VRC.Core;
-using Object = UnityEngine.Object;
 
 namespace StandaloneThirdPerson
 {
     public static class Utils
     {
-
         public static bool IsBigMenuOpen()
         {
-            return VRCUiManager.field_Private_Static_VRCUiManager_0.field_Internal_Dictionary_2_String_VRCUiPage_0.Count > 0;
+            return VRCUiManager.field_Private_Static_VRCUiManager_0.field_Internal_Dictionary_2_String_VRCUiPage_0
+                .Count > 0;
         }
-        
+
         // Credits to Psychloor for this: https://github.com/Psychloor/PlayerRotater/blob/master/PlayerRotater/Utilities.cs#L76
         internal static IEnumerator CheckWorld()
         {
-            string worldId = RoomManager.field_Internal_Static_ApiWorld_0.id;
+            var worldId = RoomManager.field_Internal_Static_ApiWorld_0.id;
 
             // Check if black/whitelisted from EmmVRC - thanks Emilia and the rest of EmmVRC Staff
             var uwr = UnityWebRequest.Get($"https://dl.emmvrc.com/riskyfuncs.php?worldid=   {worldId}");
             uwr.SendWebRequest();
             while (!uwr.isDone)
                 yield return new WaitForEndOfFrame();
-            string result = uwr.m_DownloadHandler.text?.Trim().ToLower();
+            var result = uwr.m_DownloadHandler.text?.Trim().ToLower();
             uwr.Dispose();
             if (!string.IsNullOrWhiteSpace(result))
                 switch (result)
@@ -41,7 +38,7 @@ namespace StandaloneThirdPerson
                         Main.Allowed = false;
                         yield break;
                 }
-            
+
 
             // no result from server or they're currently down
             // Check tags then. should also be in cache as it just got downloaded
@@ -49,25 +46,25 @@ namespace StandaloneThirdPerson
                 worldId,
                 new Action<ApiContainer>(
                     container =>
+                    {
+                        ApiWorld apiWorld;
+                        if ((apiWorld = container.Model.TryCast<ApiWorld>()) != null)
                         {
-                            ApiWorld apiWorld;
-                            if ((apiWorld = container.Model.TryCast<ApiWorld>()) != null)
-                            {
-                                foreach (string worldTag in apiWorld.tags)
-                                    if (worldTag.IndexOf("game", StringComparison.OrdinalIgnoreCase) != -1
-                                        || worldTag.IndexOf("club", StringComparison.OrdinalIgnoreCase) != -1)
-                                    {
-                                        Main.Allowed = false;
-                                        return;
-                                    }
+                            foreach (var worldTag in apiWorld.tags)
+                                if (worldTag.IndexOf("game", StringComparison.OrdinalIgnoreCase) != -1
+                                    || worldTag.IndexOf("club", StringComparison.OrdinalIgnoreCase) != -1)
+                                {
+                                    Main.Allowed = false;
+                                    return;
+                                }
 
-                                Main.Allowed = true;
-                            }
-                            else
-                            {
-                                MelonLogger.Error("Failed to cast ApiModel to ApiWorld");
-                            }
-                        }),
+                            Main.Allowed = true;
+                        }
+                        else
+                        {
+                            MelonLogger.Error("Failed to cast ApiModel to ApiWorld");
+                        }
+                    }),
                 disableCache: false);
         }
     }

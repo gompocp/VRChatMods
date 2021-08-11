@@ -1,7 +1,6 @@
 ﻿using System;
 using MelonLoader;
 using UnityEngine;
-using UnityEngine.Playables;
 
 namespace StandaloneThirdPerson
 {
@@ -25,7 +24,8 @@ namespace StandaloneThirdPerson
             var category = MelonPreferences.CreateCategory(categoryName, categoryName);
             keyBind = category.CreateEntry("Keybind", KeyBind.ToString(), "Keybind");
             fov = category.CreateEntry("Camera FOV", FOV, "Camera FOV");
-            nearClipPlane = category.CreateEntry("Camera NearClipPlane Value", NearClipPlane, "Camera NearClipPlane Value");
+            nearClipPlane =
+                category.CreateEntry("Camera NearClipPlane Value", NearClipPlane, "Camera NearClipPlane Value");
             enabled = category.CreateEntry("Mod Enabled", Enabled, "Mod Enabled");
         }
 
@@ -42,7 +42,7 @@ namespace StandaloneThirdPerson
         {
             try
             {
-                if(!canBeNone && pref.Value.Equals("None")) 
+                if (!canBeNone && pref.Value.Equals("None"))
                     throw new ArgumentException();
                 return ParseKeyCode(pref.Value);
             }
@@ -56,7 +56,6 @@ namespace StandaloneThirdPerson
 
         private static KeyCode ParseKeyCode(string value)
         {
-            
             return (KeyCode) Enum.Parse(typeof(KeyCode), value);
         }
     }

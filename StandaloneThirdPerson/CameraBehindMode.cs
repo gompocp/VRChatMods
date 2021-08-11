@@ -4,6 +4,6 @@
     {
         LeftShoulder = 0,
         Center = 1,
-        RightShoulder = 2,
+        RightShoulder = 2
     }
 }
