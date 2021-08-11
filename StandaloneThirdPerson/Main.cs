@@ -15,6 +15,7 @@ namespace StandaloneThirdPerson
     internal partial class Main : MelonMod
     {
         private static CameraMode currentMode = CameraMode.Normal;
+        private static CameraBehindMode cameraBehindMode = CameraBehindMode.Center;
 
         public override void OnApplicationStart()
         {
@@ -40,15 +41,14 @@ namespace StandaloneThirdPerson
 
         private static void OnUIInit()
         {
-	        var temp = GameObject.Find("Camera (eye)");
+	        vrcCamera = GameObject.Find("Camera (eye)")?.GetComponent<Camera>();
 
-	        if (temp == null)
+	        if (vrcCamera == null)
 	        {
 		        MelonLogger.Error("Couldn't find camera... mod won't run...");
 		        return;
 	        }
 	        
-	        vrcCamera = temp.GetComponent<Camera>();
 	        var originalCameraTransform = vrcCamera.transform;
 	        thirdPersonCamera = new GameObject("Standalone ThirdPerson Camera").AddComponent<Camera>();
 	        thirdPersonCamera.fieldOfView = ModSettings.FOV;
@@ -60,14 +60,21 @@ namespace StandaloneThirdPerson
 	        
 	        initialised = true;
         }
-
-        private void RepositionCamera(bool isBehind)
+        
+        private void RepositionCamera(bool isBehind, CameraBehindMode cameraBehindMode)
         {
 	        var vrcCameraTransform = vrcCamera.transform;
 	        var thirdPersonCameraTransform = thirdPersonCamera.transform;
 	        thirdPersonCameraTransform.position = vrcCameraTransform.position +  (isBehind ? -vrcCameraTransform.forward : vrcCameraTransform.forward);
 	        thirdPersonCameraTransform.LookAt(vrcCameraTransform);
-	        thirdPersonCameraTransform.position += thirdPersonCameraTransform.forward * +0.25f; // Reverse + = In  && - = Out
+	        if (isBehind)
+	        {
+		        if (cameraBehindMode == CameraBehindMode.RightShoulder)
+			        thirdPersonCameraTransform.position += vrcCameraTransform.right * 0.5f;
+		        if (cameraBehindMode == CameraBehindMode.LeftShoulder)
+			        thirdPersonCameraTransform.position -= vrcCameraTransform.right * 0.5f;
+	        }
+	        thirdPersonCameraTransform.position += thirdPersonCameraTransform.forward * 0.25f; // Reverse + = In  && - = Out
         }
 
         public static void UpdateCameraSettings()
@@ -78,36 +85,49 @@ namespace StandaloneThirdPerson
         }
         public override void OnUpdate()
         {
-	        
-	        if (!Allowed || Utils.IsBigMenuOpen() || QMEnableDisableListener.Enabled)
-		        return;
-	        
-
-	        if (initialised)
+	        if (!initialised || !ModSettings.Enabled || !Allowed || Utils.IsBigMenuOpen() || QMEnableDisableListener.Enabled)
+			        return;
+		        
+	        if (Input.GetKeyDown(ModSettings.KeyBind))
 	        {
-		        if (Input.GetKeyDown(ModSettings.KeyBind))
-		        {
-			        currentMode++;
-			        if (currentMode > CameraMode.InFront) currentMode = CameraMode.Normal;
-			        if (currentMode != CameraMode.Normal)
-			        {
-				        RepositionCamera(currentMode == CameraMode.Behind);
-				        thirdPersonCamera.enabled = true;
-			        }
-			        else
-			        {
-				        thirdPersonCamera.enabled = false;
-			        }
-		        }
-
+		        currentMode++;
+		        if (currentMode > CameraMode.InFront) currentMode = CameraMode.Normal;
 		        if (currentMode != CameraMode.Normal)
 		        {
-			        if (Input.GetKeyDown(KeyCode.Escape))
+			        RepositionCamera(currentMode == CameraMode.Behind, cameraBehindMode);
+			        thirdPersonCamera.enabled = true;
+		        }
+		        else
+		        {
+			        thirdPersonCamera.enabled = false;
+		        }
+	        }
+
+	        if (currentMode != CameraMode.Normal)
+	        {
+		        if (Input.GetKeyDown(KeyCode.Escape))
+		        {
+			        currentMode = CameraMode.Normal;
+			        thirdPersonCamera.enabled = false;
+		        }
+		        thirdPersonCamera.transform.position += (thirdPersonCamera.transform.forward * Input.GetAxis("Mouse ScrollWheel"));
+		        if (currentMode == CameraMode.Behind)
+		        {
+			        if (Input.GetKeyDown(KeyCode.E))
 			        {
-				        currentMode = CameraMode.Normal;
-				        thirdPersonCamera.enabled = false;
+				        cameraBehindMode--;
+				        if (cameraBehindMode <= CameraBehindMode.LeftShoulder)
+					        cameraBehindMode = CameraBehindMode.LeftShoulder;
+				        RepositionCamera(true, cameraBehindMode);
 			        }
-			        thirdPersonCamera.transform.position += (thirdPersonCamera.transform.forward * Input.GetAxis("Mouse ScrollWheel"));
+
+			        if (Input.GetKeyDown(KeyCode.Q))
+			        {
+				        cameraBehindMode++;
+				        if (cameraBehindMode > CameraBehindMode.RightShoulder)
+					        cameraBehindMode = CameraBehindMode.RightShoulder;
+				        RepositionCamera(true, cameraBehindMode);
+			        }
 		        }
 	        }
         }
