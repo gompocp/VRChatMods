@@ -8,15 +8,18 @@ namespace StandaloneThirdPerson
     {
         private static readonly string categoryName = "StandaloneThirdPerson";
 
-        private static MelonPreferences_Entry<string> keyBind;
+        private static MelonPreferences_Entry<string> keyBind, moveRearCameraLeftKeyBind, moveRearCameraRightKeyBind;
         private static MelonPreferences_Entry<float> fov, nearClipPlane;
-        private static MelonPreferences_Entry<bool> enabled;
+        private static MelonPreferences_Entry<bool> enabled, rearCameraChangerEnabled;
 
 
         public static KeyCode KeyBind { get; private set; } = KeyCode.T;
+        public static KeyCode MoveRearCameraLeftKeyBind { get; private set; } = KeyCode.Q;
+        public static KeyCode MoveRearCameraRightKeyBind { get; private set; } = KeyCode.E;
         public static float FOV { get; private set; } = 80;
         public static float NearClipPlane { get; private set; } = 0.01f;
         public static bool Enabled { get; private set; } = true;
+        public static bool RearCameraChangedEnabled = true;
 
 
         public static void RegisterSettings()
@@ -24,17 +27,22 @@ namespace StandaloneThirdPerson
             var category = MelonPreferences.CreateCategory(categoryName, categoryName);
             keyBind = category.CreateEntry("Keybind", KeyBind.ToString(), "Keybind");
             fov = category.CreateEntry("Camera FOV", FOV, "Camera FOV");
-            nearClipPlane =
-                category.CreateEntry("Camera NearClipPlane Value", NearClipPlane, "Camera NearClipPlane Value");
+            nearClipPlane = category.CreateEntry("Camera NearClipPlane Value", NearClipPlane, "Camera NearClipPlane Value");
             enabled = category.CreateEntry("Mod Enabled", Enabled, "Mod Enabled");
+            rearCameraChangerEnabled = category.CreateEntry("Rear Camera Changer Enabled", RearCameraChangedEnabled, "Rear Camera Changer Enabled");
+            moveRearCameraLeftKeyBind = category.CreateEntry("Move Rear Camera Left KeyBind", MoveRearCameraLeftKeyBind.ToString(), "Move Rear Camera Left KeyBind");
+            moveRearCameraRightKeyBind = category.CreateEntry("Move Rear Camera Right KeyBind", MoveRearCameraRightKeyBind.ToString(), "Move Rear Camera Right KeyBind");
         }
 
         public static void LoadSettings()
         {
             KeyBind = keyBind.TryParseKeyCodePref();
+            MoveRearCameraLeftKeyBind = moveRearCameraLeftKeyBind.TryParseKeyCodePref();
+            MoveRearCameraRightKeyBind = moveRearCameraRightKeyBind.TryParseKeyCodePref();
             NearClipPlane = nearClipPlane.Value;
             FOV = fov.Value;
             Enabled = enabled.Value;
+            RearCameraChangedEnabled = rearCameraChangerEnabled.Value;
             Main.UpdateCameraSettings();
         }
 

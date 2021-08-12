@@ -8,7 +8,7 @@ using Main = StandaloneThirdPerson.Main;
 
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly:
-    MelonInfo(typeof(Main), "StandaloneThirdPerson", "1.0.1", "gompo",
+    MelonInfo(typeof(Main), "StandaloneThirdPerson", "1.1.0", "gompo",
         "https://github.com/gompocp/VRChatMods/releases/")]
 
 namespace StandaloneThirdPerson
@@ -86,6 +86,8 @@ namespace StandaloneThirdPerson
             if (thirdPersonCamera == null) return;
             thirdPersonCamera.fieldOfView = ModSettings.FOV;
             thirdPersonCamera.nearClipPlane = ModSettings.NearClipPlane;
+            if (!ModSettings.Enabled)
+                thirdPersonCamera.enabled = false;
         }
 
         public override void OnUpdate()
@@ -119,9 +121,9 @@ namespace StandaloneThirdPerson
 
                 thirdPersonCamera.transform.position +=
                     thirdPersonCamera.transform.forward * Input.GetAxis("Mouse ScrollWheel");
-                if (currentMode == CameraMode.Behind)
+                if (currentMode == CameraMode.Behind && ModSettings.RearCameraChangedEnabled)
                 {
-                    if (Input.GetKeyDown(KeyCode.E))
+                    if (Input.GetKeyDown(ModSettings.MoveRearCameraLeftKeyBind))
                     {
                         cameraBehindMode--;
                         if (cameraBehindMode <= CameraBehindMode.LeftShoulder)
@@ -129,7 +131,7 @@ namespace StandaloneThirdPerson
                         RepositionCamera(true, cameraBehindMode);
                     }
 
-                    if (Input.GetKeyDown(KeyCode.Q))
+                    if (Input.GetKeyDown(ModSettings.MoveRearCameraRightKeyBind))
                     {
                         cameraBehindMode++;
                         if (cameraBehindMode > CameraBehindMode.RightShoulder)
