@@ -1,3 +1,6 @@
+### StandaloneThirdPerson v1.1.0
+- Added keybinds to move the rear camera over your avatars shoulders
+
 ### StandaloneThirdPerson v1.0.1
 - Quick patch for vr
 
