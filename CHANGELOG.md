@@ -1,3 +1,6 @@
+### ActionMenuUtils v1.3.11
+- Recompile to fix issues
+
 ### StandaloneThirdPerson v1.1.0
 - Added keybinds to move the rear camera over your avatars shoulders
 
