@@ -25,7 +25,7 @@ namespace WorldPredownload
     {
         private static void Prefix()
         {
-            WorldDownloadManager.CancelDownload();
+            DownloadManager.Downloader.CancelDownload();
         }
     }
 
@@ -35,13 +35,7 @@ namespace WorldPredownload
         private static void Prefix()
         {
             CacheManager.UpdateDirectories();
-            if (ModSettings.hideQMStatusWhenInActive) WorldDownloadStatus.Disable();
-            WorldDownloadManager.Downloading = false;
-            HudIcon.Disable();
-            InviteButton.UpdateTextDownloadStopped();
-            FriendButton.UpdateTextDownloadStopped();
-            WorldButton.UpdateTextDownloadStopped();
-            WorldDownloadStatus.GameObject.SetText(Constants.STATUS_IDLE_TEXT);
+            Singleton<DownloadManager.Downloader>.Instance.DownloadState = DownloadState.Idle;
         }
     }
 
@@ -61,7 +55,8 @@ namespace WorldPredownload
                     .Last();
 
                 // Thanks to Knah
-                var originalMethod = *(IntPtr*) (IntPtr) UnhollowerUtils.GetIl2CppMethodInfoPointerFieldForGeneratedMethod(setupMethod).GetValue(null);
+                var originalMethod = *(IntPtr*) (IntPtr) UnhollowerUtils
+                    .GetIl2CppMethodInfoPointerFieldForGeneratedMethod(setupMethod).GetValue(null);
 
                 MelonUtils.NativeHookAttach((IntPtr) (&originalMethod),
                     typeof(WorldInfoSetup).GetMethod(nameof(Postfix), BindingFlags.Static | BindingFlags.Public)!
@@ -71,12 +66,15 @@ namespace WorldPredownload
             }
         }
 
-        public static void Postfix(IntPtr thisPtr, IntPtr apiWorldPtr, IntPtr apiWorldInstancePtr, byte something1, byte something2, IntPtr additionalJunkPtr)
+        public static void Postfix(IntPtr thisPtr, IntPtr apiWorldPtr, IntPtr apiWorldInstancePtr, byte something1,
+            byte something2, IntPtr additionalJunkPtr)
         {
             try
             {
-                worldInfoSetupDelegate(thisPtr, apiWorldPtr, apiWorldInstancePtr, something1, something2, additionalJunkPtr);
-                if (apiWorldPtr != IntPtr.Zero) WorldButton.UpdateText(new ApiWorld(apiWorldPtr));
+                worldInfoSetupDelegate(thisPtr, apiWorldPtr, apiWorldInstancePtr, something1, something2,
+                    additionalJunkPtr);
+                if (apiWorldPtr != IntPtr.Zero)
+                    Singleton<DownloadManager.Downloader>.Instance.DownloadState = DownloadState.RefreshUI;
             }
             catch (Exception e)
             {
@@ -112,7 +110,7 @@ namespace WorldPredownload
         {
             SelectedNotification = __0;
             MelonLogger.Msg("Called patch");
-            InviteButton.UpdateText();
+            Singleton<DownloadManager.Downloader>.Instance.DownloadState = DownloadState.RefreshUI;
         }
     }
 
@@ -154,7 +152,7 @@ namespace WorldPredownload
             else
             {
                 FriendButton.Button.SetActive(true);
-                MelonCoroutines.Start(FriendButton.UpdateText());
+                Singleton<DownloadManager.Downloader>.Instance.DownloadState = DownloadState.RefreshUI;
             }
         }
     }

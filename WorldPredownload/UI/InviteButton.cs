@@ -2,6 +2,7 @@
 using System.Collections;
 using MelonLoader;
 using UnityEngine;
+using UnityEngine.Playables;
 using VRC.Core;
 using WorldPredownload.Cache;
 using WorldPredownload.DownloadManager;
@@ -9,7 +10,7 @@ using WorldPredownload.Helpers;
 
 namespace WorldPredownload.UI
 {
-    public class InviteButton
+    internal class InviteButton : Singleton<InviteButton>, IDownloadListener, IResettable
     {
         private const string PATH_TO_GAMEOBJECT_TO_CLONE =
             "UserInterface/QuickMenu/QuickModeMenus/QuickModeInviteResponseMoreOptionsMenu/BlockButton";
@@ -23,10 +24,10 @@ namespace WorldPredownload.UI
         public static Action ONClick = delegate
         {
             Utilities.DeselectClickedButton(Button);
-            if (WorldDownloadManager.Downloading || Button.GetTextComponentInChildren().text
+            if (DownloadManager.Downloader.Downloading || Button.GetTextComponentInChildren().text
                 .Equals(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT))
             {
-                WorldDownloadManager.CancelDownload();
+                DownloadManager.Downloader.CancelDownload();
                 return;
             }
 
@@ -42,7 +43,7 @@ namespace WorldPredownload.UI
                 new Action<ApiContainer>(
                     container =>
                     {
-                        WorldDownloadManager.ProcessDownload(
+                        DownloadManager.Downloader.ProcessDownload(
                             DownloadInfo.CreateInviteDownloadInfo(
                                 container.Model.Cast<ApiWorld>(),
                                 Utilities.GetSelectedNotification().GetInstanceIDWithTags(),
@@ -54,11 +55,8 @@ namespace WorldPredownload.UI
                 new Action<ApiContainer>(delegate { MelonLogger.Msg(UNABLE_TO_CONVERT_WORLDID); }));
         };
 
-        public static bool CanChangeText { get; set; } = true;
-        public static GameObject Button { get; set; }
-        public static bool Initialised { get; set; }
 
-        public static void Setup()
+        public InviteButton()
         {
             Button = Utilities.CloneGameObject(PATH_TO_GAMEOBJECT_TO_CLONE, PATH_TO_CLONE_PARENT);
             Button.GetRectTrans().SetAnchoredPos(Constants.InviteButtonPos);
@@ -67,25 +65,46 @@ namespace WorldPredownload.UI
             Button.SetButtonAction(ONClick);
             Button.SetActive(true);
             Button.GetComponent<UiTooltip>().field_Public_String_0 = Constants.INVITE_BUTTON_TOOLTIP;
-            Initialised = true;
         }
 
+        public static bool CanChangeText { get; set; } = true;
+        public static GameObject Button { get; set; }
 
-        public static void UpdateTextDownloadStopped()
+        public void Update(DownloadManager.Downloader downloader)
         {
-            Button.SetText(Constants.BUTTON_IDLE_TEXT);
-            CanChangeText = true;
+            switch (downloader.DownloadState)
+            {
+                case DownloadState.Idle:
+                    Button.SetText(Constants.BUTTON_IDLE_TEXT);
+                    CanChangeText = true;
+                    return;
+                case DownloadState.Downloading:
+                    if (CanChangeText)
+                        Button.SetText(downloader.TextStatus);
+                    return;
+                case DownloadState.RefreshUI:
+                    if (Button.active)
+                        UpdateText();
+                    return;
+            }
         }
 
-        public static void UpdateText()
+        public void Reset()
+        {
+            if (Button != null)
+                Button.Destroy();
+        }
+
+
+        private static void UpdateText()
         {
             if (Utilities.GetSelectedNotification().notificationType.Equals("invite"))
             {
                 Button.SetActive(true);
-                if (WorldDownloadManager.Downloading)
+                if (DownloadManager.Downloader.Downloading)
                 {
                     if (Utilities.GetSelectedNotification().GetWorldID()
-                        .Equals(WorldDownloadManager.DownloadInfo.ApiWorld.id))
+                        .Equals(DownloadManager.Downloader.DownloadInfo.ApiWorld.id))
                     {
                         CanChangeText = true;
                     }
@@ -113,13 +132,13 @@ namespace WorldPredownload.UI
             canDownload = false;
             for (var i = time; i >= 0; i--)
             {
-                if (!WorldDownloadManager.Downloading)
+                if (!DownloadManager.Downloader.Downloading)
                     Button.SetText($"Time Left:{i}");
                 yield return new WaitForSeconds(1);
             }
 
             canDownload = true;
-            UpdateText();
+            Singleton<DownloadManager.Downloader>.Instance.DownloadState = DownloadState.RefreshUI;
         }
     }
 }

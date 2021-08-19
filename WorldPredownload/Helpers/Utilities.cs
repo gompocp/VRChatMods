@@ -8,7 +8,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using VRC.Core;
 using VRC.SDKBase;
-using WorldPredownload.DownloadManager;
+using VRC.UI;
+using WorldPredownload.UI;
 using Exception = System.Exception;
 using Object = UnityEngine.Object;
 
@@ -87,7 +88,7 @@ namespace WorldPredownload.Helpers
                 if (ModSettings.tryUseAdvancedInvitePopup && ModSettings.AdvancedInvites)
                     try
                     {
-                        Delegates.GetAdvancedInvitesInviteDelegate(WorldDownloadManager.DownloadInfo.Notification);
+                        Delegates.GetAdvancedInvitesInviteDelegate(DownloadManager.Downloader.DownloadInfo.Notification);
                     }
                     catch (Exception e)
                     {
@@ -129,6 +130,11 @@ namespace WorldPredownload.Helpers
         {
             VRCUiManager.prop_VRCUiManager_0.field_Private_List_1_String_0.Add(msg);
             VRCUiManager.prop_VRCUiManager_0.field_Private_List_1_String_0.Add("");
+        }
+
+        public static PageUserInfo GetUserInfo()
+        {
+            return GameObject.Find(Constants.PATH_TO_USERINFO).GetComponent<PageUserInfo>();
         }
     }
 }

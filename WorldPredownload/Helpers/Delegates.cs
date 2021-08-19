@@ -7,6 +7,7 @@ using UnhollowerBaseLib.Attributes;
 using VRC.Core;
 using VRC.UI;
 using Delegate = System.Delegate;
+
 // ReSharper disable HeuristicUnreachableCode
 // ReSharper disable NotNullMemberIsNotInitialized
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
@@ -62,7 +63,7 @@ namespace WorldPredownload.Helpers
                 return loadUserDelegate;
             }
         }
-        
+
         public static ShowDismissPopupDelegate GetShowDismissPopupDelegate
         {
             get
@@ -145,6 +146,5 @@ namespace WorldPredownload.Helpers
                 return advancedInvitesInviteDelegate;
             }
         }
-        
     }
 }

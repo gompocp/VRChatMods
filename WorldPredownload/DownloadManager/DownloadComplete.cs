@@ -9,14 +9,13 @@ using UnhollowerRuntimeLib;
 using UnityEngine;
 using WorldPredownload.Cache;
 using WorldPredownload.Helpers;
-using WorldPredownload.UI;
 using AsyncOperation = UnityEngine.AsyncOperation;
 
 namespace WorldPredownload.DownloadManager
 {
     [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalse")]
     [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
-    public static partial class WorldDownloadManager
+    internal sealed partial class Downloader
     {
         private static readonly AsyncCompletedEventHandler OnComplete = async (_, args) =>
         {
@@ -24,13 +23,8 @@ namespace WorldPredownload.DownloadManager
             webClient.Dispose();
             if (!CacheManager.WorldFileExists(DownloadInfo.ApiWorld.id))
             {
-                if (ModSettings.hideQMStatusWhenInActive) WorldDownloadStatus.Disable();
-                Downloading = false;
-                HudIcon.Disable();
-                InviteButton.UpdateTextDownloadStopped();
-                FriendButton.UpdateTextDownloadStopped();
-                WorldButton.UpdateTextDownloadStopped();
-                WorldDownloadStatus.GameObject.SetText(Constants.STATUS_IDLE_TEXT);
+                Instance.DownloadState = DownloadState.Idle;
+
                 if (!string.IsNullOrEmpty(file)) File.Delete(file);
                 if (!args.Cancelled)
                     MelonLogger.Error(
@@ -61,15 +55,13 @@ namespace WorldPredownload.DownloadManager
         {
             await TaskUtilities.YieldToMainThread();
             CacheManager.CreateInfoFileFor(file);
-            if (ModSettings.showHudMessages) Utilities.QueueHudMessage("Download Finished");
-            if (ModSettings.hideQMStatusWhenInActive) WorldDownloadStatus.Disable();
-            Downloading = false;
+            if (ModSettings.showHudMessages)
+                Utilities.QueueHudMessage("Download Finished");
+
+            Instance.DownloadState = DownloadState.Idle;
+
             CacheManager.AddDirectory(CacheManager.ComputeAssetHash(DownloadInfo.ApiWorld.id));
-            HudIcon.Disable();
-            InviteButton.UpdateTextDownloadStopped();
-            FriendButton.UpdateTextDownloadStopped();
-            WorldButton.UpdateTextDownloadStopped();
-            WorldDownloadStatus.GameObject.SetText(Constants.STATUS_IDLE_TEXT);
+
             switch (DownloadInfo.DownloadType)
             {
                 case DownloadType.Friend:
@@ -82,8 +74,9 @@ namespace WorldPredownload.DownloadManager
                     {
                         Utilities.GoToWorld(DownloadInfo.ApiWorld, DownloadInfo.InstanceIDTags, false);
                     }
+
                     break;
-                
+
                 case DownloadType.Invite:
                     if (!ModSettings.autoFollowInvites)
                     {
@@ -94,8 +87,9 @@ namespace WorldPredownload.DownloadManager
                     {
                         Utilities.GoToWorld(DownloadInfo.ApiWorld, DownloadInfo.InstanceIDTags, true);
                     }
+
                     break;
-                
+
                 case DownloadType.World:
                     if (!ModSettings.autoFollowWorlds)
                     {
@@ -106,8 +100,8 @@ namespace WorldPredownload.DownloadManager
                     {
                         Utilities.GoToWorld(DownloadInfo.ApiWorld, DownloadInfo.InstanceIDTags, false);
                     }
+
                     break;
-                
             }
         }
     }

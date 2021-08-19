@@ -3,17 +3,19 @@ using System.Reflection;
 using UnhollowerRuntimeLib;
 using UnityEngine;
 using UnityEngine.UI;
+using WorldPredownload.DownloadManager;
+using WorldPredownload.Helpers;
 
 namespace WorldPredownload.UI
 {
-    public static class HudIcon
+    internal class HudIcon : Singleton<HudIcon>, IDownloadListener
     {
         private static AssetBundle iconsAssetBundle;
         private static Sprite hudIcon;
         private static Image heavy;
         private static Image fade;
 
-        public static void Setup()
+        public HudIcon()
         {
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("WorldPredownload.gompowpd"))
             using (var tempStream = new MemoryStream((int) stream.Length))
@@ -37,6 +39,24 @@ namespace WorldPredownload.UI
             heavy = main;
             fade = secondary;
             Disable();
+        }
+
+        public void Update(DownloadManager.Downloader downloader)
+        {
+            switch (downloader.DownloadState)
+            {
+                case DownloadState.Idle:
+                    Disable();
+                    return;
+                case DownloadState.Downloading:
+                    if (ModSettings.showStatusOnHud)
+                        heavy.fillAmount = downloader.Percent;
+                    return;
+                case DownloadState.StartingDownload:
+                    if (ModSettings.showStatusOnHud)
+                        Enable();
+                    return;
+            }
         }
 
         private static Image CreateImage(string name)
@@ -65,11 +85,6 @@ namespace WorldPredownload.UI
         {
             heavy.gameObject.SetActive(false);
             fade.gameObject.SetActive(false);
-        }
-
-        public static void Update(float f)
-        {
-            heavy.fillAmount = f;
         }
     }
 }

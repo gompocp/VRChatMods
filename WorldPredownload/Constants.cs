@@ -46,5 +46,6 @@ namespace WorldPredownload
         //public static readonly Vector2 WORLD_BUTTON_OVERRIDE_POS = new Vector2(-293f, 8f);
         public static readonly Vector2 FriendButtonPos = new(-915f, 458f);
         public static readonly Vector2 DwldStatusPos = new(900f, -225f);
+        public const string PATH_TO_USERINFO = "UserInterface/MenuContent/Screens/UserInfo";
     }
 }

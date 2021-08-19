@@ -9,7 +9,7 @@ using WorldPredownload.Helpers;
 
 namespace WorldPredownload.UI
 {
-    public class FriendButton
+    internal class FriendButton : Singleton<FriendButton>, IDownloadListener
     {
         private const string PATH_TO_GAMEOBJECT_TO_CLONE =
             "UserInterface/MenuContent/Screens/UserInfo/OnlineFriendButtons/Invite";
@@ -20,26 +20,22 @@ namespace WorldPredownload.UI
 
         private const string CLICK_ERROR_MESSAGE = "User may have clicked too quickly";
 
-        private const string PATH_TO_USERINFO = "UserInterface/MenuContent/Screens/UserInfo";
-
 
         public static Action ONClick = delegate
         {
             Utilities.DeselectClickedButton(Button);
             try
             {
-                if (WorldDownloadManager.Downloading || Button.GetTextComponentInChildren().text
+                if (DownloadManager.Downloader.Downloading || Button.GetTextComponentInChildren().text
                     .Equals(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT))
                 {
-                    WorldDownloadManager.CancelDownload();
+                    DownloadManager.Downloader.CancelDownload();
                     return;
                 }
 
-                WorldDownloadManager.ProcessDownload(
-                    DownloadInfo.CreateUserPageDownloadInfo(GetUserInfo().field_Private_ApiWorld_0,
-                        GetUserInfo().field_Public_APIUser_0.location.Split(':')[1],
-                        DownloadType.Friend,
-                        GetUserInfo()
+                DownloadManager.Downloader.ProcessDownload(
+                    DownloadInfo.CreateUserPageDownloadInfo(Utilities.GetUserInfo().field_Private_ApiWorld_0, Utilities.GetUserInfo().field_Public_APIUser_0.location.Split(':')[1],
+                        DownloadType.Friend, Utilities.GetUserInfo()
                     ));
             }
             catch (Exception e)
@@ -48,11 +44,7 @@ namespace WorldPredownload.UI
             }
         };
 
-        public static bool CanChangeText { get; set; } = true;
-        public static bool Initialised { get; set; }
-        public static GameObject Button { get; set; }
-
-        public static void Setup()
+        public FriendButton()
         {
             Button = Utilities.CloneGameObject(PATH_TO_GAMEOBJECT_TO_CLONE, PATH_TO_CLONE_PARENT);
             Button.GetRectTrans().SetAnchoredPos(Constants.FriendButtonPos); //213f, 315f
@@ -60,21 +52,42 @@ namespace WorldPredownload.UI
             Button.SetText(BUTTON_DEFAULT_TEXT);
             Button.SetButtonActionInChildren(ONClick);
             Button.SetActive(true);
-            Initialised = true;
         }
 
-        public static PageUserInfo GetUserInfo()
-        {
-            return GameObject.Find(PATH_TO_USERINFO).GetComponent<PageUserInfo>();
-        }
+        private static bool CanChangeText { get; set; } = true;
+        public static GameObject Button { get; set; }
 
-        public static IEnumerator UpdateText()
+        public void Update(DownloadManager.Downloader downloader)
         {
-            while (GetUserInfo().field_Private_Boolean_0 != true) yield return null;
-            Button.SetActive(true);
-            if (WorldDownloadManager.Downloading)
+            switch (downloader.DownloadState)
             {
-                if (GetUserInfo().field_Public_APIUser_0.id.Equals(WorldDownloadManager.DownloadInfo.APIUser.id))
+                case DownloadState.Idle:
+                    var userInfo = Utilities.GetUserInfo();
+                    if (userInfo == null || userInfo.field_Private_ApiWorld_0?.id == null) return;
+                    if (CacheManager.HasDownloadedWorld(userInfo.field_Private_ApiWorld_0.id,
+                        userInfo.field_Private_ApiWorld_0.version))
+                        Button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
+                    else
+                        Button.SetText(Constants.BUTTON_IDLE_TEXT);
+                    return;
+                case DownloadState.Downloading:
+                    if (CanChangeText)
+                        Button.SetText(downloader.TextStatus);
+                    return;
+                case DownloadState.RefreshUI:
+                    if (Button.active)
+                        MelonCoroutines.Start(UpdateText());
+                    return;
+            }
+        }
+
+        private static IEnumerator UpdateText()
+        {
+            while (Utilities.GetUserInfo().field_Private_Boolean_0 != true) yield return null;
+            Button.SetActive(true);
+            if (DownloadManager.Downloader.Downloading)
+            {
+                if (Utilities.GetUserInfo().field_Public_APIUser_0.id.Equals(DownloadManager.Downloader.DownloadInfo.APIUser.id))
                 {
                     CanChangeText = true;
                 }
@@ -86,25 +99,12 @@ namespace WorldPredownload.UI
             }
             else
             {
-                while (GetUserInfo().field_Private_ApiWorld_0 == null) yield return null;
-                if (CacheManager.HasDownloadedWorld(GetUserInfo().field_Private_ApiWorld_0.id,
-                    GetUserInfo().field_Private_ApiWorld_0.version))
+                while (Utilities.GetUserInfo().field_Private_ApiWorld_0 == null) yield return null;
+                if (CacheManager.HasDownloadedWorld(Utilities.GetUserInfo().field_Private_ApiWorld_0.id, Utilities.GetUserInfo().field_Private_ApiWorld_0.version))
                     Button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
                 else
                     Button.SetText(Constants.BUTTON_IDLE_TEXT);
             }
-        }
-
-        public static void UpdateTextDownloadStopped()
-        {
-            var userInfo = GetUserInfo();
-            if (userInfo == null || userInfo.field_Private_ApiWorld_0?.id == null) return;
-            if (CacheManager.HasDownloadedWorld(userInfo.field_Private_ApiWorld_0.id,
-                userInfo.field_Private_ApiWorld_0.version))
-                Button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
-            else
-                Button.SetText(Constants.BUTTON_IDLE_TEXT);
-            CanChangeText = true;
         }
     }
 }

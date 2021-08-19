@@ -9,7 +9,7 @@ using WorldPredownload.Helpers;
 
 namespace WorldPredownload.Cache
 {
-    public class CacheManager
+    public static class CacheManager
     {
         private static readonly HashSet<string> Directories = new();
         private static readonly Stopwatch Stopwatch = new();
@@ -19,7 +19,7 @@ namespace WorldPredownload.Cache
             Stopwatch.Restart();
             Directories.Clear();
             var files = Directory.GetDirectories(GetCache().path, "*", SearchOption.TopDirectoryOnly);
-            for (int i = 0; i < files.Length; i++)
+            for (var i = 0; i < files.Length; i++)
                 Directories.Add(Path.GetFileName(files[i]));
             Stopwatch.Stop();
             MelonLogger.Msg($"Finished getting {Directories.Count} cache entries in {Stopwatch.ElapsedMilliseconds}ms");

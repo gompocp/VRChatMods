@@ -14,23 +14,23 @@ namespace WorldPredownload.DownloadManager
             PageWorldInfo pageWorldInfo = null!,
             Notification notification = null!)
         {
-            this.ApiWorld = apiWorld;
-            this.InstanceIDTags = instanceIDTags;
-            this.DownloadType = downloadType;
-            this.PageUserInfo = pageUserInfo;
+            ApiWorld = apiWorld;
+            InstanceIDTags = instanceIDTags;
+            DownloadType = downloadType;
+            PageUserInfo = pageUserInfo;
             if (pageUserInfo != null) APIUser = pageUserInfo.field_Public_APIUser_0;
-            this.PageWorldInfo = pageWorldInfo;
-            this.Notification = notification;
+            PageWorldInfo = pageWorldInfo;
+            Notification = notification;
         }
 
-        public ApiWorld ApiWorld { get; set; }
-        public string InstanceIDTags { get; set; }
-        public DownloadType DownloadType { get; set; }
-        public PageUserInfo? PageUserInfo { get; set; }
+        public ApiWorld ApiWorld { get; }
+        public string InstanceIDTags { get; }
+        public DownloadType DownloadType { get; }
+        public PageUserInfo? PageUserInfo { get; }
 
-        public APIUser? APIUser { get; set; }
-        public PageWorldInfo? PageWorldInfo { get; set; }
-        public Notification? Notification { get; set; }
+        public APIUser? APIUser { get; }
+        public PageWorldInfo? PageWorldInfo { get; }
+        public Notification? Notification { get; }
 
         public static DownloadInfo CreateInviteDownloadInfo(
             ApiWorld apiWorld,
@@ -40,7 +40,7 @@ namespace WorldPredownload.DownloadManager
         {
             return new(apiWorld, instanceIDTags, downloadType, null!, null!, notification);
         }
-        
+
         public static DownloadInfo CreateWorldPageDownloadInfo(
             ApiWorld apiWorld,
             string instanceIDTags,
