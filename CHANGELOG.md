@@ -1,3 +1,6 @@
+### StandaloneThirdPerson v1.2.0
+- Added a freeform camera (You can thank [ljoonal](https://github.com/ljoonal/) for that)
+
 ### ActionMenuUtils v1.3.11
 - Recompile to fix issues
 

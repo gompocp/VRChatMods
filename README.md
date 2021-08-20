@@ -66,18 +66,22 @@ More information [here](https://github.com/gompocp/ActionMenuApi)
 
 
 Requires [loukylor's VRChatUtilityKit](https://github.com/loukylor/VRC-Mods/releases)
+- Has a Freeform camera (thanks ljoonal <3)
 - You can scroll in and out using the mouse scroll wheel
 - You can switch to behind shoulders too in rear view mode
 - KeyBinds configurable via uix/the config file. Valid values can be found [here](https://docs.unity3d.com/ScriptReference/KeyCode.html) (exluding `None`)
- ![UIX Settings](https://i.imgur.com/ev94XEE.png) 
+ ![UIX Settings](https://i.imgur.com/KoRTTqU.png) 
 - Third person camera fov and nearclipplane value can be edited as well via uix/the config file
 
 ### Preview
+#### Directly behind view
 ![Directly behind view](https://i.imgur.com/Nrq9V3z.jpeg)
+#### Front view
 ![Front View](https://i.imgur.com/BSfitPU.png)
+#### Behind right shoulder
 ![Left Side View](https://i.imgur.com/RuDD82W.jpeg)
+#### Behind left shoulder
 ![Right Side View](https://i.imgur.com/S6vvWwx.jpeg)
-
 
 ### Acknowledgements
 
