@@ -41,6 +41,9 @@ It supports the use of the
 - Toggle Button
 - Sub Menus
 
+### Preview
+![Menu Preview](https://i.imgur.com/h43xPEG.png)
+
 Additionally allows mods to add their menus to a dedicated section on the action menu to prevent clutter.
 
 More information [here](https://github.com/gompocp/ActionMenuApi)
@@ -61,10 +64,20 @@ More information [here](https://github.com/gompocp/ActionMenuApi)
 
 ## StandaloneThirdPerson
 
-Requires [loukylor's VRChatUtilityKit](https://github.com/loukylor/VRC-Mods/releases)
 
-- KeyBind configurable via uix/the config file. Valid values can be found [here](https://docs.unity3d.com/ScriptReference/KeyCode.html) (exluding `None`)
+Requires [loukylor's VRChatUtilityKit](https://github.com/loukylor/VRC-Mods/releases)
+- You can scroll in and out using the mouse scroll wheel
+- You can switch to behind shoulders too in rear view mode
+- KeyBinds configurable via uix/the config file. Valid values can be found [here](https://docs.unity3d.com/ScriptReference/KeyCode.html) (exluding `None`)
+ ![UIX Settings](https://i.imgur.com/ev94XEE.png) 
 - Third person camera fov and nearclipplane value can be edited as well via uix/the config file
+
+### Preview
+![Directly behind view](https://i.imgur.com/Nrq9V3z.jpeg)
+![Front View](https://i.imgur.com/BSfitPU.png)
+![Left Side View](https://i.imgur.com/RuDD82W.jpeg)
+![Right Side View](https://i.imgur.com/S6vvWwx.jpeg)
+
 
 ### Acknowledgements
 
@@ -80,6 +93,9 @@ Requires [loukylor's VRChatUtilityKit](https://github.com/loukylor/VRC-Mods/rele
 - Currently you can only download/preload one world at a time
 - If you go to another world while downloading, it'll cancel the download
 - Performance may degrade for split second on world enter due to you having a large cache size
+
+### Preview
+![World Page Preview](https://i.imgur.com/tGpwiSC.png)
 
 ### Acknowledgements
 
