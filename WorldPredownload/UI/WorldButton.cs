@@ -76,7 +76,7 @@ namespace WorldPredownload.UI
             }
             else
             {
-                if (CacheManager.HasDownloadedWorld(world.id, world.version))
+                if (CacheManager.HasDownloadedWorld(world.assetUrl))
                     Button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
                 else
                     Button.SetText(Constants.BUTTON_IDLE_TEXT);
@@ -87,8 +87,7 @@ namespace WorldPredownload.UI
         {
             var worldInfo = GetWorldInfo();
             if (worldInfo == null || worldInfo.field_Private_ApiWorld_0?.id == null) return;
-            if (CacheManager.HasDownloadedWorld(worldInfo.field_Private_ApiWorld_0.id,
-                worldInfo.field_Private_ApiWorld_0.version))
+            if (CacheManager.HasDownloadedWorld(worldInfo.field_Private_ApiWorld_0.assetUrl))
                 Button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
             else
                 Button.SetText(Constants.BUTTON_IDLE_TEXT);

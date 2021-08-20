@@ -171,10 +171,10 @@ namespace WorldPredownload.DownloadManager
             webClient.DownloadFileCompleted += compete;
             
             var cachePath = CacheManager.GetCache().path;
-            var assetHash = CacheManager.ComputeAssetHash(apiWorld.id);
+            var assetHash = CacheManager.ComputeAssetHash(apiWorld.assetUrl);
             var dir = Path.Combine(cachePath, assetHash);
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-            var assetVersionDir = Path.Combine(dir, "000000000000000000000000" + CacheManager.ComputeVersionString(apiWorld.version));
+            var assetVersionDir = Path.Combine(dir, "000000000000000000000000" + CacheManager.ComputeVersionString(apiWorld.assetUrl));
             if (!Directory.Exists(assetVersionDir)) Directory.CreateDirectory(assetVersionDir);
 
             var fileName = Path.Combine(assetVersionDir, "__data");
