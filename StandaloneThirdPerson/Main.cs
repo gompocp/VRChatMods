@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-using HarmonyLib;
 using MelonLoader;
 using UnityEngine;
 using Main = StandaloneThirdPerson.Main;
