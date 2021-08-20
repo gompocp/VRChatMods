@@ -73,15 +73,9 @@ Requires [loukylor's VRChatUtilityKit](https://github.com/loukylor/VRC-Mods/rele
 - Third person camera fov and nearclipplane value can be edited as well via uix/the config file
 
 ### Preview
-#### Freeform
-![Freeform](https://i.imgur.com/pnWRWQM.gif)
-#### Directly behind view
 ![Directly behind view](https://i.imgur.com/Nrq9V3z.jpeg)
-#### Front view
 ![Front View](https://i.imgur.com/BSfitPU.png)
-#### Behind right shoulder
 ![Left Side View](https://i.imgur.com/RuDD82W.jpeg)
-#### Behind left shoulder
 ![Right Side View](https://i.imgur.com/S6vvWwx.jpeg)
 
 
