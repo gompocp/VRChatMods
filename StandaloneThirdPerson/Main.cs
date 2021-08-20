@@ -6,7 +6,7 @@ using UnityEngine;
 using Main = StandaloneThirdPerson.Main;
 
 [assembly: MelonGame("VRChat", "VRChat")]
-[assembly: MelonInfo(typeof(Main), "StandaloneThirdPerson", "1.1.0", "gompo & ljoonal", "https://github.com/gompocp/VRChatMods/releases/")]
+[assembly: MelonInfo(typeof(Main), "StandaloneThirdPerson", "1.2.0", "gompo & ljoonal", "https://github.com/gompocp/VRChatMods/releases/")]
 
 namespace StandaloneThirdPerson
 {
@@ -18,19 +18,13 @@ namespace StandaloneThirdPerson
         private static Camera thirdPersonCamera;
         private static Camera vrcCamera;
         private static bool initialised;
-        internal static bool Allowed
-        {
-            get
-            {
-                return VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed;
-            }
-        }
+
+        private static bool Allowed => VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed;
 
         public override void OnApplicationStart()
         {
-            //Credits to Psychloor https://github.com/Psychloor/PlayerRotater/blob/master/PlayerRotater/ModMain.cs#L40
-            if (Environment.GetCommandLineArgs()
-                .All(args => !args.Equals("--no-vr", StringComparison.OrdinalIgnoreCase))) return;
+            //Credits to https://github.com/Psychloor/PlayerRotater/blob/master/PlayerRotater/ModMain.cs#L40 for this vr check
+            if (Environment.GetCommandLineArgs().All(args => !args.Equals("--no-vr", StringComparison.OrdinalIgnoreCase))) return;
             ModSettings.RegisterSettings();
             ModSettings.LoadSettings();
             MelonCoroutines.Start(WaitForUIInit());
@@ -71,8 +65,7 @@ namespace StandaloneThirdPerson
             var vrcCameraTransform = vrcCamera.transform;
             var thirdPersonCameraTransform = thirdPersonCamera.transform;
             thirdPersonCameraTransform.parent = vrcCameraTransform;
-            thirdPersonCameraTransform.position = vrcCameraTransform.position +
-                                                  (isBehind ? -vrcCameraTransform.forward : vrcCameraTransform.forward);
+            thirdPersonCameraTransform.position = vrcCameraTransform.position + (isBehind ? -vrcCameraTransform.forward : vrcCameraTransform.forward);
             thirdPersonCameraTransform.LookAt(vrcCameraTransform);
             if (isBehind)
             {
@@ -82,8 +75,7 @@ namespace StandaloneThirdPerson
                     thirdPersonCameraTransform.position -= vrcCameraTransform.right * 0.5f;
             }
 
-            thirdPersonCameraTransform.position +=
-                thirdPersonCameraTransform.forward * 0.25f; // Reverse + = In  && - = Out
+            thirdPersonCameraTransform.position += thirdPersonCameraTransform.forward * 0.25f; // Reverse + = In  && - = Out
         }
 
         private static void FreeformCameraUpdate()
@@ -160,9 +152,11 @@ namespace StandaloneThirdPerson
                     thirdPersonCamera.enabled = false;
                 }
 
-                thirdPersonCamera.transform.position +=
-                    thirdPersonCamera.transform.forward * Input.GetAxis("Mouse ScrollWheel");
-                if (currentMode == CameraMode.Freeform) FreeformCameraUpdate();
+                thirdPersonCamera.transform.position += thirdPersonCamera.transform.forward * Input.GetAxis("Mouse ScrollWheel");
+                if (currentMode == CameraMode.Freeform)
+                {
+                    FreeformCameraUpdate();
+                }
                 else if (currentMode == CameraMode.Behind && ModSettings.RearCameraChangedEnabled)
                 {
                     if (Input.GetKeyDown(ModSettings.MoveRearCameraLeftKeyBind))

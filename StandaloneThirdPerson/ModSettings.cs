@@ -8,9 +8,14 @@ namespace StandaloneThirdPerson
     {
         private static readonly string categoryName = "StandaloneThirdPerson";
 
-        private static MelonPreferences_Entry<string> keyBind, freeformKeyBind, moveRearCameraLeftKeyBind, moveRearCameraRightKeyBind;
+        private static MelonPreferences_Entry<string> keyBind,
+            freeformKeyBind,
+            moveRearCameraLeftKeyBind,
+            moveRearCameraRightKeyBind;
+
         private static MelonPreferences_Entry<float> fov, nearClipPlane;
         private static MelonPreferences_Entry<bool> enabled, rearCameraChangerEnabled;
+        public static bool RearCameraChangedEnabled = true;
 
 
         public static KeyCode KeyBind { get; private set; } = KeyCode.T;
@@ -20,7 +25,6 @@ namespace StandaloneThirdPerson
         public static float FOV { get; private set; } = 80;
         public static float NearClipPlane { get; private set; } = 0.01f;
         public static bool Enabled { get; private set; } = true;
-        public static bool RearCameraChangedEnabled = true;
 
 
         public static void RegisterSettings()
@@ -39,7 +43,7 @@ namespace StandaloneThirdPerson
         public static void LoadSettings()
         {
             KeyBind = keyBind.TryParseKeyCodePref();
-            FreeformKeyBind = freeformKeyBind.TryParseKeyCodePref(canBeNone: true);
+            FreeformKeyBind = freeformKeyBind.TryParseKeyCodePref(true);
             MoveRearCameraLeftKeyBind = moveRearCameraLeftKeyBind.TryParseKeyCodePref();
             MoveRearCameraRightKeyBind = moveRearCameraRightKeyBind.TryParseKeyCodePref();
             NearClipPlane = nearClipPlane.Value;
