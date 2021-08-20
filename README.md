@@ -50,6 +50,8 @@ More information [here](https://github.com/gompocp/ActionMenuApi)
 - Additionally lets you reset avatar or rejoin instance<br>
 - Shows an example of how you might use my action menu api thingy :) more info available [here](https://github.com/gompocp/ActionMenuApi/) <br>
 
+### Preview
+![Menu Preview](https://i.imgur.com/h43xPEG.png)
 
 ### Acknowledgements
 - [Knah](https://github.com/knah/) for the assetbundle loading mechanism from https://github.com/knah/VRCMods,<br>
@@ -68,8 +70,18 @@ More information [here](https://github.com/gompocp/ActionMenuApi)
 
 
 ## StandaloneThirdPerson
-- KeyBind configurable via uix/the config file. Valid values can be found [here](https://docs.unity3d.com/ScriptReference/KeyCode.html) (exluding `None`)
+- You can scroll in and out using the mouse scroll wheel
+- You can switch to behind shoulders too in rear view mode
+- KeyBinds configurable via uix/the config file. Valid values can be found [here](https://docs.unity3d.com/ScriptReference/KeyCode.html) (exluding `None`)
+  ![UIX Settings](https://i.imgur.com/ev94XEE.png) 
 - Third person camera fov and nearclipplane value can be edited as well via uix/the config file
+
+### Preview
+![Directly behind view](https://i.imgur.com/Nrq9V3z.jpeg)
+![Front View](https://i.imgur.com/BSfitPU.png)
+![Left Side View](https://i.imgur.com/RuDD82W.jpeg)
+![Right Side View](https://i.imgur.com/S6vvWwx.jpeg)
+
 
 ### Acknowledgements
 - Credit to [Knah](https://github.com/knah/) for [EnableDisable Listener](https://github.com/knah/VRCMods/blob/master/UIExpansionKit/Components/EnableDisableListener.cs)
@@ -83,6 +95,9 @@ More information [here](https://github.com/gompocp/ActionMenuApi)
 - Currently you can only download/preload one world at a time
 - If you go to another world while downloading, it'll cancel the download
 - Performance may degrade for split second on world enter due to you having a large cache size
+
+### Preview
+![World Page Preview](https://i.imgur.com/tGpwiSC.png)
 
 ### Acknowledgements
 - Credit to [Psychloor](https://github.com/Psychloor/AdvancedInvites/blob/master/AdvancedInvites/InviteHandler.cs) for method to convert worldID to apiWorld instance + much much more, and some of the way stuff is structured is also inspired by his utilities file
