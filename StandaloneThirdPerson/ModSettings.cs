@@ -8,12 +8,13 @@ namespace StandaloneThirdPerson
     {
         private static readonly string categoryName = "StandaloneThirdPerson";
 
-        private static MelonPreferences_Entry<string> keyBind, moveRearCameraLeftKeyBind, moveRearCameraRightKeyBind;
+        private static MelonPreferences_Entry<string> keyBind, freeformKeyBind, moveRearCameraLeftKeyBind, moveRearCameraRightKeyBind;
         private static MelonPreferences_Entry<float> fov, nearClipPlane;
         private static MelonPreferences_Entry<bool> enabled, rearCameraChangerEnabled;
 
 
         public static KeyCode KeyBind { get; private set; } = KeyCode.T;
+        public static KeyCode FreeformKeyBind { get; private set; } = KeyCode.None;
         public static KeyCode MoveRearCameraLeftKeyBind { get; private set; } = KeyCode.Q;
         public static KeyCode MoveRearCameraRightKeyBind { get; private set; } = KeyCode.E;
         public static float FOV { get; private set; } = 80;
@@ -26,6 +27,7 @@ namespace StandaloneThirdPerson
         {
             var category = MelonPreferences.CreateCategory(categoryName, categoryName);
             keyBind = category.CreateEntry("Keybind", KeyBind.ToString(), "Keybind");
+            freeformKeyBind = category.CreateEntry("Freeform Keybind", FreeformKeyBind.ToString(), "Freeform Keybind");
             fov = category.CreateEntry("Camera FOV", FOV, "Camera FOV");
             nearClipPlane = category.CreateEntry("Camera NearClipPlane Value", NearClipPlane, "Camera NearClipPlane Value");
             enabled = category.CreateEntry("Mod Enabled", Enabled, "Mod Enabled");
@@ -37,6 +39,7 @@ namespace StandaloneThirdPerson
         public static void LoadSettings()
         {
             KeyBind = keyBind.TryParseKeyCodePref();
+            FreeformKeyBind = freeformKeyBind.TryParseKeyCodePref(canBeNone: true);
             MoveRearCameraLeftKeyBind = moveRearCameraLeftKeyBind.TryParseKeyCodePref();
             MoveRearCameraRightKeyBind = moveRearCameraRightKeyBind.TryParseKeyCodePref();
             NearClipPlane = nearClipPlane.Value;
