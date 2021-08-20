@@ -21,7 +21,13 @@ namespace StandaloneThirdPerson
         private static Camera thirdPersonCamera;
         private static Camera vrcCamera;
         private static bool initialised;
-        internal static bool Allowed;
+        internal static bool Allowed
+        {
+            get
+            {
+                return VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed;
+            }
+        }
 
         public override void OnApplicationStart()
         {
@@ -31,6 +37,7 @@ namespace StandaloneThirdPerson
             ModSettings.RegisterSettings();
             ModSettings.LoadSettings();
             MelonCoroutines.Start(WaitForUIInit());
+            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += new Action(delegate { currentMode = CameraMode.Normal; });
         }
 
         private static IEnumerator WaitForUIInit()
@@ -150,17 +157,6 @@ namespace StandaloneThirdPerson
         public override void OnPreferencesSaved()
         {
             ModSettings.LoadSettings();
-        }
-
-        [HarmonyPatch(typeof(NetworkManager), "OnJoinedRoom")]
-        internal class OnJoinedRoomPatch
-        {
-            private static void Prefix()
-            {
-                currentMode = CameraMode.Normal;
-                Allowed = false;
-                MelonCoroutines.Start(Utils.CheckWorld());
-            }
         }
     }
 }
