@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using HarmonyLib;
 using MelonLoader;
 using UnityEngine;
 using Main = StandaloneThirdPerson.Main;
@@ -19,8 +20,8 @@ namespace StandaloneThirdPerson
         private static Camera vrcCamera;
         private static bool initialised;
 
-        private static bool Allowed => VRChatUtilityKit.Utilities.VRCUtils.AreRiskyFunctionsAllowed;
-
+        internal static bool Allowed;
+        
         public override void OnApplicationStart()
         {
             //Credits to https://github.com/Psychloor/PlayerRotater/blob/master/PlayerRotater/ModMain.cs#L40 for this vr check
@@ -28,7 +29,6 @@ namespace StandaloneThirdPerson
             ModSettings.RegisterSettings();
             ModSettings.LoadSettings();
             MelonCoroutines.Start(WaitForUIInit());
-            VRChatUtilityKit.Utilities.NetworkEvents.OnRoomJoined += new Action(delegate { currentMode = CameraMode.Normal; });
         }
 
         private static IEnumerator WaitForUIInit()
@@ -186,6 +186,17 @@ namespace StandaloneThirdPerson
         public override void OnPreferencesSaved()
         {
             ModSettings.LoadSettings();
+        }
+        
+        [HarmonyPatch(typeof(NetworkManager), "OnJoinedRoom")]
+        internal class OnJoinedRoomPatch
+        {
+            private static void Prefix()
+            {
+                currentMode = CameraMode.Normal;
+                Allowed = false;
+                MelonCoroutines.Start(Utils.CheckWorld());
+            }
         }
     }
 }
