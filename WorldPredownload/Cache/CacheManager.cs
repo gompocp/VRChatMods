@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities;
 using MelonLoader;
 using WorldPredownload.Helpers;
+using Int32 = Il2CppSystem.Int32;
 
 namespace WorldPredownload.Cache
 {
@@ -29,30 +31,25 @@ namespace WorldPredownload.Cache
         {
             Directories.Add(hash);
         }
+        
 
-
-        public static bool HasDownloadedWorld(string id)
+        public static bool HasDownloadedWorld(string url)
         {
-            return false; //Dead Method for now in case I want to rework the invite checking mechanism
-        }
-
-        public static bool HasDownloadedWorld(string id, int version)
-        {
-            var hash = ComputeAssetHash(id);
+            var hash = ComputeAssetHash(url);
             if (Directories.Contains(hash))
             {
-                if (HasVersion(hash, version))
+                if (HasVersion(hash, url))
                     return true;
                 return false;
             }
 
             return false;
         }
-
-        public static string ComputeAssetHash(string id)
+        
+        public static string ComputeAssetHash(string url)
         {
-            return Utilities.ByteArrayToString(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(id))).ToUpper()
-                .Substring(0, 16);
+            var id = Utilities.ExtractFileId(url);
+            return Utilities.ByteArrayToString(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(id))).ToUpper().Substring(0, 16);
         }
 
         public static UnityEngine.Cache GetCache()
@@ -60,26 +57,32 @@ namespace WorldPredownload.Cache
             return Utilities.GetAssetBundleDownloadManager().field_Private_Cache_0;
         }
 
-        private static bool HasVersion(string hash, int version)
+        private static bool HasVersion(string hash, string url)
         {
+            var versionString = ComputeVersionString(url);
             if (!Directory.Exists(Path.Combine(GetCache().path, hash))) return false;
             foreach (var directoryInfo in new DirectoryInfo(Path.Combine(GetCache().path, hash)).GetDirectories())
-                if (directoryInfo.Name.EndsWith(ComputeVersionString(version)))
+                if (directoryInfo.Name.EndsWith(versionString))
                     return true;
             return false;
         }
 
-        public static string ComputeVersionString(int version) //Int to Little Endian Hex String
+        public static string ComputeVersionString(string url) //Int to Little Endian Hex String
         {
+            string fileversion = Utilities.ExtractFileVersion(url);
+            if (string.IsNullOrEmpty(fileversion))
+                MelonLogger.Error("This is going to lead to an error shortly. uh oh...");
+            
+            var version = Int32.Parse(fileversion);
             var bytes = BitConverter.GetBytes(version);
             var result = "";
             foreach (var b in bytes) result += b.ToString("x2");
             return result;
         }
 
-        public static bool WorldFileExists(string id)
+        public static bool WorldFileExists(string url)
         {
-            var expectedLocation = new DirectoryInfo(Path.Combine(GetCache().path, ComputeAssetHash(id)));
+            var expectedLocation = new DirectoryInfo(Path.Combine(GetCache().path, ComputeAssetHash(url)));
             if (!Directory.Exists(expectedLocation.FullName)) return false;
             foreach (var file in expectedLocation.GetFiles("*.*", SearchOption.AllDirectories))
                 if (file.Name.Contains("__data"))

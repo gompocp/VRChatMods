@@ -22,7 +22,7 @@ namespace WorldPredownload.DownloadManager
         {
             await TaskUtilities.YieldToMainThread();
             webClient.Dispose();
-            if (!CacheManager.WorldFileExists(DownloadInfo.ApiWorld.id))
+            if (!CacheManager.WorldFileExists(DownloadInfo.ApiWorld.assetUrl))
             {
                 if (ModSettings.hideQMStatusWhenInActive) WorldDownloadStatus.Disable();
                 Downloading = false;
@@ -38,12 +38,20 @@ namespace WorldPredownload.DownloadManager
                 return;
             }
 
+            // var operation = AssetBundle.RecompressAssetBundleAsync(file, file, new BuildCompression
+            // {
+            //     compression = CompressionType.Lz4,
+            //     level = CompressionLevel.High,
+            //     blockSize = 131072U
+            // }, 0, ThreadPriority.Normal);
+            
             var operation = AssetBundle.RecompressAssetBundleAsync(file, file, new BuildCompression
             {
                 compression = CompressionType.Lz4,
                 level = CompressionLevel.High,
                 blockSize = 131072U
             }, 0, ThreadPriority.Normal);
+            
             operation.add_completed(DelegateSupport.ConvertDelegate<Action<AsyncOperation>>(
                 new System.Action<AsyncOperation>(
                     delegate
@@ -64,7 +72,7 @@ namespace WorldPredownload.DownloadManager
             if (ModSettings.showHudMessages) Utilities.QueueHudMessage("Download Finished");
             if (ModSettings.hideQMStatusWhenInActive) WorldDownloadStatus.Disable();
             Downloading = false;
-            CacheManager.AddDirectory(CacheManager.ComputeAssetHash(DownloadInfo.ApiWorld.id));
+            CacheManager.AddDirectory(CacheManager.ComputeAssetHash(DownloadInfo.ApiWorld.assetUrl));
             HudIcon.Disable();
             InviteButton.UpdateTextDownloadStopped();
             FriendButton.UpdateTextDownloadStopped();

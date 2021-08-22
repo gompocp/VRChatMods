@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using HarmonyLib;
 using MelonLoader;
+using Transmtn;
 using Transmtn.DTO.Notifications;
 using UnhollowerBaseLib;
 using UnhollowerBaseLib.Attributes;
@@ -76,7 +77,10 @@ namespace WorldPredownload
             try
             {
                 worldInfoSetupDelegate(thisPtr, apiWorldPtr, apiWorldInstancePtr, something1, something2, additionalJunkPtr);
-                if (apiWorldPtr != IntPtr.Zero) WorldButton.UpdateText(new ApiWorld(apiWorldPtr));
+                if (apiWorldPtr == IntPtr.Zero) return;
+                var apiWorld = new ApiWorld(apiWorldPtr);
+                if (apiWorld.assetUrl == null) return; // This patch gets called twice. First time with a null url & a second time with a valid one
+                WorldButton.UpdateText(new ApiWorld(apiWorldPtr));
             }
             catch (Exception e)
             {
