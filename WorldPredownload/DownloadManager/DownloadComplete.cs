@@ -44,14 +44,14 @@ namespace WorldPredownload.DownloadManager
             //     level = CompressionLevel.High,
             //     blockSize = 131072U
             // }, 0, ThreadPriority.Normal);
-            
+
             var operation = AssetBundle.RecompressAssetBundleAsync(file, file, new BuildCompression
             {
                 compression = CompressionType.Lz4,
                 level = CompressionLevel.High,
                 blockSize = 131072U
             }, 0, ThreadPriority.Normal);
-            
+
             operation.add_completed(DelegateSupport.ConvertDelegate<Action<AsyncOperation>>(
                 new System.Action<AsyncOperation>(
                     delegate
@@ -90,8 +90,9 @@ namespace WorldPredownload.DownloadManager
                     {
                         Utilities.GoToWorld(DownloadInfo.ApiWorld, DownloadInfo.InstanceIDTags, false);
                     }
+
                     break;
-                
+
                 case DownloadType.Invite:
                     if (!ModSettings.autoFollowInvites)
                     {
@@ -102,8 +103,9 @@ namespace WorldPredownload.DownloadManager
                     {
                         Utilities.GoToWorld(DownloadInfo.ApiWorld, DownloadInfo.InstanceIDTags, true);
                     }
+
                     break;
-                
+
                 case DownloadType.World:
                     if (!ModSettings.autoFollowWorlds)
                     {
@@ -114,8 +116,8 @@ namespace WorldPredownload.DownloadManager
                     {
                         Utilities.GoToWorld(DownloadInfo.ApiWorld, DownloadInfo.InstanceIDTags, false);
                     }
+
                     break;
-                
             }
         }
     }

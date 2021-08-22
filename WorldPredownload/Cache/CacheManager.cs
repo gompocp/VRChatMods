@@ -4,10 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities;
 using MelonLoader;
 using WorldPredownload.Helpers;
-using Int32 = Il2CppSystem.Int32;
 
 namespace WorldPredownload.Cache
 {
@@ -21,7 +19,7 @@ namespace WorldPredownload.Cache
             Stopwatch.Restart();
             Directories.Clear();
             var files = Directory.GetDirectories(GetCache().path, "*", SearchOption.TopDirectoryOnly);
-            for (int i = 0; i < files.Length; i++)
+            for (var i = 0; i < files.Length; i++)
                 Directories.Add(Path.GetFileName(files[i]));
             Stopwatch.Stop();
             MelonLogger.Msg($"Finished getting {Directories.Count} cache entries in {Stopwatch.ElapsedMilliseconds}ms");
@@ -31,7 +29,7 @@ namespace WorldPredownload.Cache
         {
             Directories.Add(hash);
         }
-        
+
 
         public static bool HasDownloadedWorld(string url)
         {
@@ -45,11 +43,12 @@ namespace WorldPredownload.Cache
 
             return false;
         }
-        
+
         public static string ComputeAssetHash(string url)
         {
             var id = Utilities.ExtractFileId(url);
-            return Utilities.ByteArrayToString(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(id))).ToUpper().Substring(0, 16);
+            return Utilities.ByteArrayToString(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(id))).ToUpper()
+                .Substring(0, 16);
         }
 
         public static UnityEngine.Cache GetCache()
@@ -69,11 +68,11 @@ namespace WorldPredownload.Cache
 
         public static string ComputeVersionString(string url) //Int to Little Endian Hex String
         {
-            string fileversion = Utilities.ExtractFileVersion(url);
+            var fileversion = Utilities.ExtractFileVersion(url);
             if (string.IsNullOrEmpty(fileversion))
                 MelonLogger.Error("This is going to lead to an error shortly. uh oh...");
-            
-            var version = Int32.Parse(fileversion);
+
+            var version = int.Parse(fileversion);
             var bytes = BitConverter.GetBytes(version);
             var result = "";
             foreach (var b in bytes) result += b.ToString("x2");

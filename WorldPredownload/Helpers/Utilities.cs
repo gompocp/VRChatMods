@@ -18,6 +18,11 @@ namespace WorldPredownload.Helpers
     [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
     public static class Utilities
     {
+        private static readonly Regex fileIdRegex = new("/file_[0-9A-Za-z-]+/", RegexOptions.Compiled);
+
+        private static readonly Regex fileVersionRegex =
+            new("(?:\\/file_[0-9A-Za-z-]+\\/)([0-9]+)", RegexOptions.Compiled);
+
         public static void AdvancedInvitesHandleInvite(Notification notification)
         {
 #if DEBUG
@@ -136,15 +141,10 @@ namespace WorldPredownload.Helpers
         {
             return fileIdRegex.Match(txt).Groups[1].Value;
         }
-        
+
         public static string ExtractFileVersion(string txt)
         {
             return fileVersionRegex.Match(txt).Groups[1].Value;
         }
-
-        private static Regex fileIdRegex = new ("/file_[0-9A-Za-z-]+/", RegexOptions.Compiled);
-
-        private static Regex fileVersionRegex = new Regex("(?:\\/file_[0-9A-Za-z-]+\\/)([0-9]+)", RegexOptions.Compiled);
-        
     }
 }
