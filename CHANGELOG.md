@@ -1,3 +1,6 @@
+### UpdateChecker v1.0.0
+- Initial release
+
 ### StandaloneThirdPerson v1.2.0
 - Added a freeform camera (You can thank [ljoonal](https://github.com/ljoonal/) for that)
 

@@ -7,6 +7,7 @@ Modding the VRChat client is against VRChat's Terms of Service. Therefore use th
 - [ActionMenuApi](#actionmenuapi)
 - [ActionMenuUtils](#actionmenuutils)
 - [StandaloneThirdPerson](#standalonethirdperson)
+- [UpdateChecker](#updatechecker)  
 - [WorldPredownload](#worldpredownload)
 
 ## Canny Posts
@@ -26,6 +27,12 @@ To Build simply:
 2. Open solution in an ide that supports C#
 3. Inside `Directory.Build.props` edit the path inside `<VRChatFolder>` to the path of your own game install
 4. Build Solution
+
+
+### ILRepack
+A copy of [ILRepack.Lib.MSBuild.Task](https://github.com/ravibpatel/ILRepack.Lib.MSBuild.Task) and [ILRepack](https://github.com/gluck/il-repack) are included in the repo to build the solution
+
+
 
 ## ActionMenuApi
 
@@ -87,6 +94,19 @@ More information [here](https://github.com/gompocp/ActionMenuApi)
 - Credit to [Psychloor and emmVRC team](https://github.com/Psychloor/PlayerRotater/blob/master/PlayerRotater/Utilities.cs#L76) for world check
 - Credit to [ljoonal](https://github.com/ljoonal/) some of the math is loosely based off of their [third person mod for cvr](https://github.com/ljoonal/CVR-Mods/blob/main/ThirdPersonCamera/ThirdPersonCamera.cs)
 - Some acknowledgement needs to be given to [emmVRC](https://github.com/emmVRC/) as they are the people that originally (afaik ¯\\\_(ツ)_/¯ ) had a third person mod for vrchat
+
+## UpdateChecker
+
+- Simple mod for people who dislike auto updaters
+- Checks for mod updates and lets you know in the console
+- Only works for mods that follow the semver format
+
+### Preview
+![Console Preview](https://i.imgur.com/s3BP2qf.png)
+
+### Acknowledgements
+
+- Some code was used from [Slaynash](https://github.com/Slaynash/VRCModUpdater/blob/main/Core/VRCModUpdaterCore.cs) 
 
 ## WorldPredownload
 

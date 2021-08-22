@@ -17,8 +17,6 @@ using WorldPredownload.UI;
 using InfoType = VRC.UI.PageUserInfo.EnumNPublicSealedvaNoOnOfSeReBlInFa10Unique;
 using ListType = UiUserList.EnumNPublicSealedvaNoInFrOnOfSeInFa9vUnique;
 
-//using OnDownloadComplete = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoObUnique;
-
 namespace WorldPredownload
 {
     [HarmonyPatch(typeof(NetworkManager), "OnLeftRoom")]
