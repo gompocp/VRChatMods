@@ -69,7 +69,11 @@ namespace WorldPredownload.Cache
 
         public static string ComputeVersionString(string url) //Int to Little Endian Hex String
         {
-            var version = Int32.Parse(Utilities.ExtractFileVersion(url));
+            string fileversion = Utilities.ExtractFileVersion(url);
+            if (string.IsNullOrEmpty(fileversion))
+                MelonLogger.Error("This is going to lead to an error shortly. uh oh...");
+            
+            var version = Int32.Parse(fileversion);
             var bytes = BitConverter.GetBytes(version);
             var result = "";
             foreach (var b in bytes) result += b.ToString("x2");

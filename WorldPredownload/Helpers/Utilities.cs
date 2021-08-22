@@ -144,7 +144,7 @@ namespace WorldPredownload.Helpers
 
         private static Regex fileIdRegex = new ("/file_[0-9A-Za-z-]+/", RegexOptions.Compiled);
 
-        private static Regex fileVersionRegex = new Regex("/(?:\\/file_[0-9A-Za-z-]+\\/)([0-9]+)/gi", RegexOptions.Compiled);
+        private static Regex fileVersionRegex = new Regex("(?:\\/file_[0-9A-Za-z-]+\\/)([0-9]+)", RegexOptions.Compiled);
         
     }
 }
