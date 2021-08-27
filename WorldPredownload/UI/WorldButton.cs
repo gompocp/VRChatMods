@@ -29,7 +29,7 @@ namespace WorldPredownload.UI
                     WorldDownloadManager.CancelDownload();
                     return;
                 }
-
+                
                 WorldDownloadManager.ProcessDownload(
                     DownloadInfo.CreateWorldPageDownloadInfo(
                         GetWorldInfo().field_Private_ApiWorld_0,
