@@ -22,12 +22,16 @@ namespace UpdateChecker
             {
                 Headers = {["User-Agent"] = "UpdateChecker"}
             };
-            apiResponse = client.DownloadString("https://api.vrcmg.com/v0/mods.json");
-            if (string.IsNullOrEmpty(apiResponse))
+            try
             {
-                MelonLogger.Error("Failed to contact api");
+                apiResponse = client.DownloadString("https://api.vrcmg.com/v0/mods.json");
+            }
+            catch (WebException e)
+            {
+                MelonLogger.Error($"Failed to contact api: {e.Message}");
                 return;
             }
+            
             List<Mod> mods = JsonConvert.DeserializeObject<List<Mod>>(apiResponse);
 
             if (mods == null || mods.Count == 0)
@@ -49,6 +53,7 @@ namespace UpdateChecker
                 }
                 catch (ArgumentException)
                 {
+                    // Ignore. There's a null check later that handles this later
                 }
                 foreach (var alias in mod.aliases)
                 {
@@ -59,36 +64,36 @@ namespace UpdateChecker
                 }
             }
             
-            foreach (var melonmod in MelonHandler.Mods)
+            foreach (var melon in MelonHandler.Mods)
             {
                 try
                 {
-                    SemVersion semVersion = SemVersion.Parse(melonmod.Info.Version);
-                    if (workingModsLookUpTable.ContainsKey(melonmod.Info.Name))
+                    SemVersion semVersion = SemVersion.Parse(melon.Info.Version);
+                    if (workingModsLookUpTable.ContainsKey(melon.Info.Name))
                     {
-                        var latestVersion = workingModsLookUpTable[melonmod.Info.Name];
+                        var latestVersion = workingModsLookUpTable[melon.Info.Name];
                         if (latestVersion.SemVersion == null)
                         {
                             throw new ArgumentException();
                         }
                         if (semVersion < latestVersion.SemVersion)
                         {
-                            MelonLogger.Msg(ConsoleColor.Green,$"Mod {melonmod.Info.Name} by {melonmod.Info.Author} is out of date. {melonmod.Info.Version} --> {latestVersion.modversion}");
+                            MelonLogger.Msg(ConsoleColor.Green,$"Mod {melon.Info.Name} by {melon.Info.Author} is out of date. {melon.Info.Version} --> {latestVersion.modversion}");
                         }
                     }
-                    else if (brokenModsLookUpTable.ContainsKey(melonmod.Info.Name))
+                    else if (brokenModsLookUpTable.ContainsKey(melon.Info.Name))
                     {
-                        MelonLogger.Msg(ConsoleColor.Yellow,$"Running currently broken mod: {melonmod.Info.Name} by {melonmod.Info.Author}");
+                        MelonLogger.Msg(ConsoleColor.Yellow,$"Running currently broken mod: {melon.Info.Name} by {melon.Info.Author}");
                     }
-                    else if (!melonmod.Info.Name.Equals("UpdateChecker"))
+                    else if (!melon.Info.Name.Equals("UpdateChecker"))
                     {
-                        MelonLogger.Msg(ConsoleColor.Blue,$"Running unknown mod: {melonmod.Info.Name} by {melonmod.Info.Author}");
+                        MelonLogger.Msg(ConsoleColor.Blue,$"Running unknown mod: {melon.Info.Name} by {melon.Info.Author}");
                     }
                     
                 }
                 catch(ArgumentException)
                 {
-                    MelonLogger.Msg(ConsoleColor.Red,$"MelonMod {melonmod.Info.Name} isn't following semver. Skipping...");   
+                    MelonLogger.Msg(ConsoleColor.Red,$"MelonMod {melon.Info.Name} isn't following semver. Skipping...");   
                 }
             }
         }
