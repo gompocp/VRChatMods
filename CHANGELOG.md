@@ -1,6 +1,6 @@
 ### WorldPredownload v1.6.0
 - Temporarily disable invite predownloading
-- Fixed downloading issues
+- Fixed downloading issues (Thanks [Natsumi](https://github.com/Natsumi-sama/) for your help :) )
 
 ### UpdateChecker v1.0.0
 - Initial release

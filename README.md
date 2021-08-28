@@ -121,6 +121,8 @@ More information [here](https://github.com/gompocp/ActionMenuApi)
 
 ### Acknowledgements
 
+- Credit to [Natsumi](https://github.com/Natsumi-sama/) for helping me with the new cache structure <3
+- Credit to [vrcx team](https://github.com/pypy-vrc/VRCX/blob/master/html/src/app.js) for their regexes to parse the asseturl   
 - Credit to [Psychloor](https://github.com/Psychloor/AdvancedInvites/blob/master/AdvancedInvites/InviteHandler.cs) for method to convert worldID to apiWorld instance + much much more, and some of the way stuff is structured is also inspired by his utilities file
 - Credit to [Ben](https://github.com/BenjaminZehowlt/DynamicBonesSafety) for xref scanning mechanism and hud icon idea
 - Credit to [Knah](https://github.com/knah/) for [Enable Listener](https://github.com/knah/VRCMods/blob/master/UIExpansionKit/Components/EnableDisableListener.cs) and the [hud icon method](https://github.com/knah/VRCMods/blob/master/JoinNotifier/JoinNotifierMod.cs#L120) that I changed to use here along with the [assetbundle loading mechanism](https://github.com/knah/VRCMods/blob/master/JoinNotifier/JoinNotifierMod.cs#L61)
