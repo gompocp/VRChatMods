@@ -1,3 +1,6 @@
+### WorldPredownload v1.6.1
+- Small bug fix
+
 ### WorldPredownload v1.6.0
 - Temporarily disable invite predownloading
 - Fixed downloading issues (Thanks [Natsumi](https://github.com/Natsumi-sama/) for your help :) )
