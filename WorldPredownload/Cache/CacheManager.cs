@@ -47,6 +47,9 @@ namespace WorldPredownload.Cache
         public static string ComputeAssetHash(string url)
         {
             var id = Utilities.ExtractFileId(url);
+            #if DEBUG
+            MelonLogger.Msg($"File Id: {id}");
+            #endif
             return Utilities.ByteArrayToString(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(id))).ToUpper()
                 .Substring(0, 16);
         }
@@ -78,7 +81,7 @@ namespace WorldPredownload.Cache
             foreach (var b in bytes) result += b.ToString("x2");
             return result;
         }
-
+        
         public static bool WorldFileExists(string url)
         {
             var expectedLocation = new DirectoryInfo(Path.Combine(GetCache().path, ComputeAssetHash(url)));

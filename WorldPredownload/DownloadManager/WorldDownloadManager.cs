@@ -178,6 +178,9 @@ namespace WorldPredownload.DownloadManager
             if (!Directory.Exists(assetVersionDir)) Directory.CreateDirectory(assetVersionDir);
 
             var fileName = Path.Combine(assetVersionDir, "__data");
+            #if DEBUG
+            MelonLogger.Msg($"Calculated Directory: {assetVersionDir}");
+            #endif
             MelonLogger.Msg($"Starting world download for: {apiWorld.name}");
             file = fileName;
 

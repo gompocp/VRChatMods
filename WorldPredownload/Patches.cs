@@ -19,6 +19,7 @@ using ListType = UiUserList.EnumNPublicSealedvaNoInFrOnOfSeInFa9vUnique;
 
 namespace WorldPredownload
 {
+    
     [HarmonyPatch(typeof(NetworkManager), "OnLeftRoom")]
     internal class OnLeftRoomPatch
     {
@@ -78,7 +79,10 @@ namespace WorldPredownload
                 if (apiWorldPtr == IntPtr.Zero) return;
                 var apiWorld = new ApiWorld(apiWorldPtr);
                 if (apiWorld.assetUrl == null) return; // This patch gets called twice. First time with a null url & a second time with a valid one
-                WorldButton.UpdateText(new ApiWorld(apiWorldPtr));
+                #if DEBUG
+                MelonLogger.Msg(apiWorld.assetUrl);
+#endif
+                WorldButton.UpdateText(apiWorld);
             }
             catch (Exception e)
             {
@@ -113,7 +117,6 @@ namespace WorldPredownload
         public static void Prefix(Notification __0)
         {
             SelectedNotification = __0;
-            MelonLogger.Msg("Called patch");
             InviteButton.UpdateText();
         }
     }
