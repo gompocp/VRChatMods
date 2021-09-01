@@ -1,3 +1,6 @@
+### WorldPredownload v1.6.2
+- Patch out possible memory leak
+
 ### WorldPredownload v1.6.1
 - Small bug fix
 
