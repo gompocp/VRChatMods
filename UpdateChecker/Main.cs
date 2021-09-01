@@ -53,7 +53,7 @@ namespace UpdateChecker
                 }
                 catch (ArgumentException)
                 {
-                    // Ignore. There's a null check later that handles this later
+                    // Ignore. There's a null check that handles this later
                 }
                 foreach (var alias in mod.aliases)
                 {
@@ -69,27 +69,24 @@ namespace UpdateChecker
                 try
                 {
                     SemVersion semVersion = SemVersion.Parse(melon.Info.Version);
+                    
                     if (workingModsLookUpTable.ContainsKey(melon.Info.Name))
                     {
                         var latestVersion = workingModsLookUpTable[melon.Info.Name];
+                        
                         if (latestVersion.SemVersion == null)
-                        {
                             throw new ArgumentException();
-                        }
+                        
                         if (semVersion < latestVersion.SemVersion)
-                        {
                             MelonLogger.Msg(ConsoleColor.Green,$"Mod {melon.Info.Name} by {melon.Info.Author} is out of date. {melon.Info.Version} --> {latestVersion.modversion}");
-                        }
+                        
                     }
                     else if (brokenModsLookUpTable.ContainsKey(melon.Info.Name))
-                    {
                         MelonLogger.Msg(ConsoleColor.Yellow,$"Running currently broken mod: {melon.Info.Name} by {melon.Info.Author}");
-                    }
-                    else if (!melon.Info.Name.Equals("UpdateChecker"))
-                    {
-                        MelonLogger.Msg(ConsoleColor.Blue,$"Running unknown mod: {melon.Info.Name} by {melon.Info.Author}");
-                    }
                     
+                    else if (!melon.Info.Name.Equals("UpdateChecker"))
+                        MelonLogger.Msg(ConsoleColor.Blue,$"Running unknown mod: {melon.Info.Name} by {melon.Info.Author}");
+
                 }
                 catch(ArgumentException)
                 {

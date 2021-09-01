@@ -47,8 +47,8 @@ namespace WorldPredownload.Cache
         public static string ComputeAssetHash(string url)
         {
             var id = Utilities.ExtractFileId(url);
-            var hash = Utilities.ByteArrayToString(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(id))).ToUpper();
-
+            using var sha256 = SHA256.Create();
+            var hash = Utilities.ByteArrayToString(sha256.ComputeHash(Encoding.UTF8.GetBytes(id))).ToUpper();   
             #if DEBUG
             MelonLogger.Msg($"File Id: {id}");
             MelonLogger.Msg($"Hash: {hash}");
