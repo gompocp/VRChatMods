@@ -21,7 +21,7 @@ namespace WorldPredownload.DownloadManager
         {
             await TaskUtilities.YieldToMainThread();
             webClient.Dispose();
-            if (!CacheManager.WorldFileExists(DownloadInfo.ApiWorld.id))
+            if (!CacheManager.WorldFileExists(DownloadInfo.ApiWorld.assetUrl))
             {
                 Instance.DownloadState = DownloadState.Idle;
 
@@ -32,12 +32,20 @@ namespace WorldPredownload.DownloadManager
                 return;
             }
 
-            var operation = AssetBundle.RecompressAssetBundleAsync(file, file, new BuildCompression
+            // var operation = AssetBundle.RecompressAssetBundleAsync(file, file, new BuildCompression
+            // {
+            //     compression = CompressionType.Lz4,
+            //     level = CompressionLevel.High,
+            //     blockSize = 131072U
+            // }, 0, ThreadPriority.Normal);
+            
+            var operation = AssetBundle.RecompressAssetBundleAsync_Internal(file, file, new BuildCompression
             {
                 compression = CompressionType.Lz4,
                 level = CompressionLevel.High,
                 blockSize = 131072U
             }, 0, ThreadPriority.Normal);
+
             operation.add_completed(DelegateSupport.ConvertDelegate<Action<AsyncOperation>>(
                 new System.Action<AsyncOperation>(
                     delegate

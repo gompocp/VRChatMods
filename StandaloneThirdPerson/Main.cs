@@ -7,9 +7,7 @@ using UnityEngine;
 using Main = StandaloneThirdPerson.Main;
 
 [assembly: MelonGame("VRChat", "VRChat")]
-[assembly:
-    MelonInfo(typeof(Main), "StandaloneThirdPerson", "1.1.0", "gompo",
-        "https://github.com/gompocp/VRChatMods/releases/")]
+[assembly: MelonInfo(typeof(Main), "StandaloneThirdPerson", "1.2.0", "gompo & ljoonal", "https://github.com/gompocp/VRChatMods/releases/")]
 
 namespace StandaloneThirdPerson
 {
@@ -21,13 +19,13 @@ namespace StandaloneThirdPerson
         private static Camera thirdPersonCamera;
         private static Camera vrcCamera;
         private static bool initialised;
-        internal static bool Allowed;
 
+        internal static bool Allowed;
+        
         public override void OnApplicationStart()
         {
-            //Credits to Psychloor https://github.com/Psychloor/PlayerRotater/blob/master/PlayerRotater/ModMain.cs#L40
-            if (Environment.GetCommandLineArgs()
-                .All(args => !args.Equals("--no-vr", StringComparison.OrdinalIgnoreCase))) return;
+            //Credits to https://github.com/Psychloor/PlayerRotater/blob/master/PlayerRotater/ModMain.cs#L40 for this vr check
+            if (Environment.GetCommandLineArgs().All(args => !args.Equals("--no-vr", StringComparison.OrdinalIgnoreCase))) return;
             ModSettings.RegisterSettings();
             ModSettings.LoadSettings();
             MelonCoroutines.Start(WaitForUIInit());
@@ -66,8 +64,8 @@ namespace StandaloneThirdPerson
         {
             var vrcCameraTransform = vrcCamera.transform;
             var thirdPersonCameraTransform = thirdPersonCamera.transform;
-            thirdPersonCameraTransform.position = vrcCameraTransform.position +
-                                                  (isBehind ? -vrcCameraTransform.forward : vrcCameraTransform.forward);
+            thirdPersonCameraTransform.parent = vrcCameraTransform;
+            thirdPersonCameraTransform.position = vrcCameraTransform.position + (isBehind ? -vrcCameraTransform.forward : vrcCameraTransform.forward);
             thirdPersonCameraTransform.LookAt(vrcCameraTransform);
             if (isBehind)
             {
@@ -77,8 +75,28 @@ namespace StandaloneThirdPerson
                     thirdPersonCameraTransform.position -= vrcCameraTransform.right * 0.5f;
             }
 
-            thirdPersonCameraTransform.position +=
-                thirdPersonCameraTransform.forward * 0.25f; // Reverse + = In  && - = Out
+            thirdPersonCameraTransform.position += thirdPersonCameraTransform.forward * 0.25f; // Reverse + = In  && - = Out
+        }
+
+        private static void FreeformCameraUpdate()
+        {
+            float h = 0;
+            if (Input.GetKey(KeyCode.UpArrow)) h -= 1f;
+            if (Input.GetKey(KeyCode.DownArrow)) h += 1f;
+            float v = 0;
+            if (Input.GetKey(KeyCode.LeftArrow)) v -= 1f;
+            if (Input.GetKey(KeyCode.RightArrow)) v += 1f;
+            thirdPersonCamera.transform.eulerAngles += new Vector3(h, v, 0);
+
+            Vector3 movement = new();
+            if (Input.GetKey(KeyCode.U)) movement += thirdPersonCamera.transform.up;
+            if (Input.GetKey(KeyCode.O)) movement -= thirdPersonCamera.transform.up;
+            if (Input.GetKey(KeyCode.L)) movement += thirdPersonCamera.transform.right;
+            if (Input.GetKey(KeyCode.J)) movement -= thirdPersonCamera.transform.right;
+            if (Input.GetKey(KeyCode.I)) movement += thirdPersonCamera.transform.forward;
+            if (Input.GetKey(KeyCode.K)) movement -= thirdPersonCamera.transform.forward;
+
+            thirdPersonCamera.transform.position += movement * Time.deltaTime * 2;
         }
 
         public static void UpdateCameraSettings()
@@ -110,6 +128,21 @@ namespace StandaloneThirdPerson
                     thirdPersonCamera.enabled = false;
                 }
             }
+            else if (Input.GetKeyDown(ModSettings.FreeformKeyBind))
+            {
+                if (currentMode == CameraMode.Freeform)
+                {
+                    currentMode = CameraMode.Normal;
+                    thirdPersonCamera.enabled = false;
+                }
+                else
+                {
+                    currentMode = CameraMode.Freeform;
+                    thirdPersonCamera.transform.parent = null;
+                    thirdPersonCamera.enabled = true;
+                }
+            }
+
 
             if (currentMode != CameraMode.Normal)
             {
@@ -119,9 +152,12 @@ namespace StandaloneThirdPerson
                     thirdPersonCamera.enabled = false;
                 }
 
-                thirdPersonCamera.transform.position +=
-                    thirdPersonCamera.transform.forward * Input.GetAxis("Mouse ScrollWheel");
-                if (currentMode == CameraMode.Behind && ModSettings.RearCameraChangedEnabled)
+                thirdPersonCamera.transform.position += thirdPersonCamera.transform.forward * Input.GetAxis("Mouse ScrollWheel");
+                if (currentMode == CameraMode.Freeform)
+                {
+                    FreeformCameraUpdate();
+                }
+                else if (currentMode == CameraMode.Behind && ModSettings.RearCameraChangedEnabled)
                 {
                     if (Input.GetKeyDown(ModSettings.MoveRearCameraLeftKeyBind))
                     {
@@ -151,7 +187,7 @@ namespace StandaloneThirdPerson
         {
             ModSettings.LoadSettings();
         }
-
+        
         [HarmonyPatch(typeof(NetworkManager), "OnJoinedRoom")]
         internal class OnJoinedRoomPatch
         {

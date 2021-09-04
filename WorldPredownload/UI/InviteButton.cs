@@ -58,6 +58,7 @@ namespace WorldPredownload.UI
 
         public InviteButton()
         {
+            return;
             Button = Utilities.CloneGameObject(PATH_TO_GAMEOBJECT_TO_CLONE, PATH_TO_CLONE_PARENT);
             Button.GetRectTrans().SetAnchoredPos(Constants.InviteButtonPos);
             Button.SetName(Constants.INVITE_BUTTON_NAME);
@@ -98,6 +99,7 @@ namespace WorldPredownload.UI
 
         private static void UpdateText()
         {
+            return;
             if (Utilities.GetSelectedNotification().notificationType.Equals("invite"))
             {
                 Button.SetActive(true);
@@ -129,6 +131,7 @@ namespace WorldPredownload.UI
 
         public static IEnumerator InviteButtonTimer(int time)
         {
+            yield break;
             canDownload = false;
             for (var i = time; i >= 0; i--)
             {

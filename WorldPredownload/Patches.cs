@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using HarmonyLib;
 using MelonLoader;
+using Transmtn;
 using Transmtn.DTO.Notifications;
 using UnhollowerBaseLib;
 using UnhollowerBaseLib.Attributes;
@@ -16,10 +17,9 @@ using WorldPredownload.UI;
 using InfoType = VRC.UI.PageUserInfo.EnumNPublicSealedvaNoOnOfSeReBlInFa10Unique;
 using ListType = UiUserList.EnumNPublicSealedvaNoInFrOnOfSeInFa9vUnique;
 
-//using OnDownloadComplete = AssetBundleDownloadManager.MulticastDelegateNInternalSealedVoObUnique;
-
 namespace WorldPredownload
 {
+    
     [HarmonyPatch(typeof(NetworkManager), "OnLeftRoom")]
     internal class OnLeftRoomPatch
     {
@@ -71,10 +71,14 @@ namespace WorldPredownload
         {
             try
             {
-                worldInfoSetupDelegate(thisPtr, apiWorldPtr, apiWorldInstancePtr, something1, something2,
-                    additionalJunkPtr);
-                if (apiWorldPtr != IntPtr.Zero)
-                    Singleton<DownloadManager.Downloader>.Instance.DownloadState = DownloadState.RefreshUI;
+                worldInfoSetupDelegate(thisPtr, apiWorldPtr, apiWorldInstancePtr, something1, something2, additionalJunkPtr);
+                if (apiWorldPtr == IntPtr.Zero) return;
+                var apiWorld = new ApiWorld(apiWorldPtr);
+                if (apiWorld.assetUrl == null) return; // This patch gets called twice. First time with a null url & a second time with a valid one
+                #if DEBUG
+                MelonLogger.Msg(apiWorld.assetUrl);
+#endif
+                Singleton<DownloadManager.Downloader>.Instance.DownloadState = DownloadState.RefreshUI;
             }
             catch (Exception e)
             {
@@ -110,7 +114,7 @@ namespace WorldPredownload
         {
             SelectedNotification = __0;
             MelonLogger.Msg("Called patch");
-            Singleton<DownloadManager.Downloader>.Instance.DownloadState = DownloadState.RefreshUI;
+            //Singleton<DownloadManager.Downloader>.Instance.DownloadState = DownloadState.RefreshUI;
         }
     }
 

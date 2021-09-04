@@ -4,6 +4,7 @@
     {
         Normal = 0,
         Behind = 1,
-        InFront = 2
+        InFront = 2,
+        Freeform = 3
     }
 }

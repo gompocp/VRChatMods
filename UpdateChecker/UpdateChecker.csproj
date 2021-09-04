@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
+        <VrcReferences>true</VrcReferences>
+        <Version>1.0.0.0</Version>
+        <LangVersion>9</LangVersion>
+    </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="semver" Version="2.0.6" />
+    </ItemGroup>
+    <Import Project="$(MsBuildThisFileDirectory)/../ILRepack/ILRepack.Lib.MSBuild.Task.targets" />
+
+    <Target Name="ILRepack" AfterTargets="Build">
+        <PropertyGroup>
+            <WorkingDirectory>$(OutputPath)</WorkingDirectory>
+        </PropertyGroup>
+        <ItemGroup>
+            <InputAssemblies Include="$(OutputPath)/$(AssemblyName).dll" />
+            <InputAssemblies Include="$(OutputPath)/Semver.dll" />
+            <IlRepackLibs Include="$(OutputPath)" />
+            <IlRepackLibs Include="$(MelonManaged)" />
+            <IlRepackLibs Include="$(MelonLoader)" />
+        </ItemGroup>
+        <Message Text="MERGING: @(InputAssemblies->'%(Filename)') into $(OutputAssembly)" Importance="High" />
+        <ILRepack Internalize="true" LibraryPath="@(IlRepackLibs)" OutputFile="$(OutputPath)/$(AssemblyName).dll" InputAssemblies="@(InputAssemblies)" />
+    </Target>
+    <Target Name="PostBuildCopy" AfterTargets="ILRepack">
+        <Exec Command="xcopy /c /f /y $(OutputPath)\$(AssemblyName).dll $(VRChatFolder)\Mods" />
+    </Target>
+</Project>

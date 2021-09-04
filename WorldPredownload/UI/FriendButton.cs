@@ -99,12 +99,22 @@ namespace WorldPredownload.UI
             }
             else
             {
-                while (Utilities.GetUserInfo().field_Private_ApiWorld_0 == null) yield return null;
-                if (CacheManager.HasDownloadedWorld(Utilities.GetUserInfo().field_Private_ApiWorld_0.id, Utilities.GetUserInfo().field_Private_ApiWorld_0.version))
+                if (CacheManager.HasDownloadedWorld(Utilities.GetUserInfo().field_Private_ApiWorld_0.assetUrl))
                     Button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
                 else
                     Button.SetText(Constants.BUTTON_IDLE_TEXT);
             }
+        }
+
+        public static void UpdateTextDownloadStopped()
+        {
+            var userInfo = Utilities.GetUserInfo();
+            if (userInfo == null || userInfo.field_Private_ApiWorld_0?.id == null) return;
+            if (CacheManager.HasDownloadedWorld(userInfo.field_Private_ApiWorld_0.assetUrl))
+                Button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
+            else
+                Button.SetText(Constants.BUTTON_IDLE_TEXT);
+            CanChangeText = true;
         }
     }
 }

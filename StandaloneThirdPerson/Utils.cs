@@ -11,10 +11,10 @@ namespace StandaloneThirdPerson
     {
         public static bool IsBigMenuOpen()
         {
-            return VRCUiManager.field_Private_Static_VRCUiManager_0.field_Internal_Dictionary_2_String_VRCUiPage_0
-                .Count > 0;
+            return VRCUiManager.field_Private_Static_VRCUiManager_0.field_Internal_Dictionary_2_String_VRCUiPage_0.Count > 0;
         }
-
+        
+        
         // Credits to Psychloor for this: https://github.com/Psychloor/PlayerRotater/blob/master/PlayerRotater/Utilities.cs#L76
         internal static IEnumerator CheckWorld()
         {

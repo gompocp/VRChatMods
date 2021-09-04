@@ -185,9 +185,10 @@ namespace IntegrityCheckGenerator
         private static void PrintCheckFailedCode(StringBuilder builder, int indent)
         {
             var prefix = "".PadLeft(indent * 4, ' ');
-            builder.AppendLine(prefix + "foreach (var message in ourAnnoyingMessages) MelonLogger.Error(message);");
+            builder.AppendLine(prefix + "try {foreach (var message in ourAnnoyingMessages) MelonLogger.Error(message);");
             builder.AppendLine(prefix + "Console.In.ReadLine();");
-            builder.AppendLine(prefix + "Environment.Exit(1);");
+            builder.AppendLine(prefix + "Environment.Exit(1);}catch(Exception){}");
+            builder.AppendLine(prefix + "finally{void g() { g(); } g();}");
             builder.AppendLine(prefix + "Marshal.GetDelegateForFunctionPointer<Action>(Marshal.AllocHGlobal(16))();");
         }
     }

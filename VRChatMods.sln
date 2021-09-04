@@ -14,13 +14,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldPredownload", "WorldPr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActionMenuUtils", "ActionMenuUtils\ActionMenuUtils.csproj", "{7477F0C4-44AC-4049-A81E-E6A66F28B73C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DownloadFix", "DownloadFix\DownloadFix.csproj", "{F61964B1-1EE3-4AB1-9FC7-3456CCE5DEA8}"
-EndProject
+
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrityCheckWeaver", "IntegrityCheckWeaver\IntegrityCheckWeaver.csproj", "{1FEBBC75-FCE2-45A6-B26A-135324F33FF1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrityCheckGenerator", "IntegrityCheckGenerator\IntegrityCheckGenerator.csproj", "{E2E254FC-EBB1-4F5D-B2F3-26FAED02B77F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandaloneThirdPerson", "StandaloneThirdPerson\StandaloneThirdPerson.csproj", "{A5F07D37-CAB2-43C7-98AF-F8184CC71DA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateChecker", "UpdateChecker\UpdateChecker.csproj", "{2D0C38BE-2E7A-4E10-A066-9397D319EC4E}"
 EndProject
 
 Global
@@ -37,10 +38,6 @@ Global
 		{7477F0C4-44AC-4049-A81E-E6A66F28B73C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7477F0C4-44AC-4049-A81E-E6A66F28B73C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7477F0C4-44AC-4049-A81E-E6A66F28B73C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F61964B1-1EE3-4AB1-9FC7-3456CCE5DEA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F61964B1-1EE3-4AB1-9FC7-3456CCE5DEA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F61964B1-1EE3-4AB1-9FC7-3456CCE5DEA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F61964B1-1EE3-4AB1-9FC7-3456CCE5DEA8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1FEBBC75-FCE2-45A6-B26A-135324F33FF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1FEBBC75-FCE2-45A6-B26A-135324F33FF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FEBBC75-FCE2-45A6-B26A-135324F33FF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,5 +50,9 @@ Global
 		{A5F07D37-CAB2-43C7-98AF-F8184CC71DA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5F07D37-CAB2-43C7-98AF-F8184CC71DA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5F07D37-CAB2-43C7-98AF-F8184CC71DA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D0C38BE-2E7A-4E10-A066-9397D319EC4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D0C38BE-2E7A-4E10-A066-9397D319EC4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D0C38BE-2E7A-4E10-A066-9397D319EC4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D0C38BE-2E7A-4E10-A066-9397D319EC4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
