@@ -33,8 +33,8 @@ namespace WorldPredownload
             if (string.IsNullOrEmpty(ID)) return;
             var downloader = Singleton<DownloadManager.Downloader>.Instance;
             downloader.Attach(ResettableSingleton<InviteButton>.Instance);
-            downloader.Attach(Singleton<FriendButton>.Instance);
-            downloader.Attach(Singleton<WorldButton>.Instance);
+            downloader.Attach(ResettableSingleton<FriendButton>.Instance);
+            downloader.Attach(ResettableSingleton<WorldButton>.Instance);
             downloader.Attach(Singleton<WorldDownloadStatus>.Instance);
             downloader.Attach(Singleton<HudIcon>.Instance);
         }

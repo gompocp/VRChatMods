@@ -8,7 +8,7 @@ using WorldPredownload.Helpers;
 
 namespace WorldPredownload.UI
 {
-    internal class WorldButton : Singleton<WorldButton>, IDownloadListener
+    internal class WorldButton : Singleton<WorldButton>, IDownloadListener, IResettable
     {
         private const string PATH_TO_GAMEOBJECT_TO_CLONE =
             "UserInterface/MenuContent/Screens/WorldInfo/WorldButtons/GoButton";
@@ -65,8 +65,7 @@ namespace WorldPredownload.UI
                 case DownloadState.Idle:
                     var worldInfo = GetWorldInfo();
                     if (worldInfo == null || worldInfo.field_Private_ApiWorld_0?.id == null) return;
-                    if (CacheManager.HasDownloadedWorld(worldInfo.field_Private_ApiWorld_0.id,
-                        worldInfo.field_Private_ApiWorld_0.version))
+                    if (CacheManager.HasDownloadedWorld(worldInfo.field_Private_ApiWorld_0.assetUrl))
                         Button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
                     else
                         Button.SetText(Constants.BUTTON_IDLE_TEXT);
@@ -123,6 +122,11 @@ namespace WorldPredownload.UI
         private static PageWorldInfo GetWorldInfo()
         {
             return GameObject.Find(PATH_TO_WORLDINFO).GetComponent<PageWorldInfo>();
+        }
+
+        public void Reset()
+        {
+            throw new NotImplementedException();
         }
     }
 }

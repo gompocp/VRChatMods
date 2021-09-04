@@ -9,7 +9,7 @@ using WorldPredownload.Helpers;
 
 namespace WorldPredownload.UI
 {
-    internal class FriendButton : Singleton<FriendButton>, IDownloadListener
+    internal class FriendButton : Singleton<FriendButton>, IDownloadListener, IResettable
     {
         private const string PATH_TO_GAMEOBJECT_TO_CLONE =
             "UserInterface/MenuContent/Screens/UserInfo/OnlineFriendButtons/Invite";
@@ -64,8 +64,7 @@ namespace WorldPredownload.UI
                 case DownloadState.Idle:
                     var userInfo = Utilities.GetUserInfo();
                     if (userInfo == null || userInfo.field_Private_ApiWorld_0?.id == null) return;
-                    if (CacheManager.HasDownloadedWorld(userInfo.field_Private_ApiWorld_0.id,
-                        userInfo.field_Private_ApiWorld_0.version))
+                    if (CacheManager.HasDownloadedWorld(userInfo.field_Private_ApiWorld_0.assetUrl))
                         Button.SetText(Constants.BUTTON_ALREADY_DOWNLOADED_TEXT);
                     else
                         Button.SetText(Constants.BUTTON_IDLE_TEXT);
@@ -115,6 +114,11 @@ namespace WorldPredownload.UI
             else
                 Button.SetText(Constants.BUTTON_IDLE_TEXT);
             CanChangeText = true;
+        }
+
+        public void Reset()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -12,10 +12,7 @@ namespace WorldPredownload.DownloadManager
 
         private readonly List<IDownloadListener> listeners;
 
-        public Downloader()
-        {
-            listeners = new List<IDownloadListener>();
-        }
+        public Downloader() => listeners = new List<IDownloadListener>();
 
 
         public DownloadState DownloadState
@@ -28,9 +25,9 @@ namespace WorldPredownload.DownloadManager
             }
         }
 
-        public float Percent { get; set; }
+        public float Percent { get; private set; }
 
-        public string TextStatus { get; set; }
+        public string? TextStatus { get; private set; }
 
         public void Attach(IDownloadListener listener)
         {
@@ -44,7 +41,8 @@ namespace WorldPredownload.DownloadManager
 
         private void Notify()
         {
-            foreach (var listener in listeners) listener.Update(this);
+            foreach (var listener in listeners) 
+                listener.Update(this);
         }
     }
 }
