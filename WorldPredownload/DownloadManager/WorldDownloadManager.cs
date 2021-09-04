@@ -166,10 +166,13 @@ namespace WorldPredownload.DownloadManager
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             webClient?.Dispose();
             webClient = new WebClient();
-            webClient.Headers.Add("user-agent", ModSettings.downloadUserAgent);
+            #if DEBUG
+            MelonLogger.Msg($"Using UserAgent: {ModSettings.downloadUserAgent}");
+            #endif
+            webClient.Headers.Add(HttpRequestHeader.UserAgent, ModSettings.downloadUserAgent);
             webClient.DownloadProgressChanged += progress;
             webClient.DownloadFileCompleted += compete;
-            
+
             var cachePath = CacheManager.GetCache().path;
             var assetHash = CacheManager.ComputeAssetHash(apiWorld.assetUrl);
             var dir = Path.Combine(cachePath, assetHash);
@@ -184,7 +187,10 @@ namespace WorldPredownload.DownloadManager
             MelonLogger.Msg($"Starting world download for: {apiWorld.name}");
             file = fileName;
 
-           
+            #if DEBUG
+            MelonLogger.Msg($"AssetUrl: {apiWorld.assetUrl}");
+            #endif
+            
             webClient.DownloadFileAsync(new Uri(apiWorld.assetUrl), fileName);
         }
     }

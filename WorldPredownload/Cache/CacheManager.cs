@@ -9,7 +9,7 @@ using WorldPredownload.Helpers;
 
 namespace WorldPredownload.Cache
 {
-    public class CacheManager
+    public static class CacheManager
     {
         private static readonly HashSet<string> Directories = new();
         private static readonly Stopwatch Stopwatch = new();
